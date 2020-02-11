@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MySql(数据过滤) | ZJR&#39;blog</title>
+  <meta name="keywords" content=" MySql_where , MySql_like ">
+  <meta name="description" content="MySql(数据过滤) | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql(创建和操纵表)">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/08/MySql-Course12/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-08T02:54:47.000Z">
+<meta property="article:modified_time" content="2020-02-11T09:46:00.342Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="MySql_create">
+<meta property="article:tag" content="MySql_alter">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="15">
+<input type="hidden" id="yelog_site_word_count" value="12.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/01/24/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构和伪加密">Zip结构和伪加密</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-MySql-Course03" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">MySql(数据过滤)</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="MySqlCourse">MySqlCourse</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color2">MySql_where</a>
+            
+            <a class="color1">MySql_like</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-02-11 17:46:00'>2020-02-02 10:55</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#对检索数据进行操作"><span class="toc-text">对检索数据进行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#过滤数据"><span class="toc-text">过滤数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#where子句操作符"><span class="toc-text">where子句操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#where的简单应用"><span class="toc-text">where的简单应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空值检查"><span class="toc-text">空值检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据过滤-过滤数据的进阶"><span class="toc-text">数据过滤(过滤数据的进阶)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AND操作符"><span class="toc-text">AND操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OR操作符"><span class="toc-text">OR操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计算次序"><span class="toc-text">计算次序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IN操作符"><span class="toc-text">IN操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NOT操作符"><span class="toc-text">NOT操作符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用通配符进行过滤"><span class="toc-text">用通配符进行过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#百分号（-）通配符"><span class="toc-text">百分号（%）通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下划线（-）通配符"><span class="toc-text">下划线（_）通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用通配符的技巧"><span class="toc-text">使用通配符的技巧</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="对检索数据进行操作"><a href="#对检索数据进行操作" class="headerlink" title="对检索数据进行操作"></a>对检索数据进行操作</h1><p>指定搜索条件。<br>主要是对where子句学习，以及where子句与一些关键字和子句的综合使用。</p>
+<h2 id="过滤数据"><a href="#过滤数据" class="headerlink" title="过滤数据"></a>过滤数据</h2><h3 id="where子句操作符"><a href="#where子句操作符" class="headerlink" title="where子句操作符"></a>where子句操作符</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">=</td>
+<td align="center">等于</td>
+</tr>
+<tr>
+<td align="center">&lt;&gt;</td>
+<td align="center">不等于</td>
+</tr>
+<tr>
+<td align="center">!=</td>
+<td align="center">不等于</td>
+</tr>
+<tr>
+<td align="center">&lt;</td>
+<td align="center">小于</td>
+</tr>
+<tr>
+<td align="center">&lt;=</td>
+<td align="center">小于等于</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td align="center">大于</td>
+</tr>
+<tr>
+<td align="center">&gt;=</td>
+<td align="center">大于等于</td>
+</tr>
+<tr>
+<td align="center">between</td>
+<td align="center">在指定的两个值之间</td>
+</tr>
+</tbody></table>
+<h3 id="where的简单应用"><a href="#where的简单应用" class="headerlink" title="where的简单应用"></a>where的简单应用</h3><blockquote>
+<p>select prod_name,prod_price<br>from products<br>where prod_price = 2.50;<br><img src="1.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where prod_name = ‘fuses’;<br><em>MySql在执行匹配时默认不区分大小写，所以fuses与FUSES匹配</em><br><img src="2.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where prod_price &lt; 10;<br><img src="3.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where prod_price &lt;= 10;<br><img src="4.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p>select vend_id,prod_name<br>from products<br>where vend_id &lt;&gt; 1003;<br>与<br>select vend_id,prod_name<br>from products<br>where vend_id != 1003;<br>相同<br><img src="5.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where prod_price between 5.99 and 10;<br><img src="6.png" alt=""><br><em>注：这里5.99和10都能被返回，所以between and 相当于 &gt;= and &lt;=</em></p>
+</blockquote>
+<h3 id="空值检查"><a href="#空值检查" class="headerlink" title="空值检查"></a>空值检查</h3><p>NULL无值（no value），与字段0、空字符串或仅仅包含空格不同。</p>
+<blockquote>
+<p>select cust_id,cust_email<br>from customers<br>where cust_email is null;<br><img src="7.png" alt=""><br><em>注：不能通过NULL值来过滤，从而返回具有NULL值的行。因为未知具有特殊含义，数据库不知道它们是否匹配，所以在匹配过滤或不匹配过滤时不返回它们。因此，在过滤数据时，一定要验证返回数据中确实给出了被过滤列具有NULL的行。</em></p>
+</blockquote>
+<blockquote>
+<p><em>注：输入的过滤参数类型需要与对应字段的数据类型一致，例如prod_price的数据类型为int型则输入参数为数字，不需要加引号。</em></p>
+</blockquote>
+<blockquote>
+<p><em>注：在同时使用order by和where时，order by应该位于where之后。</em></p>
+</blockquote>
+<h2 id="数据过滤-过滤数据的进阶"><a href="#数据过滤-过滤数据的进阶" class="headerlink" title="数据过滤(过滤数据的进阶)"></a>数据过滤(过滤数据的进阶)</h2><p>主要是对AND、OR、IN、NOT关键字的组合使用。</p>
+<h3 id="AND操作符"><a href="#AND操作符" class="headerlink" title="AND操作符"></a>AND操作符</h3><blockquote>
+<p>select prod_id,prod_price,prod_name<br>from products<br>where vend_id = 1003 and prod_price &lt;= 10;<br><img src="8.png" alt=""><br>可以添加多个过滤条件，每添加一条就要使用一个AND。</p>
+</blockquote>
+<h3 id="OR操作符"><a href="#OR操作符" class="headerlink" title="OR操作符"></a>OR操作符</h3><blockquote>
+<p>select vend_id,prod_name,prod_price<br>from products<br>where vend_id = 1002 OR vend_id = 1003;<br><img src="9.png" alt=""></p>
+</blockquote>
+<h3 id="计算次序"><a href="#计算次序" class="headerlink" title="计算次序"></a>计算次序</h3><p>列出价格为10美元（含）以上且由1002或1003制造的所有产品。</p>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where vend_id = 1002 or vend_id = 1003 and prod_price &gt;= 10;<br><img src="10.png" alt=""><br>如上所示，在结果中出现了价格低于10的产品。这是由于在检索时先做and计算，再做or计算。and的优先级要高于or。<br>正确的语句：<br>select prod_name,prod_price<br>from products<br>where (vend_id = 1002 or vend_id = 1003) and prod_price &gt;= 10;<br><img src="11.png" alt=""><br>加上括号后，计算次序发生改变，优先计算括号内。即先根据括号内的语句过滤数据，再根据括号外的语句进一步过滤。<br>多条语句同时作用时，应该使用圆括号来明确计算的次序，以免产生歧义。</p>
+</blockquote>
+<h3 id="IN操作符"><a href="#IN操作符" class="headerlink" title="IN操作符"></a>IN操作符</h3><p>IN操作符用来指定条件范围，范围中的每个条件都可以进行匹配。IN取合法值的逗号分隔的清单，全都在括号中。</p>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where vend_id in (1002,1003)<br>order by prod_name;<br><img src="12.png" alt=""><br>由此可见IN操作符完成的功能与OR相同。</p>
+</blockquote>
+<p><strong>IN操作符的优点：</strong></p>
+<ul>
+<li>在使用长的合法选项清单时，IN操作符的语法更清楚直观</li>
+<li>计算次序更容易管理</li>
+<li>一般情况下IN操作符的执行速度比OR操作符更快</li>
+<li>可以包含其他SELECT语句</li>
+</ul>
+<h3 id="NOT操作符"><a href="#NOT操作符" class="headerlink" title="NOT操作符"></a>NOT操作符</h3><p>用来否定它之后所跟的任何条件。</p>
+<blockquote>
+<p>select prod_name,prod_price<br>from products<br>where vend_id not in (1002,1003)<br>order by prod_name;<br><img src="13.png" alt=""><br>MySql支持使用NOT对IN、BETWEEN和EXISTS子句取反。</p>
+</blockquote>
+<h2 id="用通配符进行过滤"><a href="#用通配符进行过滤" class="headerlink" title="用通配符进行过滤"></a>用通配符进行过滤</h2><p>利用LIKE操作符进行</p>
+<h3 id="百分号（-）通配符"><a href="#百分号（-）通配符" class="headerlink" title="百分号（%）通配符"></a>百分号（%）通配符</h3><p>%表示任何字符出现任意次数。</p>
+<blockquote>
+<p>select prod_id,prod_name<br>from products<br>where prod_name like ‘jet%’;<br>检索以产品名以jet开头的产品，搜索模式为‘jet%’<br><img src="14.png" alt=""><br>通配符可以在搜索模式中任意位置使用<br>select prod_id,prod_name<br>from products<br>where prod_name like ‘%anvil%’;<br><img src="15.png" alt=""><br><em>注：尾空格可能会干扰通配符匹配。例如在保存anvil时，如果后面有一个或多个空格，则子句where prod_name like ‘%anvil’将不会匹配它们，因为l后面还有字符。</em><br><em>注：通配符不能匹配用值NULL作为参数的行。</em></p>
+</blockquote>
+<h3 id="下划线（-）通配符"><a href="#下划线（-）通配符" class="headerlink" title="下划线（_）通配符"></a>下划线（_）通配符</h3><p>下划线通配符用法与百分号通配符一样，但只匹配单个字符</p>
+<blockquote>
+<p>select prod_id,prod_name<br>from products<br>where prod_name like ‘_ ton anvil’;<br><img src="16.png" alt=""></p>
+</blockquote>
+<h3 id="使用通配符的技巧"><a href="#使用通配符的技巧" class="headerlink" title="使用通配符的技巧"></a>使用通配符的技巧</h3><ul>
+<li>不要过度使用，因为通配符搜索的处理时间比之前学习的其他搜索所花的时间更长</li>
+<li>除非必要，否则不要把它们用在搜索模式的开始处</li>
+<li>仔细注意通配符的位置</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>MySql(数据过滤)</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.1k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-02-02, 10:55:26</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-11, 17:46:00</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/02/MySql-Course03/" title="MySql(数据过滤)">http://zjr-g.github.io/2020/02/02/MySql-Course03/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#MySql_show','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_regexp','#MySql_function','#MySql_concat','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

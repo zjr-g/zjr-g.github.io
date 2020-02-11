@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Zip结构和伪加密 | ZJR&#39;blog</title>
+  <meta name="keywords" content=" zip ">
+  <meta name="description" content="Zip结构和伪加密 | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql(创建和操纵表)">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/08/MySql-Course12/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-08T02:54:47.000Z">
+<meta property="article:modified_time" content="2020-02-11T09:46:00.342Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="MySql_create">
+<meta property="article:tag" content="MySql_alter">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="15">
+<input type="hidden" id="yelog_site_word_count" value="12.6k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/01/24/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构和伪加密">Zip结构和伪加密</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Zip" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Zip结构和伪加密</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="CTF">CTF</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color4">zip</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-02-11 20:23:50'>2020-01-24 10:13</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#关于zip的伪加密"><span class="toc-text">关于zip的伪加密</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩源文件数据区"><span class="toc-text">压缩源文件数据区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩源文件目录区"><span class="toc-text">压缩源文件目录区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#压缩源文件目录结束标志"><span class="toc-text">压缩源文件目录结束标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例分析"><span class="toc-text">实例分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩源文件数据区分析"><span class="toc-text">压缩源文件数据区分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩源文件目录区分析"><span class="toc-text">压缩源文件目录区分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩源文件目录结束标志分析"><span class="toc-text">压缩源文件目录结束标志分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#伪加密分析"><span class="toc-text">伪加密分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无加密"><span class="toc-text">无加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#假加密"><span class="toc-text">假加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#真加密"><span class="toc-text">真加密</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="关于zip的伪加密"><a href="#关于zip的伪加密" class="headerlink" title="关于zip的伪加密"></a>关于zip的伪加密</h1><p>一个zip文件由三个部分组成：</p>
+<ul>
+<li>压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区)</li>
+<li>压缩源文件目录区(核心目录)</li>
+<li>压缩源文件目录结束标志</li>
+</ul>
+<h2 id="压缩源文件数据区"><a href="#压缩源文件数据区" class="headerlink" title="压缩源文件数据区"></a>压缩源文件数据区</h2><p>再这个数据区中每一个压缩的源文件/目录都是一条记录，记录格式</p>
+<blockquote>
+<p>文件头 + 文件数据 + 数据描述符</p>
+</blockquote>
+<p>1.文件头结构</p>
+<table>
+<thead>
+<tr>
+<th align="left">组成</th>
+<th align="left">长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">文件头标记</td>
+<td align="left">4 bytes (0x04034B50)</td>
+</tr>
+<tr>
+<td align="left">解压文件所需 pkware 版本</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">全局方式位标记</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">压缩方式</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">最后修改文件时间</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">最后修改文件日期</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">CRC-32校验</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">压缩后尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">未压缩尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">文件名长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">扩展记录长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">文件名</td>
+<td align="left">不定长度</td>
+</tr>
+<tr>
+<td align="left">扩展字段</td>
+<td align="left">不定长度</td>
+</tr>
+</tbody></table>
+<p>2.文件数据<br>内容长度不定</p>
+<p>3.数据描述符</p>
+<table>
+<thead>
+<tr>
+<th align="left">组成</th>
+<th align="left">长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CRC-32校验</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">压缩后尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">未压缩尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+</tbody></table>
+<p>这个数据描述符只在全局方式位标记的第３位设为１时才存在（见后详解），紧接在压缩数据的最后一个字节后。这个数据描述符只用在不能对输出的 ZIP 文件进行检索时使用。例如：在一个不能检索的驱动器（如：磁带机上）上的 ZIP 文件中。如果是磁盘上的ZIP文件一般没有这个数据描述符。</p>
+<h2 id="压缩源文件目录区"><a href="#压缩源文件目录区" class="headerlink" title="压缩源文件目录区"></a>压缩源文件目录区</h2><p>在这个数据区中每一条纪录对应在压缩源文件数据区中的一条数据</p>
+<table>
+<thead>
+<tr>
+<th align="left">组成</th>
+<th align="left">长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">目录中文件文件头标记</td>
+<td align="left">4 bytes (0x02014B50)</td>
+</tr>
+<tr>
+<td align="left">压缩使用的pkware版本</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">解压文件所需pkware版本</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">全局方式位标记</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">压缩方式</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">最后修改文件时间</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">最后修改文件日期</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">CRC-32校验</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">压缩后尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">未压缩尺寸</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">文件名长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">扩展字段长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">文件注释长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">磁盘开始号</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">内部文件属性</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">外部文件属性</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">局部头部偏移量</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">文件名</td>
+<td align="left">(不定长度)</td>
+</tr>
+<tr>
+<td align="left">扩展字段</td>
+<td align="left">(不定长度)</td>
+</tr>
+<tr>
+<td align="left">文件注释</td>
+<td align="left">(不定长度)</td>
+</tr>
+</tbody></table>
+<h2 id="压缩源文件目录结束标志"><a href="#压缩源文件目录结束标志" class="headerlink" title="压缩源文件目录结束标志"></a>压缩源文件目录结束标志</h2><table>
+<thead>
+<tr>
+<th align="left">组成</th>
+<th align="left">长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">目录结束标记</td>
+<td align="left">4 bytes(0x02014B50)</td>
+</tr>
+<tr>
+<td align="left">当前磁盘编号</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">目录区开始磁盘编号</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">本磁盘上纪录总数</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">目录区中纪录总数</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">目录区尺寸大小</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">目录区对第一张磁盘的偏移量</td>
+<td align="left">4 bytes</td>
+</tr>
+<tr>
+<td align="left">ZIP 文件注释长度</td>
+<td align="left">2 bytes</td>
+</tr>
+<tr>
+<td align="left">ZIP 文件注释</td>
+<td align="left">(不定长度)</td>
+</tr>
+</tbody></table>
+<h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><p><img src="zip1.png" alt="zip1"><br>该被压缩文件信息：<br><img src="zip2.png" alt="zip2"><br>这里使用WinHex分析的，是以小端模式展示数据的</p>
+<h3 id="压缩源文件数据区分析"><a href="#压缩源文件数据区分析" class="headerlink" title="压缩源文件数据区分析"></a>压缩源文件数据区分析</h3><p>50 4B 03 04：就是头文件标记(0x02014B50)<br>14 00：解压文件所需pkware版本<br>00 00：全局方式位标记(即压缩包是否加密)头文件标记后2bytes<br>08 00：压缩方式<br>1D BF：最后修改文件时间<br>48 50：最后修改文件日期<br>83 B9 E5 C3：CRC-32校验(0xC3E5B983)<br>4D 00 00 00：压缩后尺寸(转为十进制就是77，单位是字节)<br>4F 00 00 00：未压缩尺寸(79字节)<br>18 00：文件名长度(24字节，即9个英文字符+2个数字字符+1个.符号+6个中文字符)<br>27 00：扩展记录长度<br>后面部分的数据段：<br><img src="zip3.png" alt="zip3"><br>77 69 6E 68 65 78 D0 B4 C8 EB 31 36 BD F8 D6 C6 CA FD BE DD 2E 74 78 74：文件名</p>
+<h3 id="压缩源文件目录区分析"><a href="#压缩源文件目录区分析" class="headerlink" title="压缩源文件目录区分析"></a>压缩源文件目录区分析</h3><p>50 4B 01 02：目录中文件头标记(0x02014B50)<br>14 00：压缩使用的 pkware 版本<br>14 00：解压文件所需 pkware 版本<br>00 00：全局方式位标记(有无加密，伪加密的关键)目录文件标记后4bytes<br>08 00：压缩方式<br>1D BF：最后修改文件时间<br>48 50：最后修改文件日期<br>83 B9 E5 C3：CRC-32校验(0xC3E5B983)<br>4D 00 00 00：压缩后尺寸<br>4F 00 00 00：未压缩尺寸<br>18 00：文件名长度<br>4B 00：扩展字段长度<br>00 00：文件注释长度<br>00 00：磁盘开始号<br>00 00：内部文件属性<br>20 00 00 00：外部文件属性<br>00 00 00 00：局部头部偏移量<br>77 69 6E 68 65 78 D0 B4 C8 EB 31 36 BD F8 D6 C6 CA FD BE DD 2E 74 78 74：文件名</p>
+<h3 id="压缩源文件目录结束标志分析"><a href="#压缩源文件目录结束标志分析" class="headerlink" title="压缩源文件目录结束标志分析"></a>压缩源文件目录结束标志分析</h3><p><img src="zip4.png" alt="zip4"><br>50 4B 05 06：目录结束标记<br>00 00：当前磁盘编号<br>00 00：目录区开始磁盘编号<br>01 00：本磁盘上纪录总数<br>01 00：目录区中纪录总数<br>91 00 00 00：目录区尺寸大小<br>AA 00 00 00：目录区对第一张磁盘的偏移量<br>00 00：ZIP 文件注释长度</p>
+<p>到这里就是zip文件全部的详细解析</p>
+<h2 id="伪加密分析"><a href="#伪加密分析" class="headerlink" title="伪加密分析"></a>伪加密分析</h2><p>修改其压缩源文件目录区的全布局方式标记比特值之后即可对文件加密或解密。<br>压缩源文件数据区：50 4B 03 04：这是头文件标记<br>压缩源文件目录区：50 4B 01 02：目录中文件文件头标记<br>14 00：压缩使用的 pkware 版本<br>14 00：解压文件所需 pkware 版本<br>00 00：全局方式位标记(改为09 00打开就会提示需要密码)<br>压缩源文件目录结束标志 ：50 4B 05 06：目录结束标记<br><img src="zip5.png" alt="zip5"><br>更改完后解压时就会提示需要密码<br><img src="zip6.png" alt="zip6"><br>全局方式位标记的四个数字中只有第二个数字对其有影响，其它的不管为何值，都不影响它的加密属性！<br>第二个数字为奇数时 –&gt;加密<br>第二个数字为偶数时 –&gt;未加密</p>
+<h3 id="无加密"><a href="#无加密" class="headerlink" title="无加密"></a>无加密</h3><p>压缩源文件数据区的全局加密应当为00 00 (504B0304两个bytes之后)<br>且压缩源文件目录区的全局方式位标记应当为00 00(504B0304四个bytes之后)</p>
+<h3 id="假加密"><a href="#假加密" class="headerlink" title="假加密"></a>假加密</h3><p>压缩源文件数据区的全局加密应当为00 00<br>且压缩源文件目录区的全局方式位标记应当为09 00</p>
+<h3 id="真加密"><a href="#真加密" class="headerlink" title="真加密"></a>真加密</h3><p>压缩源文件数据区的全局加密应当为09 00<br>且压缩源文件目录区的全局方式位标记应当为09 00<br><img src="zip7.png" alt="zip7"><br><strong>伪加密其实就是更改源文件目录区的一个标记，让解压软件误以为文件是经过加密的(一般解压软件先读取压缩源文件目，再处理压缩源文件数据)，实事上源文件并没有被加密过，一些解压软件能自动识别伪加密，即能正常解压伪加密的文件。</strong></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Zip结构和伪加密</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.7k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-01-24, 10:13:53</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-11, 20:23:50</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/01/24/Zip/" title="Zip结构和伪加密">http://zjr-g.github.io/2020/01/24/Zip/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#MySql_show','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_regexp','#MySql_function','#MySql_concat','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
