@@ -6,19 +6,26 @@
   <meta name="keywords" content=" MySql_concat ">
   <meta name="description" content="MySql(字符拼接) | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta name="description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySql(创建和操纵表)">
-<meta property="og:url" content="http://zjr-g.github.io/2020/02/08/MySql-Course12/index.html">
+<meta property="og:title" content="Zip结构及其伪加密">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/11/Zip/index.html">
 <meta property="og:site_name" content="ZJR&#39;blog">
-<meta property="og:description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-08T02:54:47.000Z">
-<meta property="article:modified_time" content="2020-02-11T09:46:00.342Z">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip7.png">
+<meta property="article:published_time" content="2020-02-11T13:03:24.000Z">
+<meta property="article:modified_time" content="2020-02-11T13:04:53.469Z">
 <meta property="article:author" content="ZJR">
-<meta property="article:tag" content="MySql_create">
-<meta property="article:tag" content="MySql_alter">
+<meta property="article:tag" content="zip">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -133,7 +140,7 @@
     
         
             
-            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+            <li><div data-rel="CTF">CTF</div>
                 
             </li>
             
@@ -141,7 +148,7 @@
     
         
             
-            <li><div data-rel="CTF">CTF</div>
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
                 
             </li>
             
@@ -165,8 +172,8 @@
     </div>
     <div><a  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="15">
-<input type="hidden" id="yelog_site_word_count" value="12.6k">
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="13.6k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -200,7 +207,7 @@
     <div class="tags-list">
     
     <li class="article-tag-list-item">
-        <a class="color1">MySql_show</a>
+        <a class="color2">base64</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -220,15 +227,19 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_regexp</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">MySql_function</a>
+        <a class="color3">MySql_concat</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color3">MySql_concat</a>
+        <a class="color5">MySql_function</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -264,6 +275,10 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_create</a>
     </li>
     
@@ -276,10 +291,6 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color4">Markdown</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color5">hexo</a>
     </li>
     
@@ -289,12 +300,12 @@
     
     <nav id="title-list-nav">
         
-        <a  class="MySqlCourse "
-           href="/2020/01/31/MySql-Course01/"
-           data-tag="MySql_show"
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
            data-author="" >
-            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
-            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -314,6 +325,14 @@
         </a>
         
         <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course04/"
            data-tag="MySql_regexp"
            data-author="" >
@@ -322,19 +341,19 @@
         </a>
         
         <a  class="MySqlCourse "
-           href="/2020/02/04/MySql-Course06/"
-           data-tag="MySql_function"
-           data-author="" >
-            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
-            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
-        </a>
-        
-        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course05/"
            data-tag="MySql_concat"
            data-author="" >
             <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
             <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -377,6 +396,14 @@
             <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
         </a>
         
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
         <a  class="MySqlCourse "
            href="/2020/02/08/MySql-Course12/"
            data-tag="MySql_create,MySql_alter"
@@ -386,19 +413,11 @@
         </a>
         
         <a  class="CTF "
-           href="/2020/01/24/Zip/"
+           href="/2020/02/11/Zip/"
            data-tag="zip"
            data-author="" >
-            <span class="post-title" title="Zip结构和伪加密">Zip结构和伪加密</span>
-            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
-        </a>
-        
-        <a  class="Tips "
-           href="/2020/01/23/StudyM/"
-           data-tag="Markdown"
-           data-author="" >
-            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
-            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
         </a>
         
         <a  class="Tips "
@@ -445,12 +464,12 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-02-11 17:46:01'>2020-02-03 18:24</time>
+        创建时间:<time class="date" title='更新时间: 2020-02-11 21:31:57'>2020-02-03 18:24</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:352</span>
+        <span>字数:346</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -469,7 +488,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#创建计算字段"><span class="toc-text">创建计算字段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#拼接（concatenate）字段"><span class="toc-text">拼接（concatenate）字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行算数计算"><span class="toc-text">执行算数计算</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#拼接（concatenate）字段"><span class="toc-text">拼接（concatenate）字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行算数计算"><span class="toc-text">执行算数计算</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -485,10 +504,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="创建计算字段"><a href="#创建计算字段" class="headerlink" title="创建计算字段"></a>创建计算字段</h1><p>计算字段并不实际存在于数据库表中，它是运行时在SELECT语句中创建的。</p>
+        <p>计算字段并不实际存在于数据库表中，它是运行时在SELECT语句中创建的。</p>
 <p><strong>字段field</strong>基本上与列（column）的意思相同，经常互换使用。<br>注：只有数据库知道SELECT语句中哪些列是实际的表列，哪些列是计算字段。从客户机的角度看来，计算字段的数据是以与其他列的数据相同的方式返回的。</p>
-<h2 id="拼接（concatenate）字段"><a href="#拼接（concatenate）字段" class="headerlink" title="拼接（concatenate）字段"></a>拼接（concatenate）字段</h2><p>将值联结到一起构成单个值。<br>使用Concat()函数来拼接两个列。<br><img src="1.png" alt=""><br>Concat()也能拼接字符。<br>AS为别名关键字，返回的新列的名字为AS后的字符串。客户机可以按名引用这个列。<br>RTrim()函数可以去掉值右边的所有空格。<br>LTrim()函数可以去掉值左边的所有空格。<br>Trim()函数可以去掉值左右两边的所有空格。<br><strong>注意：多数DBMS使用+或||来实现拼接，MySql则使用Concat()函数来实现。</strong></p>
-<h2 id="执行算数计算"><a href="#执行算数计算" class="headerlink" title="执行算数计算"></a>执行算数计算</h2><p><img src="2.png" alt=""><br>MySql算数操作符</p>
+<h2 id="拼接（concatenate）字段"><a href="#拼接（concatenate）字段" class="headerlink" title="拼接（concatenate）字段"></a>拼接（concatenate）字段</h2><p>将值联结到一起构成单个值。<br>使用Concat()函数来拼接两个列。<br><img src="1.png" alt=" "><br>Concat()也能拼接字符。<br>AS为别名关键字，返回的新列的名字为AS后的字符串。客户机可以按名引用这个列。<br>RTrim()函数可以去掉值右边的所有空格。<br>LTrim()函数可以去掉值左边的所有空格。<br>Trim()函数可以去掉值左右两边的所有空格。<br><strong>注意：多数DBMS使用+或||来实现拼接，MySql则使用Concat()函数来实现。</strong></p>
+<h2 id="执行算数计算"><a href="#执行算数计算" class="headerlink" title="执行算数计算"></a>执行算数计算</h2><p><img src="2.png" alt=" "><br>MySql算数操作符</p>
 <table>
 <thead>
 <tr>
@@ -524,10 +543,10 @@
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>MySql(字符拼接)</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">352</span></p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">346</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
     <p><span class="copy-title">发布时间:</span>2020-02-03, 18:24:11</p>
-    <p><span class="copy-title">最后更新:</span>2020-02-11, 17:46:01</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-11, 21:31:57</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/03/MySql-Course05/" title="MySql(字符拼接)">http://zjr-g.github.io/2020/02/03/MySql-Course05/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
@@ -572,7 +591,7 @@
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#MySql_show','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_regexp','#MySql_function','#MySql_concat','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
+            'data': ['#base64','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_show','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#Markdown','#MySql_create','#MySql_alter','#zip','#hexo',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');

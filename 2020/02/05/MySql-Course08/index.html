@@ -6,19 +6,26 @@
   <meta name="keywords" content=" MySql_subquery ">
   <meta name="description" content="MySql(子查询) | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta name="description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySql(创建和操纵表)">
-<meta property="og:url" content="http://zjr-g.github.io/2020/02/08/MySql-Course12/index.html">
+<meta property="og:title" content="Zip结构及其伪加密">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/11/Zip/index.html">
 <meta property="og:site_name" content="ZJR&#39;blog">
-<meta property="og:description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-08T02:54:47.000Z">
-<meta property="article:modified_time" content="2020-02-11T09:46:00.342Z">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip7.png">
+<meta property="article:published_time" content="2020-02-11T13:03:24.000Z">
+<meta property="article:modified_time" content="2020-02-11T13:04:53.469Z">
 <meta property="article:author" content="ZJR">
-<meta property="article:tag" content="MySql_create">
-<meta property="article:tag" content="MySql_alter">
+<meta property="article:tag" content="zip">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -133,7 +140,7 @@
     
         
             
-            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+            <li><div data-rel="CTF">CTF</div>
                 
             </li>
             
@@ -141,7 +148,7 @@
     
         
             
-            <li><div data-rel="CTF">CTF</div>
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
                 
             </li>
             
@@ -165,8 +172,8 @@
     </div>
     <div><a  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="15">
-<input type="hidden" id="yelog_site_word_count" value="12.6k">
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="13.6k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -200,7 +207,7 @@
     <div class="tags-list">
     
     <li class="article-tag-list-item">
-        <a class="color1">MySql_show</a>
+        <a class="color2">base64</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -220,15 +227,19 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_regexp</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">MySql_function</a>
+        <a class="color3">MySql_concat</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color3">MySql_concat</a>
+        <a class="color5">MySql_function</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -264,6 +275,10 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_create</a>
     </li>
     
@@ -276,10 +291,6 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color4">Markdown</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color5">hexo</a>
     </li>
     
@@ -289,12 +300,12 @@
     
     <nav id="title-list-nav">
         
-        <a  class="MySqlCourse "
-           href="/2020/01/31/MySql-Course01/"
-           data-tag="MySql_show"
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
            data-author="" >
-            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
-            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -314,6 +325,14 @@
         </a>
         
         <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course04/"
            data-tag="MySql_regexp"
            data-author="" >
@@ -322,19 +341,19 @@
         </a>
         
         <a  class="MySqlCourse "
-           href="/2020/02/04/MySql-Course06/"
-           data-tag="MySql_function"
-           data-author="" >
-            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
-            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
-        </a>
-        
-        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course05/"
            data-tag="MySql_concat"
            data-author="" >
             <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
             <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -377,6 +396,14 @@
             <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
         </a>
         
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
         <a  class="MySqlCourse "
            href="/2020/02/08/MySql-Course12/"
            data-tag="MySql_create,MySql_alter"
@@ -386,19 +413,11 @@
         </a>
         
         <a  class="CTF "
-           href="/2020/01/24/Zip/"
+           href="/2020/02/11/Zip/"
            data-tag="zip"
            data-author="" >
-            <span class="post-title" title="Zip结构和伪加密">Zip结构和伪加密</span>
-            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
-        </a>
-        
-        <a  class="Tips "
-           href="/2020/01/23/StudyM/"
-           data-tag="Markdown"
-           data-author="" >
-            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
-            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
         </a>
         
         <a  class="Tips "
@@ -445,12 +464,12 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-02-11 17:46:01'>2020-02-05 11:04</time>
+        创建时间:<time class="date" title='更新时间: 2020-02-11 21:36:30'>2020-02-05 11:04</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:797</span>
+        <span>字数:794</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -469,7 +488,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#子查询"><span class="toc-text">子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用子查询进行过滤"><span class="toc-text">利用子查询进行过滤</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用子查询进行过滤"><span class="toc-text">利用子查询进行过滤</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -485,14 +504,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h1><p><font size=4>版本要求：MySql4.1或更高级版本</font><br>子查询即嵌套在其他查询中的查询。</p>
+        <p><font size=4>版本要求：MySql4.1或更高级版本</font><br>子查询即嵌套在其他查询中的查询。</p>
 <h2 id="利用子查询进行过滤"><a href="#利用子查询进行过滤" class="headerlink" title="利用子查询进行过滤"></a>利用子查询进行过滤</h2><p>orders表不存储客户信息，只存储了订单号，客户id和订单日期。<br>orderitems表中存储各订单号及相应物品的信息。<br>customers表存储客户的id及相关信息。<br>假设现在要列出订购物品TNT2的所有客户，就需要利用orders表将orderitems表与customers表连接起来。<br>步骤为：</p>
 <ol>
 <li>检索包含物品TNT2的所有订单的编号<br><strong>SELECT order_num FROM orderitems WHERE prod_id = ‘TNT2’;</strong><br>获得返回值20005和20007</li>
 <li>检索具有前一步骤列出的订单编号的所有客户的ID<br><strong>SELECT cust_id FROM orders WHERE order_num IN (20005,20007);</strong><br>获得返回值10001和10004</li>
 <li>检索前一步骤返回的所有客户ID的客户信息<br><strong>SELECT cust_name,cust_contact FROM customers WHERE cust_id IN (10001,10004)</strong><br>获得对应客户信息</li>
 </ol>
-<p>使用子查询将3个查询组合成一条语句。<br><img src="1.png" alt=""><br>为了更好的阅读SELECT语句，这里对其做了格式化处理。<br>在SELECT语句中，子查询总是从内向外处理，在处理上面的SELECT语句时，实际上执行了三个操作。<br>注意：</p>
+<p>使用子查询将3个查询组合成一条语句。<br><img src="1.png" alt=" "><br>为了更好的阅读SELECT语句，这里对其做了格式化处理。<br>在SELECT语句中，子查询总是从内向外处理，在处理上面的SELECT语句时，实际上执行了三个操作。<br>注意：</p>
 <ul>
 <li>在WHERE子句中使用子查询，应该保证SELECT语句具有与WHERE子句中相同数目的列。通常子查询将返回单个列表并且与单个列匹配，但如果需要也可以使用多个列。</li>
 <li>对于能嵌套的子查询的数目没有限制，不过在实际使用时由于性能的限制，不能嵌套太多的子查询。</li>
@@ -502,8 +521,8 @@
 <li>从customers表中获取客户列表</li>
 <li>对于检索出的每个客户，统计其在orders表中的订单数目</li>
 </ol>
-<p><img src="2.png" alt=""><br>这条SELECT语句对customers表中每个客户返回3列，orders是计算字段，由圆括号中的子查询建立的。该子查询对检索出的每个客户执行一次。<br>子查询中的WHERE子句，使用了完全限定列名。<br>如下语句告诉语句告诉SQL比较orders表中的cust_id与customers表中检索的cust_id：<br>WHERE orders.cust_id = customers.cust_id</p>
-<p>这种类型的子查询称为相关子查询。任何时候只要列名可能有多义性，就必须使用这种语法（表名和列名由一个句点分隔）。<br>如上例子若不使用这种语法：<br><img src="3.png" alt=""><br>返回结果出错。<br>有两个cust_id列，一个在customers中，另一个在orders中，需要比较这两个列以正确的把订单与它们相应的顾客匹配。<br>如果不完全限定列名，MySql将假定是对orders表中的cust_id进行自身比较。而SELECT COUNT(*) FROM orders WHERE cust_id = cust_id;总是返回orders表中的订单总数。</p>
+<p><img src="2.png" alt=" "><br>这条SELECT语句对customers表中每个客户返回3列，orders是计算字段，由圆括号中的子查询建立的。该子查询对检索出的每个客户执行一次。<br>子查询中的WHERE子句，使用了完全限定列名。<br>如下语句告诉语句告诉SQL比较orders表中的cust_id与customers表中检索的cust_id：<br>WHERE orders.cust_id = customers.cust_id</p>
+<p>这种类型的子查询称为相关子查询。任何时候只要列名可能有多义性，就必须使用这种语法（表名和列名由一个句点分隔）。<br>如上例子若不使用这种语法：<br><img src="3.png" alt=" "><br>返回结果出错。<br>有两个cust_id列，一个在customers中，另一个在orders中，需要比较这两个列以正确的把订单与它们相应的顾客匹配。<br>如果不完全限定列名，MySql将假定是对orders表中的cust_id进行自身比较。而SELECT COUNT(*) FROM orders WHERE cust_id = cust_id;总是返回orders表中的订单总数。</p>
 <p><strong>注意：我们应该通过逐渐增加子查询来建立查询，这样便于测试和调试，也能提高查询一开始就正常工作的可能性。</strong></p>
 
       
@@ -515,10 +534,10 @@
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>MySql(子查询)</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">797</span></p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">794</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
     <p><span class="copy-title">发布时间:</span>2020-02-05, 11:04:05</p>
-    <p><span class="copy-title">最后更新:</span>2020-02-11, 17:46:01</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-11, 21:36:30</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/05/MySql-Course08/" title="MySql(子查询)">http://zjr-g.github.io/2020/02/05/MySql-Course08/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
@@ -563,7 +582,7 @@
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#MySql_show','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_regexp','#MySql_function','#MySql_concat','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
+            'data': ['#base64','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_show','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#Markdown','#MySql_create','#MySql_alter','#zip','#hexo',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');

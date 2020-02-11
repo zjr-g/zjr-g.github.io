@@ -6,19 +6,26 @@
   <meta name="keywords" content=" MySql_create , MySql_alter ">
   <meta name="description" content="MySql(创建和操纵表) | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta name="description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySql(创建和操纵表)">
-<meta property="og:url" content="http://zjr-g.github.io/2020/02/08/MySql-Course12/index.html">
+<meta property="og:title" content="Zip结构及其伪加密">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/11/Zip/index.html">
 <meta property="og:site_name" content="ZJR&#39;blog">
-<meta property="og:description" content="创建表表创建基础 新表的名字，在关键在CRTEATE TABLE之后给出 表列的名字和定义，用逗号分隔   CREATE TABLE customers(cust_id      int      NOT NULL AUTO_INCREMENT, cust_name    char(50) NOT NULL, cust_address char(50) NULL, cust_city    cha">
+<meta property="og:description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-02-08T02:54:47.000Z">
-<meta property="article:modified_time" content="2020-02-11T09:46:00.342Z">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip7.png">
+<meta property="article:published_time" content="2020-02-11T13:03:24.000Z">
+<meta property="article:modified_time" content="2020-02-11T13:04:53.469Z">
 <meta property="article:author" content="ZJR">
-<meta property="article:tag" content="MySql_create">
-<meta property="article:tag" content="MySql_alter">
+<meta property="article:tag" content="zip">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -133,7 +140,7 @@
     
         
             
-            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+            <li><div data-rel="CTF">CTF</div>
                 
             </li>
             
@@ -141,7 +148,7 @@
     
         
             
-            <li><div data-rel="CTF">CTF</div>
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
                 
             </li>
             
@@ -165,8 +172,8 @@
     </div>
     <div><a  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="15">
-<input type="hidden" id="yelog_site_word_count" value="12.6k">
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="13.6k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -200,7 +207,7 @@
     <div class="tags-list">
     
     <li class="article-tag-list-item">
-        <a class="color1">MySql_show</a>
+        <a class="color2">base64</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -220,15 +227,19 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_regexp</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">MySql_function</a>
+        <a class="color3">MySql_concat</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color3">MySql_concat</a>
+        <a class="color5">MySql_function</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -264,6 +275,10 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_create</a>
     </li>
     
@@ -276,10 +291,6 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color4">Markdown</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color5">hexo</a>
     </li>
     
@@ -289,12 +300,12 @@
     
     <nav id="title-list-nav">
         
-        <a  class="MySqlCourse "
-           href="/2020/01/31/MySql-Course01/"
-           data-tag="MySql_show"
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
            data-author="" >
-            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
-            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -314,6 +325,14 @@
         </a>
         
         <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course04/"
            data-tag="MySql_regexp"
            data-author="" >
@@ -322,19 +341,19 @@
         </a>
         
         <a  class="MySqlCourse "
-           href="/2020/02/04/MySql-Course06/"
-           data-tag="MySql_function"
-           data-author="" >
-            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
-            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
-        </a>
-        
-        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course05/"
            data-tag="MySql_concat"
            data-author="" >
             <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
             <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -377,6 +396,14 @@
             <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
         </a>
         
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
         <a  class="MySqlCourse "
            href="/2020/02/08/MySql-Course12/"
            data-tag="MySql_create,MySql_alter"
@@ -386,19 +413,11 @@
         </a>
         
         <a  class="CTF "
-           href="/2020/01/24/Zip/"
+           href="/2020/02/11/Zip/"
            data-tag="zip"
            data-author="" >
-            <span class="post-title" title="Zip结构和伪加密">Zip结构和伪加密</span>
-            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
-        </a>
-        
-        <a  class="Tips "
-           href="/2020/01/23/StudyM/"
-           data-tag="Markdown"
-           data-author="" >
-            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
-            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
         </a>
         
         <a  class="Tips "
@@ -447,12 +466,12 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-02-11 17:46:00'>2020-02-08 10:54</time>
+        创建时间:<time class="date" title='更新时间: 2020-02-11 21:39:59'>2020-02-08 10:54</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:963</span>
+        <span>字数:960</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -471,7 +490,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#创建表"><span class="toc-text">创建表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表创建基础"><span class="toc-text">表创建基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用NULL值"><span class="toc-text">使用NULL值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主键"><span class="toc-text">主键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AUTO-INCREMENT"><span class="toc-text">使用AUTO_INCREMENT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指定默认值"><span class="toc-text">指定默认值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引擎类型"><span class="toc-text">引擎类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#更新表"><span class="toc-text">更新表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#删除表"><span class="toc-text">删除表</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#表创建基础"><span class="toc-text">表创建基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用NULL值"><span class="toc-text">使用NULL值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主键"><span class="toc-text">主键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用AUTO-INCREMENT"><span class="toc-text">使用AUTO_INCREMENT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指定默认值"><span class="toc-text">指定默认值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引擎类型"><span class="toc-text">引擎类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新表"><span class="toc-text">更新表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除表"><span class="toc-text">删除表</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -487,25 +506,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h1><h2 id="表创建基础"><a href="#表创建基础" class="headerlink" title="表创建基础"></a>表创建基础</h2><ul>
+        <h2 id="表创建基础"><a href="#表创建基础" class="headerlink" title="表创建基础"></a>表创建基础</h2><ul>
 <li>新表的名字，在关键在CRTEATE TABLE之后给出</li>
 <li>表列的名字和定义，用逗号分隔</li>
 </ul>
 <blockquote>
-<p>CREATE TABLE customers<br>(cust_id      int      NOT NULL AUTO_INCREMENT,<br> cust_name    char(50) NOT NULL,<br> cust_address char(50) NULL,<br> cust_city    char(50) NULL,<br> cust_state   char(5)  NULL,<br> cust_zip     char(10) NULL,<br> cust_country char(50) NULL,<br> cust_contact char(50) NULL,<br> cust_email   char(255)NULL,<br> PRIMARY KEY (cust_id)) ENGINE=InnoDB</p>
+<p>CREATE TABLE customers<br>(cust_id      int      NOT NULL AUTO_INCREMENT,<br>cust_name    char(50) NOT NULL,<br>cust_address char(50) NULL,<br>cust_city    char(50) NULL,<br>cust_state   char(5)  NULL,<br>cust_zip     char(10) NULL,<br>cust_country char(50) NULL,<br>cust_contact char(50) NULL,<br>cust_email   char(255)NULL,<br>PRIMARY KEY (cust_id)) ENGINE=InnoDB</p>
 </blockquote>
 <p>实际的定义（所有列）括在圆括号之中。各列之间用逗号分隔。每列的定义以列名（它在表中必须是唯一的）开始，后跟列的数据类型。表的主键可以在创建表时使用PRIMARY KEY关键字指定。这里列cust_id指定作为主键列。<br>注意：在创建新表时，指定的表名必须不存在。</p>
 <h2 id="使用NULL值"><a href="#使用NULL值" class="headerlink" title="使用NULL值"></a>使用NULL值</h2><p>允许NULL值的列也允许在插入行时不给出该列的值。不允许NULL值的列不接受该列没有值的行。<br>每个表列或者是NULL列或者是NOT NULL列，这种状态在创建时由表的定义规定。</p>
 <h2 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h2><p>表中的每个行必须具有唯一的主键值。如果主键使用单个列，则它的值必须唯一。如果使用多个列，则这些列的组合值必须唯一</p>
 <blockquote>
-<p>CREATE TABLE orderitems<br>(order_num    int         NOT NULL,<br> order_item   int         NOT NULL,<br> prod_id      char(10)    NOT NULL,<br> quantity     int         NOT NULL,<br> item_price decimal(8,2)  NOT NULL,<br> PRIMARY KEY (order_num, order_item)) ENGINE=InnoDB</p>
+<p>CREATE TABLE orderitems<br>(order_num    int         NOT NULL,<br>order_item   int         NOT NULL,<br>prod_id      char(10)    NOT NULL,<br>quantity     int         NOT NULL,<br>item_price decimal(8,2)  NOT NULL,<br>PRIMARY KEY (order_num, order_item)) ENGINE=InnoDB</p>
 </blockquote>
 <h2 id="使用AUTO-INCREMENT"><a href="#使用AUTO-INCREMENT" class="headerlink" title="使用AUTO_INCREMENT"></a>使用AUTO_INCREMENT</h2><blockquote>
 <p>cust_id int NOT NULL AUTO_INCREMENT,</p>
 </blockquote>
 <p>AUTO_INCREMENT告诉MySql，本列每当增加一行时自动增量。每次执行一个INSERT操作时，MySql自动对该列增量，给该列赋予下一个可用值。<br>每个表只允许一个AUTO_INCREMENT列，而且它必须被索引。（通常将它作为主键）<br>可以简单地在INSERT语句中指定一个值，只要它是唯一的，该值将被用来替代自动生成的值。后续的增量将开始使用该手工插入的值。</p>
 <h2 id="指定默认值"><a href="#指定默认值" class="headerlink" title="指定默认值"></a>指定默认值</h2><blockquote>
-<p>CREATE TABLE orderitems<br>(order_num   int          NOT NULL,<br> order_item  int          NOT NULL,<br> prod_id     char(10)     NOT NULL,<br> quantity    int          NOT NULL DEFAULT 1,<br> item_price decimal(8,2)  NOT NULL,<br> PRIMARY KEY (order_num,order_item))ENGINE=InnoDB</p>
+<p>CREATE TABLE orderitems<br>(order_num   int          NOT NULL,<br>order_item  int          NOT NULL,<br>prod_id     char(10)     NOT NULL,<br>quantity    int          NOT NULL DEFAULT 1,<br>item_price decimal(8,2)  NOT NULL,<br>PRIMARY KEY (order_num,order_item))ENGINE=InnoDB</p>
 </blockquote>
 <p>DEFAULT 1指示MySql，在未给出数量的情况下使用数量1。</p>
 <p>注意：与大多数DBMS不同，MySql不允许使用函数作为默认值</p>
@@ -516,7 +535,7 @@
 <li>MyISAM是一个性能极高的引擎，它支持全文本搜索，但不支持事物处理</li>
 </ul>
 <p>外键不能跨引擎</p>
-<h1 id="更新表"><a href="#更新表" class="headerlink" title="更新表"></a>更新表</h1><p>一般不建议对表进行更新，所以在表的设计过程中需要花费大量时间来考虑，以便后期不对该表进行大的改动。<br>为了使用ALTER TABLE更改表结构，必须给出下面的信息:</p>
+<h2 id="更新表"><a href="#更新表" class="headerlink" title="更新表"></a>更新表</h2><p>一般不建议对表进行更新，所以在表的设计过程中需要花费大量时间来考虑，以便后期不对该表进行大的改动。<br>为了使用ALTER TABLE更改表结构，必须给出下面的信息:</p>
 <ul>
 <li>在ALTER TABLE之后给出要更改的表名</li>
 <li>所做更改的列表</li>
@@ -543,7 +562,7 @@
 <li>用旧表原来的名字重命名新表</li>
 <li>根据需要，重新创建触发器，存储过程，索引和外键</li>
 </ul>
-<h1 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h1><p>使用DROP TABLE语句</p>
+<h2 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h2><p>使用DROP TABLE语句</p>
 <blockquote>
 <p>DROP TABLE customers2;</p>
 </blockquote>
@@ -552,9 +571,7 @@
 <p>RENAME TABLE customers2 TO customers;</p>
 </blockquote>
 <p>可以使用逗号分隔，一次对多个表进行重命名</p>
-<blockquote>
-<p>RENAME TABLE customers2 TO customers,<br>             backup_customers TO customers;</p>
-</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RENAME TABLE customers2 TO customers,</span><br><span class="line">             backup_customers TO customers;</span><br></pre></td></tr></table></figure>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
@@ -565,10 +582,10 @@
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>MySql(创建和操纵表)</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">963</span></p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">960</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
     <p><span class="copy-title">发布时间:</span>2020-02-08, 10:54:47</p>
-    <p><span class="copy-title">最后更新:</span>2020-02-11, 17:46:00</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-11, 21:39:59</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/08/MySql-Course12/" title="MySql(创建和操纵表)">http://zjr-g.github.io/2020/02/08/MySql-Course12/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
@@ -613,7 +630,7 @@
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#MySql_show','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_regexp','#MySql_function','#MySql_concat','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
+            'data': ['#base64','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_show','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#Markdown','#MySql_create','#MySql_alter','#zip','#hexo',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');
