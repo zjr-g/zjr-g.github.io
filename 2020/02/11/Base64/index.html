@@ -6,26 +6,21 @@
   <meta name="keywords" content=" base64 ">
   <meta name="description" content="神奇的Base64隐写 | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
+<meta name="description" content="Git是一个分布式版本控制系统Git取代了SVN等传统的版本控制系统，最核心的区别是 SVN 是集中式的版本控制系统，而 Git 是分布式的。  集中式版本控制系统需要找一个服务器作为大本营，所有的代码都需要提交到服务器上进行统一的管理。当你需要对代码进行改动时，需要先从服务器上下载一份拷贝，修改完成之后，还需要上传回服务器。 在分布式版本控制系统中，大家都拥有一个完整的版本库，不需要联网也可以提">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Zip结构及其伪加密">
-<meta property="og:url" content="http://zjr-g.github.io/2020/02/11/Zip/index.html">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/18/Git/index.html">
 <meta property="og:site_name" content="ZJR&#39;blog">
-<meta property="og:description" content="一个zip文件由三个部分组成：  压缩源文件数据区(这部分可以重复多次，当压缩包中有多个文件时，就会有多个压缩源文件数据区) 压缩源文件目录区(核心目录) 压缩源文件目录结束标志  压缩源文件数据区再这个数据区中每一个压缩的源文件&#x2F;目录都是一条记录，记录格式  文件头 + 文件数据 + 数据描述符  1.文件头结构    组成 长度    文件头标记 4 bytes (0x04034B50)">
+<meta property="og:description" content="Git是一个分布式版本控制系统Git取代了SVN等传统的版本控制系统，最核心的区别是 SVN 是集中式的版本控制系统，而 Git 是分布式的。  集中式版本控制系统需要找一个服务器作为大本营，所有的代码都需要提交到服务器上进行统一的管理。当你需要对代码进行改动时，需要先从服务器上下载一份拷贝，修改完成之后，还需要上传回服务器。 在分布式版本控制系统中，大家都拥有一个完整的版本库，不需要联网也可以提">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip2.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip3.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip4.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip5.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip6.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip7.png">
-<meta property="article:published_time" content="2020-02-11T13:03:24.000Z">
-<meta property="article:modified_time" content="2020-02-11T13:04:53.469Z">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/18/Git/git02.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/18/Git/git01.png">
+<meta property="article:published_time" content="2020-02-18T11:47:13.000Z">
+<meta property="article:modified_time" content="2020-02-18T11:53:11.564Z">
 <meta property="article:author" content="ZJR">
-<meta property="article:tag" content="zip">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/11/Zip/zip1.png">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/18/Git/git02.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -172,8 +167,8 @@
     </div>
     <div><a  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="16">
-<input type="hidden" id="yelog_site_word_count" value="13.6k">
+<input type="hidden" id="yelog_site_posts_number" value="17">
+<input type="hidden" id="yelog_site_word_count" value="15.3k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -211,6 +206,10 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color3">MySql_select</a>
     </li>
     
@@ -219,15 +218,15 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color2">MySql_where</a>
     </li>
     
     <li class="article-tag-list-item">
         <a class="color1">MySql_like</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color1">MySql_show</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -275,10 +274,6 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color4">Markdown</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color3">MySql_create</a>
     </li>
     
@@ -288,6 +283,10 @@
     
     <li class="article-tag-list-item">
         <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -309,11 +308,27 @@
         </a>
         
         <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
            href="/2020/02/01/MySql-Course02/"
            data-tag="MySql_select,MySql_order by"
            data-author="" >
             <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
             <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -322,14 +337,6 @@
            data-author="" >
             <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
             <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
-        </a>
-        
-        <a  class="MySqlCourse "
-           href="/2020/01/31/MySql-Course01/"
-           data-tag="MySql_show"
-           data-author="" >
-            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
-            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -396,14 +403,6 @@
             <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
         </a>
         
-        <a  class="Tips "
-           href="/2020/01/23/StudyM/"
-           data-tag="Markdown"
-           data-author="" >
-            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
-            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
-        </a>
-        
         <a  class="MySqlCourse "
            href="/2020/02/08/MySql-Course12/"
            data-tag="MySql_create,MySql_alter"
@@ -418,6 +417,14 @@
            data-author="" >
             <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
             <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
         </a>
         
         <a  class="Tips "
@@ -506,8 +513,115 @@
       
         <p>俄罗斯有个叫 Olympic_ctf 的 CTF, 在 2014 年有道 misc 题是关于 Base64 的隐写题. 做完真是感觉无处不能用于隐写。</p>
 <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>是一段字符串</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">U3RlZ2Fub2dyYXBoeSBpcyB0aGUgYXJ0IGFuZCBzY2llbmNlIG9m</span><br><span class="line">IHdyaXRpbmcgaGlkZGVuIG1lc3NhZ2VzIGluIHN1Y2ggYSB3YXkgdGhhdCBubyBvbmV&#x3D;</span><br><span class="line">LCBhcGFydCBmcm9tIHRoZSBzZW5kZXIgYW5kIGludGVuZGVkIHJlY2lwaWVudCwgc3VzcGU&#x3D;</span><br><span class="line">Y3RzIHRoZSBleGlzdGVuY2Ugb2YgdGhlIG1lc3M&#x3D;</span><br><span class="line">YWdlLCBhIGZvcm0gb2Ygc2VjdXJpdHkgdGhyb3VnaCBvYnNjdXJpdHkuIFS&#x3D;</span><br><span class="line">aGUgd29yZCBzdGVnYW5vZ3JhcGh5IGlzIG9mIEdyZWVrIG9yaWdpbiBhbmQgbWVhbnMgImNvbmNlYW&#x3D;&#x3D;</span><br><span class="line">bGVkIHdyaXRpbmciIGZyb20gdGhlIEdyZWVrIHdvcmRzIHN0ZWdhbm9zIG1lYW5pbmcgImNv</span><br><span class="line">dmVyZWQgb3IgcHJvdGVjdGVkIiwgYW5kIGdyYXBoZWluIG1lYW5pbmcgInRvIHc&#x3D;</span><br><span class="line">cml0ZSIuIFRoZSBmaXJzdCByZWNvcmRlZCB1c2Ugb2YgdGhlIHRlcm0gd2FzIGluIDE0OTkgYnkgSm9o</span><br><span class="line">YW5uZXMgVHJpdGhlbWl1cyBpbiBoaXMgU3RlZ2Fub2dyYXBoaWEsIGEgdHJlYV&#x3D;&#x3D;</span><br><span class="line">dGlzZSBvbiBjcnlwdG9ncmFwaHkgYW5kIHN0ZWdhbm9ncmFwaHkgZGlzZ8&#x3D;&#x3D;</span><br><span class="line">dWlzZWQgYXMgYSBib29rIG9uIG1hZ2ljLiBHZW5lcmFsbHksIG1lc3P&#x3D;</span><br><span class="line">YWdlcyB3aWxsIGFwcGVhciB0byBiZSBzb21ldGhpbmcgZWxzZTogaW1hZ2VzLCBhcnRp</span><br><span class="line">Y2xlcywgc2hvcHBpbmcgbGlzdHMsIG9yIHNvbWUgb3R&#x3D;</span><br><span class="line">aGVyIGNvdmVydGV4dCBhbmQsIGNsYXNzaWNhbGx5LCB0aGUgaGlkZGVuIG1lc3NhZ2UgbWF5IGJlIGluIGludmm&#x3D;</span><br><span class="line">c2libGUgaW5rIGJldHdlZW4gdGhlIHZpc2libGUgbGluZXMgb2YgYSBwcml2YXRlIGxldHRlci4NCg0KVGhl</span><br><span class="line">IGFkdmFudGFnZSBvZiBzdGVnYW5vZ3JhcGh5LCBvdmVyIGNy</span><br><span class="line">eXB0b2dyYXBoeSBhbG9uZSwgaXMgdGhhdCBtZXNzYWdlcyBkbyBub3QgYXR0cmFjdCBhdHRlbnRpb25&#x3D;</span><br><span class="line">IHRvIHRoZW1zZWx2ZXMuIFBsYWlubHkgdmlzaWJsZSBlbmNyeXB0ZWQgbWVzc2FnZXOXbm8gbWF0dGVyIF&#x3D;&#x3D;</span><br><span class="line">aG93IHVuYnJlYWthYmxll3dpbGwgYXJvdXNlIHN&#x3D;</span><br><span class="line">dXNwaWNpb24sIGFuZCBtYXkgaW4gdGhlbXNlbHZlcyBiZSBpbmNyaW1pbmF0aW5nIP&#x3D;&#x3D;</span><br><span class="line">aW4gY291bnRyaWVzIHdoZXJlIGVuY3J5cHRpb24gaXMgaWxsZWdhbC4gVGhlcmVmb3JlLH&#x3D;&#x3D;</span><br><span class="line">IHdoZXJlYXMgY3J5cHRvZ3JhcGh5IHByb3RlY3RzIHRoZSBjb250ZW50cyBvZj&#x3D;&#x3D;</span><br><span class="line">IGEgbWVzc2FnZSwgc3RlZ2Fub2dyYXBoeSBjYW4gYmUgc2FpZCB0byBwcm90ZWN0IGJ&#x3D;</span><br><span class="line">b3RoIG1lc3NhZ2VzIGFuZCBjb21tdW5pY2F0aW5nIHBhcnRpZXMuDQoNClN0ZWdhbm9ncmFwaHkgaW5jbHW&#x3D;</span><br><span class="line">ZGVzIHRoZSBjb25jZWFsbWVudCBvZiBpbmZvcm1hdGlvbiB3aXRoaW4gY29t</span><br><span class="line">cHV0ZXIgZmlsZXMuIEluIGRpZ2l0YWwgc3RlZ2Fub2dyYXBoeSwgZWxlY3Ryb25pYyBjb21tdW5pY2F0aW9u</span><br><span class="line">cyBtYXkgaW5jbHVkZSBzdGVnYW5vZ3JhcGhpYyBjb2RpbmcgaW5zaZ&#x3D;&#x3D;</span><br><span class="line">ZGUgb2YgYSB0cmFuc3BvcnQgbGF5ZXIsIHN1Y2ggYXMgYSBkb2N1bWVudCBmaWxlLCBpbWFnZSBmaWx&#x3D;</span><br><span class="line">ZSwgcHJvZ3JhbSBvciBwcm90b2NvbC4gTWVkaWEg</span><br><span class="line">ZmlsZXMgYXJlIGlkZWFsIGZvciBzdGVnYW5vZ3JhcGhpYyB0cmFuc21pc3Npb+&#x3D;&#x3D;</span><br><span class="line">biBiZWNhdXNlIG9mIHRoZWlyIGxhcmdlIHNpemUuIEFzIB&#x3D;&#x3D;</span><br><span class="line">YSBzaW1wbGUgZXhhbXBsZSwgYSBzZW5kZXIgbWlnaHQgc3RhcnQgd2l0aCBh</span><br><span class="line">biBpbm5vY3VvdXMgaW1hZ2UgZmlsZSBhbmQgYWRqdXN0IHRoZSBjb2xvciBvZiBldmVyeSAxMDB0aCBwaXhlbCD&#x3D;</span><br><span class="line">dG8gY29ycmVzcG9uZCB0byBhIGxldHRlciBpbiB0aGUgYWxwaGFiZXQsIGF&#x3D;</span><br><span class="line">IGNoYW5nZSBzbyBzdWJ0bGUgdGhhdCBzb21lb25lIG5vdCBzcGVjaWZpY2FsbHkgbG9va2luZyBm</span><br><span class="line">b3IgaXQgaXMgdW5saWtlbHkgdG8gbm90aWNlIGl0Lg0KDQpUaGU&#x3D;</span><br><span class="line">IGZpcnN0IHJlY29yZGVkIHVzZXMgb2Ygc3RlZ2Fub2dyYXBoeSBjYW4gYmUgdHJ&#x3D;</span><br><span class="line">YWNlZCBiYWNrIHRvIDQ0MCBCQyB3aGVuIEhlcm9kb3R1cyBtZW50aW9ucyB0d28gZXhhbXBsZXMgb+&#x3D;&#x3D;</span><br><span class="line">ZiBzdGVnYW5vZ3JhcGh5IGluIFRoZSBIaXN0b3JpZXMgb2Yg</span><br><span class="line">SGVyb2RvdHVzLiBEZW1hcmF0dXMgc2VudCBhIHdhcm5pbmcgYWJvdXQgYSB&#x3D;</span><br><span class="line">Zm9ydGhjb21pbmcgYXR0YWNrIHRvIEdyZWVjZSBieSB3</span><br><span class="line">cml0aW5nIGl0IGRpcmVjdGx5IG9uIHRoZSB3b29kZW4gYmFja2luZyBvZiBhIHdheCB0YWJsZXQgYmVm</span><br><span class="line">b3JlIGFwcGx5aW5nIGl0cyBiZWVzd2F4IHN1cmZhY2UuIFdheCB0YWJsZXRzIHdlcmUgaW4gY29tbW9uIHVzZV&#x3D;&#x3D;</span><br><span class="line">IHRoZW4gYXMgcmV1c2FibGUgd3JpdGluZyBzdXJmYWNlcywgc29tZXRpbWX&#x3D;</span><br><span class="line">cyB1c2VkIGZvciBzaG9ydGhhbmQuIEFub3RoZXIgYW5jaWVudCBleGFtcGxlIGlzIHRoYXQgb9&#x3D;&#x3D;</span><br><span class="line">ZiBIaXN0aWFldXMsIHdobyBzaGF2ZWQgdGhlIGhlYWQgb2YgaGlzIG1vc3QgdHJ1c3RlZCBz</span><br><span class="line">bGF2ZSBhbmQgdGF0dG9vZWQgYSBtZXNzYWdlIG9uIGl0LiBBZnRlciBoaXMgaGFpciBoYWQgZ5&#x3D;&#x3D;</span><br><span class="line">cm93biB0aGUgbWVzc2FnZSB3YXMgaGlkZGVuLiBUaGUgcHVycG9zZSB3YXMgdG+&#x3D;</span><br><span class="line">IGluc3RpZ2F0ZSBhIHJldm9sdCBhZ2FpbnN0IHRoZSBQZXJzaWFucy4NCg0KU3RlZ2Fub2dyYXBoeSBoYXMgYm&#x3D;&#x3D;</span><br><span class="line">ZWVuIHdpZGVseSB1c2VkLCBpbmNsdWRpbmcgaW4gcmVjZW50IGhpc3RvcmljYWwgdGltZXMgYW5kIHT&#x3D;</span><br><span class="line">aGUgcHJlc2VudCBkYXkuIFBvc3NpYmxlIHBlcm11dGF0aW9ucyBhcmUgZW5kbGVzcyBhbmT&#x3D;</span><br><span class="line">IGtub3duIGV4YW1wbGVzIGluY2x1ZGU6DQoqIEhpZGRlbiBtZXNzYWdlcyB3aXRoaW4gd2F4IHRh</span><br><span class="line">YmxldHM6IGluIGFuY2llbnQgR3JlZWNlLCBwZW9wbGUgd3JvdGUgbWV&#x3D;</span><br><span class="line">c3NhZ2VzIG9uIHRoZSB3b29kLCB0aGVuIGNvdmVyZWQgaXQgd2l0aCB3YXggdXBvbiB3aGljaCBhbiBpbm5vY2Vu</span><br><span class="line">dCBjb3ZlcmluZyBtZXNzYWdlIHdhcyB3cml0dGVu</span><br><span class="line">Lg0KKiBIaWRkZW4gbWVzc2FnZXMgb24gbWVzc2VuZ2VyJ3MgYm9keTogYWxzbyB1c2VkIGluIGFuY2llbt&#x3D;&#x3D;</span><br><span class="line">dCBHcmVlY2UuIEhlcm9kb3R1cyB0ZWxscyB0aGUgc3Rvcnkgb1&#x3D;&#x3D;</span><br><span class="line">ZiBhIG1lc3NhZ2UgdGF0dG9vZWQgb24gYSBzbGF2ZSdzIHNoYXZlZCBoZWFkLCBoaWRkZW4gYnkgdGhl</span><br><span class="line">IGdyb3d0aCBvZiBoaXMgaGFpciwgYW5kIGV4cG9zZWQgYnkgc2hhdmluZyBoaXMgaGVhZM&#x3D;&#x3D;</span><br><span class="line">IGFnYWluLiBUaGUgbWVzc2FnZSBhbGxlZ2VkbHkgY2FycmllZCBhIHdhcm5pbmcgdG8gR3JlZWNlIGFib5&#x3D;&#x3D;</span><br><span class="line">dXQgUGVyc2lhbiBpbnZhc2lvbiBwbGFucy4gVGh&#x3D;</span><br><span class="line">aXMgbWV0aG9kIGhhcyBvYnZpb3VzIGRyYXdiYWNrcyz&#x3D;</span><br><span class="line">IHN1Y2ggYXMgZGVsYXllZCB0cmFuc21pc3Npb24gd2hpbGUgd2FpdGluZyBmb3IgdGhlIHP&#x3D;</span><br><span class="line">bGF2ZSdzIGhhaXIgdG8gZ3JvdywgYW5kIHRoZSByZXN0cmljdGlvbnMgb3&#x3D;&#x3D;</span><br><span class="line">biB0aGUgbnVtYmVyIGFuZCBzaXplIG9mIG1lc3M&#x3D;</span><br><span class="line">YWdlcyB0aGF0IGNhbiBiZSBlbmNvZGVkIG9uIG9uZSBwZXJzb24&#x3D;</span><br><span class="line">J3Mgc2NhbHAuDQoqIEluIFdXSUksIHRoZSBGcmVuY2ggUmVzaXN0YW5jZSBzZW50IHNvbWUgbWVzc2FnZXMgd2&#x3D;&#x3D;</span><br><span class="line">cml0dGVuIG9uIHRoZSBiYWNrcyBvZiBjb3VyaWVycyD&#x3D;</span><br><span class="line">dXNpbmcgaW52aXNpYmxlIGluay4NCiogSGlkZGVuIG1lc3NhZ2VzIG9uIHBhcGVyIHdy</span><br><span class="line">aXR0ZW4gaW4gc2VjcmV0IGlua3MsIHVuZGVyIG90aGVyIG1lc3NhZ2Vz</span><br><span class="line">IG9yIG9uIHRoZSBibGFuayBwYXJ0cyBvZiBvdGhlct&#x3D;&#x3D;</span><br><span class="line">IG1lc3NhZ2VzLg0KKiBNZXNzYWdlcyB3cml0dGVuIGluIE1vcnNlIGNvZGUgb24ga25pdHRpbmcgeWFybiBhbmQg</span><br><span class="line">dGhlbiBrbml0dGVkIGludG8gYSBwaWVjZSBvZiBjbG90aGluZyB3b3K&#x3D;</span><br><span class="line">biBieSBhIGNvdXJpZXIuDQoqIE1lc3NhZ2VzIHdyaXR0ZW4gb24gdGhlIGJhY2sgb5&#x3D;&#x3D;</span><br><span class="line">ZiBwb3N0YWdlIHN0YW1wcy4NCiogRHVyaW5nIGFuZCBhZnRlcm&#x3D;&#x3D;</span><br><span class="line">IFdvcmxkIFdhciBJSSwgZXNwaW9uYWdlIGFnZW50cyB1c2VkIHBob3RvZ3JhcGhpY2FsbHkgcO&#x3D;&#x3D;</span><br><span class="line">cm9kdWNlZCBtaWNyb2RvdHMgdG8gc2VuZCBpbmZvcm1hdGlvbiBiYWNrIGFuZH&#x3D;&#x3D;</span><br><span class="line">IGZvcnRoLiBNaWNyb2RvdHMgd2VyZSB0eXBpY2FsbHkg</span><br><span class="line">bWludXRlLCBhcHByb3hpbWF0ZWx5IGxlc3MgdGhhbiB0aGUgc2l6ZSBvZiB0aGUgcGVyaW9kIHByb2R&#x3D;</span><br><span class="line">dWNlZCBieSBhIHR5cGV3cml0ZXIuIFdXSUkgbWljcm9kb3RzIG5lZWRlZCB0byBiZSBlbWJlZGRlZB&#x3D;&#x3D;</span><br><span class="line">IGluIHRoZSBwYXBlciBhbmQgY292ZXJlZCB3aXRoIGFuIGFkaGVzaXZlIChzdWNoIGFzIGNvbGxvZGlvbikuIFR&#x3D;</span><br><span class="line">aGlzIHdhcyByZWZsZWN0aXZlIGFuZCB0aHVzIGRldGVjdGFibGUg</span><br><span class="line">Ynkgdmlld2luZyBhZ2FpbnN0IGdsYW5jaW5nIGxpZ2h0LiBBbHRlcm5hdGl2ZSB0ZWNobmlxdWVzIGluY2x1ZGVk</span><br><span class="line">IGluc2VydGluZyBtaWNyb2RvdHMgaW50byBzbGl0cyBjdXQgaW50byB0aGUgZWRnZSBvZv&#x3D;&#x3D;</span><br><span class="line">IHBvc3QgY2FyZHMuDQoqIER1cmluZyBXb3JsZCBXYXIgSUksIGEgc3B5IGZvciB&#x3D;</span><br><span class="line">SmFwYW4gaW4gTmV3IFlvcmsgQ2l0eSwgVmVsdmFsZWW&#x3D;</span><br><span class="line">IERpY2tpbnNvbiwgc2VudCBpbmZvcm1hdGlvbiB0byBhY2NvbW1vZGF0aW9&#x3D;</span><br><span class="line">biBhZGRyZXNzZXMgaW4gbmV1dHJhbCBTb3V0aCBBbWVyaWO&#x3D;</span><br><span class="line">YS4gU2hlIHdhcyBhIGRlYWxlciBpbiBkb2xscywgYW5kIG&#x3D;&#x3D;</span><br><span class="line">aGVyIGxldHRlcnMgZGlzY3Vzc2VkIGhvdyBtYW55IG9mIHRoaXMgb3IgdGhhdCBkb2xs</span><br><span class="line">IHRvIHNoaXAuIFRoZSBzdGVnb3RleHQgd2FzIHRoZSBkb2xsIG9yZGVycywgd2hpbGUgdGhl</span><br><span class="line">IGNvbmNlYWxlZCAicGxhaW50ZXh0IiB3YXMgaXRzZWxmIGVuY2+&#x3D;</span><br><span class="line">ZGVkIGFuZCBnYXZlIGluZm9ybWF0aW9uIGFib3V0IHNoaXAgbW92ZW1lbnRzLF&#x3D;&#x3D;</span><br><span class="line">IGV0Yy4gSGVyIGNhc2UgYmVjYW1lIHNvbWV3aGF0IGZh</span><br><span class="line">bW91cyBhbmQgc2hlIGJlY2FtZSBrbm93biBhcyB0aGX&#x3D;</span><br><span class="line">IERvbGwgV29tYW4uDQoqIENvbGQgV2FyIGNvdW50</span><br><span class="line">ZXItcHJvcGFnYW5kYS4gSW4gMTk2OCwgY3JldyBtZW1iZW&#x3D;&#x3D;</span><br><span class="line">cnMgb2YgdGhlIFVTUyBQdWVibG8gKEFHRVItMikgaW50ZWxsaWdlbmNlIHNoaXAgaGVsZCBhcyBwcm&#x3D;&#x3D;</span><br><span class="line">aXNvbmVycyBieSBOb3J0aCBLb3JlYSwgY29tbXVuaWNhdGVkIGluIHNpZ25&#x3D;</span><br><span class="line">IGxhbmd1YWdlIGR1cmluZyBzdGFnZWQgcGhvdG8gb3Bwb3J0</span><br><span class="line">dW5pdGllcywgaW5mb3JtaW5nIHRoZSBVbml0ZWQgU3RhdGVzIHRoZXkg</span><br><span class="line">d2VyZSBub3QgZGVmZWN0b3JzIGJ1dCByYXRoZXIgd2VyZSBiZWluZyBoZWxkIGNh</span><br><span class="line">cHRpdmUgYnkgdGhlIE5vcnRoIEtvcmVhbnMuIEluIG90aGVyIHBob3Rv</span><br><span class="line">cyBwcmVzZW50ZWQgdG8gdGhlIFVTLCBjcmV3IG1lbWJlcnMgZ2F2ZSAidGhlIGZpbmdlciIgdG8g</span><br><span class="line">dGhlIHVuc3VzcGVjdGluZyBOb3J0aCBLb3JlYW5zLCBpbiBhbiBhdHRlbXB0IHRvIE&#x3D;&#x3D;</span><br><span class="line">ZGlzY3JlZGl0IHBob3RvcyB0aGF0IHNob3dlZCB0aGVtIHNtaQ&#x3D;&#x3D;</span><br><span class="line">bGluZyBhbmQgY29tZm9ydGFibGUuDQoNCi0tDQpodHRwOi8vZW4ud2lraXBlZGlhLm9yZw&#x3D;&#x3D;</span><br><span class="line">L3dpa2kvU3RlZ2Fub2dyYXBoeQ0K</span><br></pre></td></tr></table></figure>
-
+<pre><code class="txt">    U3RlZ2Fub2dyYXBoeSBpcyB0aGUgYXJ0IGFuZCBzY2llbmNlIG9m
+    IHdyaXRpbmcgaGlkZGVuIG1lc3NhZ2VzIGluIHN1Y2ggYSB3YXkgdGhhdCBubyBvbmV=
+    LCBhcGFydCBmcm9tIHRoZSBzZW5kZXIgYW5kIGludGVuZGVkIHJlY2lwaWVudCwgc3VzcGU=
+    Y3RzIHRoZSBleGlzdGVuY2Ugb2YgdGhlIG1lc3M=
+    YWdlLCBhIGZvcm0gb2Ygc2VjdXJpdHkgdGhyb3VnaCBvYnNjdXJpdHkuIFS=
+    aGUgd29yZCBzdGVnYW5vZ3JhcGh5IGlzIG9mIEdyZWVrIG9yaWdpbiBhbmQgbWVhbnMgImNvbmNlYW==
+    bGVkIHdyaXRpbmciIGZyb20gdGhlIEdyZWVrIHdvcmRzIHN0ZWdhbm9zIG1lYW5pbmcgImNv
+    dmVyZWQgb3IgcHJvdGVjdGVkIiwgYW5kIGdyYXBoZWluIG1lYW5pbmcgInRvIHc=
+    cml0ZSIuIFRoZSBmaXJzdCByZWNvcmRlZCB1c2Ugb2YgdGhlIHRlcm0gd2FzIGluIDE0OTkgYnkgSm9o
+    YW5uZXMgVHJpdGhlbWl1cyBpbiBoaXMgU3RlZ2Fub2dyYXBoaWEsIGEgdHJlYV==
+    dGlzZSBvbiBjcnlwdG9ncmFwaHkgYW5kIHN0ZWdhbm9ncmFwaHkgZGlzZ8==
+    dWlzZWQgYXMgYSBib29rIG9uIG1hZ2ljLiBHZW5lcmFsbHksIG1lc3P=
+    YWdlcyB3aWxsIGFwcGVhciB0byBiZSBzb21ldGhpbmcgZWxzZTogaW1hZ2VzLCBhcnRp
+    Y2xlcywgc2hvcHBpbmcgbGlzdHMsIG9yIHNvbWUgb3R=
+    aGVyIGNvdmVydGV4dCBhbmQsIGNsYXNzaWNhbGx5LCB0aGUgaGlkZGVuIG1lc3NhZ2UgbWF5IGJlIGluIGludmm=
+    c2libGUgaW5rIGJldHdlZW4gdGhlIHZpc2libGUgbGluZXMgb2YgYSBwcml2YXRlIGxldHRlci4NCg0KVGhl
+    IGFkdmFudGFnZSBvZiBzdGVnYW5vZ3JhcGh5LCBvdmVyIGNy
+    eXB0b2dyYXBoeSBhbG9uZSwgaXMgdGhhdCBtZXNzYWdlcyBkbyBub3QgYXR0cmFjdCBhdHRlbnRpb25=
+    IHRvIHRoZW1zZWx2ZXMuIFBsYWlubHkgdmlzaWJsZSBlbmNyeXB0ZWQgbWVzc2FnZXOXbm8gbWF0dGVyIF==
+    aG93IHVuYnJlYWthYmxll3dpbGwgYXJvdXNlIHN=
+    dXNwaWNpb24sIGFuZCBtYXkgaW4gdGhlbXNlbHZlcyBiZSBpbmNyaW1pbmF0aW5nIP==
+    aW4gY291bnRyaWVzIHdoZXJlIGVuY3J5cHRpb24gaXMgaWxsZWdhbC4gVGhlcmVmb3JlLH==
+    IHdoZXJlYXMgY3J5cHRvZ3JhcGh5IHByb3RlY3RzIHRoZSBjb250ZW50cyBvZj==
+    IGEgbWVzc2FnZSwgc3RlZ2Fub2dyYXBoeSBjYW4gYmUgc2FpZCB0byBwcm90ZWN0IGJ=
+    b3RoIG1lc3NhZ2VzIGFuZCBjb21tdW5pY2F0aW5nIHBhcnRpZXMuDQoNClN0ZWdhbm9ncmFwaHkgaW5jbHW=
+    ZGVzIHRoZSBjb25jZWFsbWVudCBvZiBpbmZvcm1hdGlvbiB3aXRoaW4gY29t
+    cHV0ZXIgZmlsZXMuIEluIGRpZ2l0YWwgc3RlZ2Fub2dyYXBoeSwgZWxlY3Ryb25pYyBjb21tdW5pY2F0aW9u
+    cyBtYXkgaW5jbHVkZSBzdGVnYW5vZ3JhcGhpYyBjb2RpbmcgaW5zaZ==
+    ZGUgb2YgYSB0cmFuc3BvcnQgbGF5ZXIsIHN1Y2ggYXMgYSBkb2N1bWVudCBmaWxlLCBpbWFnZSBmaWx=
+    ZSwgcHJvZ3JhbSBvciBwcm90b2NvbC4gTWVkaWEg
+    ZmlsZXMgYXJlIGlkZWFsIGZvciBzdGVnYW5vZ3JhcGhpYyB0cmFuc21pc3Npb+==
+    biBiZWNhdXNlIG9mIHRoZWlyIGxhcmdlIHNpemUuIEFzIB==
+    YSBzaW1wbGUgZXhhbXBsZSwgYSBzZW5kZXIgbWlnaHQgc3RhcnQgd2l0aCBh
+    biBpbm5vY3VvdXMgaW1hZ2UgZmlsZSBhbmQgYWRqdXN0IHRoZSBjb2xvciBvZiBldmVyeSAxMDB0aCBwaXhlbCD=
+    dG8gY29ycmVzcG9uZCB0byBhIGxldHRlciBpbiB0aGUgYWxwaGFiZXQsIGF=
+    IGNoYW5nZSBzbyBzdWJ0bGUgdGhhdCBzb21lb25lIG5vdCBzcGVjaWZpY2FsbHkgbG9va2luZyBm
+    b3IgaXQgaXMgdW5saWtlbHkgdG8gbm90aWNlIGl0Lg0KDQpUaGU=
+    IGZpcnN0IHJlY29yZGVkIHVzZXMgb2Ygc3RlZ2Fub2dyYXBoeSBjYW4gYmUgdHJ=
+    YWNlZCBiYWNrIHRvIDQ0MCBCQyB3aGVuIEhlcm9kb3R1cyBtZW50aW9ucyB0d28gZXhhbXBsZXMgb+==
+    ZiBzdGVnYW5vZ3JhcGh5IGluIFRoZSBIaXN0b3JpZXMgb2Yg
+    SGVyb2RvdHVzLiBEZW1hcmF0dXMgc2VudCBhIHdhcm5pbmcgYWJvdXQgYSB=
+    Zm9ydGhjb21pbmcgYXR0YWNrIHRvIEdyZWVjZSBieSB3
+    cml0aW5nIGl0IGRpcmVjdGx5IG9uIHRoZSB3b29kZW4gYmFja2luZyBvZiBhIHdheCB0YWJsZXQgYmVm
+    b3JlIGFwcGx5aW5nIGl0cyBiZWVzd2F4IHN1cmZhY2UuIFdheCB0YWJsZXRzIHdlcmUgaW4gY29tbW9uIHVzZV==
+    IHRoZW4gYXMgcmV1c2FibGUgd3JpdGluZyBzdXJmYWNlcywgc29tZXRpbWX=
+    cyB1c2VkIGZvciBzaG9ydGhhbmQuIEFub3RoZXIgYW5jaWVudCBleGFtcGxlIGlzIHRoYXQgb9==
+    ZiBIaXN0aWFldXMsIHdobyBzaGF2ZWQgdGhlIGhlYWQgb2YgaGlzIG1vc3QgdHJ1c3RlZCBz
+    bGF2ZSBhbmQgdGF0dG9vZWQgYSBtZXNzYWdlIG9uIGl0LiBBZnRlciBoaXMgaGFpciBoYWQgZ5==
+    cm93biB0aGUgbWVzc2FnZSB3YXMgaGlkZGVuLiBUaGUgcHVycG9zZSB3YXMgdG+=
+    IGluc3RpZ2F0ZSBhIHJldm9sdCBhZ2FpbnN0IHRoZSBQZXJzaWFucy4NCg0KU3RlZ2Fub2dyYXBoeSBoYXMgYm==
+    ZWVuIHdpZGVseSB1c2VkLCBpbmNsdWRpbmcgaW4gcmVjZW50IGhpc3RvcmljYWwgdGltZXMgYW5kIHT=
+    aGUgcHJlc2VudCBkYXkuIFBvc3NpYmxlIHBlcm11dGF0aW9ucyBhcmUgZW5kbGVzcyBhbmT=
+    IGtub3duIGV4YW1wbGVzIGluY2x1ZGU6DQoqIEhpZGRlbiBtZXNzYWdlcyB3aXRoaW4gd2F4IHRh
+    YmxldHM6IGluIGFuY2llbnQgR3JlZWNlLCBwZW9wbGUgd3JvdGUgbWV=
+    c3NhZ2VzIG9uIHRoZSB3b29kLCB0aGVuIGNvdmVyZWQgaXQgd2l0aCB3YXggdXBvbiB3aGljaCBhbiBpbm5vY2Vu
+    dCBjb3ZlcmluZyBtZXNzYWdlIHdhcyB3cml0dGVu
+    Lg0KKiBIaWRkZW4gbWVzc2FnZXMgb24gbWVzc2VuZ2VyJ3MgYm9keTogYWxzbyB1c2VkIGluIGFuY2llbt==
+    dCBHcmVlY2UuIEhlcm9kb3R1cyB0ZWxscyB0aGUgc3Rvcnkgb1==
+    ZiBhIG1lc3NhZ2UgdGF0dG9vZWQgb24gYSBzbGF2ZSdzIHNoYXZlZCBoZWFkLCBoaWRkZW4gYnkgdGhl
+    IGdyb3d0aCBvZiBoaXMgaGFpciwgYW5kIGV4cG9zZWQgYnkgc2hhdmluZyBoaXMgaGVhZM==
+    IGFnYWluLiBUaGUgbWVzc2FnZSBhbGxlZ2VkbHkgY2FycmllZCBhIHdhcm5pbmcgdG8gR3JlZWNlIGFib5==
+    dXQgUGVyc2lhbiBpbnZhc2lvbiBwbGFucy4gVGh=
+    aXMgbWV0aG9kIGhhcyBvYnZpb3VzIGRyYXdiYWNrcyz=
+    IHN1Y2ggYXMgZGVsYXllZCB0cmFuc21pc3Npb24gd2hpbGUgd2FpdGluZyBmb3IgdGhlIHP=
+    bGF2ZSdzIGhhaXIgdG8gZ3JvdywgYW5kIHRoZSByZXN0cmljdGlvbnMgb3==
+    biB0aGUgbnVtYmVyIGFuZCBzaXplIG9mIG1lc3M=
+    YWdlcyB0aGF0IGNhbiBiZSBlbmNvZGVkIG9uIG9uZSBwZXJzb24=
+    J3Mgc2NhbHAuDQoqIEluIFdXSUksIHRoZSBGcmVuY2ggUmVzaXN0YW5jZSBzZW50IHNvbWUgbWVzc2FnZXMgd2==
+    cml0dGVuIG9uIHRoZSBiYWNrcyBvZiBjb3VyaWVycyD=
+    dXNpbmcgaW52aXNpYmxlIGluay4NCiogSGlkZGVuIG1lc3NhZ2VzIG9uIHBhcGVyIHdy
+    aXR0ZW4gaW4gc2VjcmV0IGlua3MsIHVuZGVyIG90aGVyIG1lc3NhZ2Vz
+    IG9yIG9uIHRoZSBibGFuayBwYXJ0cyBvZiBvdGhlct==
+    IG1lc3NhZ2VzLg0KKiBNZXNzYWdlcyB3cml0dGVuIGluIE1vcnNlIGNvZGUgb24ga25pdHRpbmcgeWFybiBhbmQg
+    dGhlbiBrbml0dGVkIGludG8gYSBwaWVjZSBvZiBjbG90aGluZyB3b3K=
+    biBieSBhIGNvdXJpZXIuDQoqIE1lc3NhZ2VzIHdyaXR0ZW4gb24gdGhlIGJhY2sgb5==
+    ZiBwb3N0YWdlIHN0YW1wcy4NCiogRHVyaW5nIGFuZCBhZnRlcm==
+    IFdvcmxkIFdhciBJSSwgZXNwaW9uYWdlIGFnZW50cyB1c2VkIHBob3RvZ3JhcGhpY2FsbHkgcO==
+    cm9kdWNlZCBtaWNyb2RvdHMgdG8gc2VuZCBpbmZvcm1hdGlvbiBiYWNrIGFuZH==
+    IGZvcnRoLiBNaWNyb2RvdHMgd2VyZSB0eXBpY2FsbHkg
+    bWludXRlLCBhcHByb3hpbWF0ZWx5IGxlc3MgdGhhbiB0aGUgc2l6ZSBvZiB0aGUgcGVyaW9kIHByb2R=
+    dWNlZCBieSBhIHR5cGV3cml0ZXIuIFdXSUkgbWljcm9kb3RzIG5lZWRlZCB0byBiZSBlbWJlZGRlZB==
+    IGluIHRoZSBwYXBlciBhbmQgY292ZXJlZCB3aXRoIGFuIGFkaGVzaXZlIChzdWNoIGFzIGNvbGxvZGlvbikuIFR=
+    aGlzIHdhcyByZWZsZWN0aXZlIGFuZCB0aHVzIGRldGVjdGFibGUg
+    Ynkgdmlld2luZyBhZ2FpbnN0IGdsYW5jaW5nIGxpZ2h0LiBBbHRlcm5hdGl2ZSB0ZWNobmlxdWVzIGluY2x1ZGVk
+    IGluc2VydGluZyBtaWNyb2RvdHMgaW50byBzbGl0cyBjdXQgaW50byB0aGUgZWRnZSBvZv==
+    IHBvc3QgY2FyZHMuDQoqIER1cmluZyBXb3JsZCBXYXIgSUksIGEgc3B5IGZvciB=
+    SmFwYW4gaW4gTmV3IFlvcmsgQ2l0eSwgVmVsdmFsZWW=
+    IERpY2tpbnNvbiwgc2VudCBpbmZvcm1hdGlvbiB0byBhY2NvbW1vZGF0aW9=
+    biBhZGRyZXNzZXMgaW4gbmV1dHJhbCBTb3V0aCBBbWVyaWO=
+    YS4gU2hlIHdhcyBhIGRlYWxlciBpbiBkb2xscywgYW5kIG==
+    aGVyIGxldHRlcnMgZGlzY3Vzc2VkIGhvdyBtYW55IG9mIHRoaXMgb3IgdGhhdCBkb2xs
+    IHRvIHNoaXAuIFRoZSBzdGVnb3RleHQgd2FzIHRoZSBkb2xsIG9yZGVycywgd2hpbGUgdGhl
+    IGNvbmNlYWxlZCAicGxhaW50ZXh0IiB3YXMgaXRzZWxmIGVuY2+=
+    ZGVkIGFuZCBnYXZlIGluZm9ybWF0aW9uIGFib3V0IHNoaXAgbW92ZW1lbnRzLF==
+    IGV0Yy4gSGVyIGNhc2UgYmVjYW1lIHNvbWV3aGF0IGZh
+    bW91cyBhbmQgc2hlIGJlY2FtZSBrbm93biBhcyB0aGX=
+    IERvbGwgV29tYW4uDQoqIENvbGQgV2FyIGNvdW50
+    ZXItcHJvcGFnYW5kYS4gSW4gMTk2OCwgY3JldyBtZW1iZW==
+    cnMgb2YgdGhlIFVTUyBQdWVibG8gKEFHRVItMikgaW50ZWxsaWdlbmNlIHNoaXAgaGVsZCBhcyBwcm==
+    aXNvbmVycyBieSBOb3J0aCBLb3JlYSwgY29tbXVuaWNhdGVkIGluIHNpZ25=
+    IGxhbmd1YWdlIGR1cmluZyBzdGFnZWQgcGhvdG8gb3Bwb3J0
+    dW5pdGllcywgaW5mb3JtaW5nIHRoZSBVbml0ZWQgU3RhdGVzIHRoZXkg
+    d2VyZSBub3QgZGVmZWN0b3JzIGJ1dCByYXRoZXIgd2VyZSBiZWluZyBoZWxkIGNh
+    cHRpdmUgYnkgdGhlIE5vcnRoIEtvcmVhbnMuIEluIG90aGVyIHBob3Rv
+    cyBwcmVzZW50ZWQgdG8gdGhlIFVTLCBjcmV3IG1lbWJlcnMgZ2F2ZSAidGhlIGZpbmdlciIgdG8g
+    dGhlIHVuc3VzcGVjdGluZyBOb3J0aCBLb3JlYW5zLCBpbiBhbiBhdHRlbXB0IHRvIE==
+    ZGlzY3JlZGl0IHBob3RvcyB0aGF0IHNob3dlZCB0aGVtIHNtaQ==
+    bGluZyBhbmQgY29tZm9ydGFibGUuDQoNCi0tDQpodHRwOi8vZW4ud2lraXBlZGlhLm9yZw==
+    L3dpa2kvU3RlZ2Fub2dyYXBoeQ0K</code></pre>
 <p>可以看出全都是base64编码。</p>
 <h2 id="复习一下Base64"><a href="#复习一下Base64" class="headerlink" title="复习一下Base64"></a>复习一下Base64</h2><p>BASE64 是一种编码方式, 是一种可逆的编码方式.<br>编码后的数据是一个字符串, 包含的字符为: A-Za-z0-9+/<br>共 64 个字符：26 + 26 + 10 + 1 + 1 = 64<br>其实是 65 个字符, “=”是填充字符.</p>
 <p>64 个字符需要 6 位二进制来表示, 表示成数值为 0~63.<br><img src="base64-1.png" alt="base64-1"><br>这样, 长度为 3 个字节的数据经过 Base64 编码后就变为 4 个字节</p>
@@ -519,10 +633,31 @@
 </ol>
 <h2 id="隐写原理"><a href="#隐写原理" class="headerlink" title="隐写原理"></a>隐写原理</h2><p>注意红色的 0, 我们在解码的时候将其丢弃了, 所以这里的值不会影响解码. 所以我们可以在这进行隐写.<br>为什么等号的那部分 0 不能用于隐写? 因为修改那里的二进制值会导致等号数量变化, 解码的第 1 步会受影响. 自然也就破坏了源字符串.<br>而红色部分的 0 是作为最后一个字符二进制的组成部分, 还原时只用到了最后一个字符二进制的前部分, 后面的部分就不会影响还原.<br>唯一的影响就是最后一个字符会变化. 如下图<br><img src="base64-4.png" alt="base64-4"><br>如果你直接解密’VHIweQ==’与’VHIweR==’, 得到的结果都是’Tr0y’.</p>
 <p>当然, 一行 base64 顶多能有 2 个等号, 也就是有 2*2 位的可隐写位. 所以我们得弄很多行, 才能隐藏一个字符串, 这也是为什么题目给了一大段 base64 的原因.<br>接下来, 把要隐藏的 flag 转为 8 位二进制, 塞进去就行了.</p>
-<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">flag = <span class="string">'Tr0y&#123;Base64isF4n&#125;'</span> <span class="comment">#flag</span></span><br><span class="line">bin_str = <span class="string">''</span>.join([bin(ord(c)).replace(<span class="string">'0b'</span>, <span class="string">''</span>).zfill(<span class="number">8</span>) <span class="keyword">for</span> c <span class="keyword">in</span> flag])</span><br><span class="line">base64chars = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'0.txt'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f0, open(<span class="string">'1.txt'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f1: <span class="comment">#'0.txt'是明文, '1.txt'用于存放隐写后的 base64</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f0.readlines():</span><br><span class="line">        rowstr = base64.b64encode(line.replace(<span class="string">'\n'</span>, <span class="string">''</span>))</span><br><span class="line">        equalnum = rowstr.count(<span class="string">'='</span>)</span><br><span class="line">        <span class="keyword">if</span> equalnum <span class="keyword">and</span> len(bin_str):</span><br><span class="line">            offset = int(<span class="string">'0b'</span>+bin_str[:equalnum * <span class="number">2</span>], <span class="number">2</span>)</span><br><span class="line">            char = rowstr[len(rowstr) - equalnum - <span class="number">1</span>]</span><br><span class="line">            rowstr = rowstr.replace(char, base64chars[base64chars.index(char) + offset])</span><br><span class="line">            bin_str = bin_str[equalnum*<span class="number">2</span>:]</span><br><span class="line">        f1.write(rowstr + <span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
-
-<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">b64chars = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.txt'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    bin_str = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        stegb64 = <span class="string">''</span>.join(line.split())</span><br><span class="line">        rowb64 =  <span class="string">''</span>.join(stegb64.decode(<span class="string">'base64'</span>).encode(<span class="string">'base64'</span>).split())</span><br><span class="line">        offset = abs(b64chars.index(stegb64.replace(<span class="string">'='</span>,<span class="string">''</span>)[<span class="number">-1</span>])-b64chars.index(rowb64.replace(<span class="string">'='</span>,<span class="string">''</span>)[<span class="number">-1</span>]))</span><br><span class="line">        equalnum = stegb64.count(<span class="string">'='</span>) <span class="comment">#no equalnum no offset</span></span><br><span class="line">        <span class="keyword">if</span> equalnum:</span><br><span class="line">            bin_str += bin(offset)[<span class="number">2</span>:].zfill(equalnum * <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">''</span>.join([chr(int(bin_str[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, len(bin_str), <span class="number">8</span>)]) <span class="comment">#8 位一组</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><pre><code class="python">import base64
+flag = &#39;Tr0y{Base64isF4n}&#39; #flag
+bin_str = &#39;&#39;.join([bin(ord(c)).replace(&#39;0b&#39;, &#39;&#39;).zfill(8) for c in flag])
+base64chars = &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#39;
+with open(&#39;0.txt&#39;, &#39;rb&#39;) as f0, open(&#39;1.txt&#39;, &#39;wb&#39;) as f1: #&#39;0.txt&#39;是明文, &#39;1.txt&#39;用于存放隐写后的 base64
+    for line in f0.readlines():
+        rowstr = base64.b64encode(line.replace(&#39;\n&#39;, &#39;&#39;))
+        equalnum = rowstr.count(&#39;=&#39;)
+        if equalnum and len(bin_str):
+            offset = int(&#39;0b&#39;+bin_str[:equalnum * 2], 2)
+            char = rowstr[len(rowstr) - equalnum - 1]
+            rowstr = rowstr.replace(char, base64chars[base64chars.index(char) + offset])
+            bin_str = bin_str[equalnum*2:]
+        f1.write(rowstr + &#39;\n&#39;)</code></pre>
+<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><pre><code class="python">b64chars = &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#39;
+with open(&#39;1.txt&#39;, &#39;rb&#39;) as f:
+    bin_str = &#39;&#39;
+    for line in f.readlines():
+        stegb64 = &#39;&#39;.join(line.split())
+        rowb64 =  &#39;&#39;.join(stegb64.decode(&#39;base64&#39;).encode(&#39;base64&#39;).split())
+        offset = abs(b64chars.index(stegb64.replace(&#39;=&#39;,&#39;&#39;)[-1])-b64chars.index(rowb64.replace(&#39;=&#39;,&#39;&#39;)[-1]))
+        equalnum = stegb64.count(&#39;=&#39;) #no equalnum no offset
+        if equalnum:
+            bin_str += bin(offset)[2:].zfill(equalnum * 2)
+        print &#39;&#39;.join([chr(int(bin_str[i:i + 8], 2)) for i in xrange(0, len(bin_str), 8)]) #8 位一组</code></pre>
 <p>本文转自：<a href="http://www.tr0y.wang/2017/06/14/Base64steg/" target="_blank" rel="noopener">http://www.tr0y.wang/2017/06/14/Base64steg/</a></p>
 
       
@@ -582,7 +717,7 @@
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#base64','#MySql_select','#MySql_order by','#MySql_where','#MySql_like','#MySql_show','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#Markdown','#MySql_create','#MySql_alter','#zip','#hexo',],
+            'data': ['#base64','#MySql_show','#MySql_select','#MySql_order by','#Git','#MySql_where','#MySql_like','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#zip','#Markdown','#hexo',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');

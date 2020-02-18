@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>MySql(连接，创建等操作) | ZJR&#39;blog</title>
-  <meta name="keywords" content=" MySql_show ">
-  <meta name="description" content="MySql(连接，创建等操作) | ZJR&#39;blog">
+  <title>Git | ZJR&#39;blog</title>
+  <meta name="keywords" content=" Git ">
+  <meta name="description" content="Git | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Git是一个分布式版本控制系统Git取代了SVN等传统的版本控制系统，最核心的区别是 SVN 是集中式的版本控制系统，而 Git 是分布式的。  集中式版本控制系统需要找一个服务器作为大本营，所有的代码都需要提交到服务器上进行统一的管理。当你需要对代码进行改动时，需要先从服务器上下载一份拷贝，修改完成之后，还需要上传回服务器。 在分布式版本控制系统中，大家都拥有一个完整的版本库，不需要联网也可以提">
 <meta property="og:type" content="article">
@@ -447,9 +447,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-MySql-Course01" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-Git" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">MySql(连接，创建等操作)</h1>
+        <h1 class="article-title">Git</h1>
     
     <div class="article-meta">
         
@@ -457,26 +457,26 @@
         
         <span class="book">
             
-                <a  data-rel="MySqlCourse">MySqlCourse</a>
+                <a  data-rel="CTF">CTF</a>
             
         </span>
         
         
         <span class="tag">
             
-            <a class="color1">MySql_show</a>
+            <a class="color4">Git</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-02-11 21:23:22'>2020-01-31 21:02</time>
+        创建时间:<time class="date" title='更新时间: 2020-02-18 19:53:11'>2020-02-18 19:47</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:510</span>
+        <span>字数:1.8k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -495,7 +495,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用的书籍是《Mysql必知必会》"><span class="toc-text">使用的书籍是《Mysql必知必会》</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySql的安装及学习环境的配置"><span class="toc-text">MySql的安装及学习环境的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SHOW-命令的使用"><span class="toc-text">SHOW 命令的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#之后的学习都将在这个数据库与这些表中进行"><span class="toc-text">之后的学习都将在这个数据库与这些表中进行</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git的工作流程"><span class="toc-text">Git的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git常用命令"><span class="toc-text">Git常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reset和checkout的基本作用"><span class="toc-text">reset和checkout的基本作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程仓库的使用"><span class="toc-text">远程仓库的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git的分支操作"><span class="toc-text">Git的分支操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#忽略文件"><span class="toc-text">忽略文件</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -511,54 +511,85 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这是关于MySql的学习记录</p>
-<h2 id="使用的书籍是《Mysql必知必会》"><a href="#使用的书籍是《Mysql必知必会》" class="headerlink" title="使用的书籍是《Mysql必知必会》"></a>使用的书籍是《Mysql必知必会》</h2><h3 id="MySql的安装及学习环境的配置"><a href="#MySql的安装及学习环境的配置" class="headerlink" title="MySql的安装及学习环境的配置"></a>MySql的安装及学习环境的配置</h3><p>直接进入MySQL官方网站下载安装即可</p>
-<blockquote>
-<p><a href="https://www.mysql.com/downloads/" target="_blank" rel="noopener">https://www.mysql.com/downloads/</a><br><font size=3 color=red>对应MySql版本为4.1及更高版本</font></p>
-</blockquote>
-<p>Linux下利用wget安装（版本可自行更替）</p>
-<blockquote>
-<p>wget <a href="https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.26-linux-glibc2.12-x86_64.tar.gz" target="_blank" rel="noopener">https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.26-linux-glibc2.12-x86_64.tar.gz</a><br>tar -xvf mysql-5.7.26-linux-glibc2.12-x86_64.tar.gz</p>
-</blockquote>
-<p>或者利用apt安装</p>
-<blockquote>
-<p>apt-get install mysql-server(mysql服务，必须安装)<br>apt-get install mysql-client(mysql客户，非必须)</p>
-</blockquote>
-<p>可以自行安装图形化管理软件如：Navicat，MySQL Administrator。</p>
-<p>这里主要为了学习MySql的相关命令使用的是mysql-client命令行实用程序。</p>
-<p>练习数据库可以到如下网站下载（书籍配套练习数据库）</p>
-<blockquote>
-<p><a href="https://forta.com/books/0672327120/" target="_blank" rel="noopener">https://forta.com/books/0672327120/</a><br>在网页最下方下载mysql_scripts.zip即可<br>解压后有两个文件：creat.sql，populate.sql</p>
-</blockquote>
-<p>连接数据库</p>
-<blockquote>
-<p><strong>mysql -uxxx -pxxx -hxxx -Pxxx</strong><br>xxx为参数，-u后为用户名，-p后为密码，-h为MySQL服务器名或地址，-P为服务端口号<br>本地连接则可以不带-h和-P<br><strong>注意参数格式</strong></p>
-</blockquote>
-<p>连接MySql后</p>
-<blockquote>
-<p>create database crashcourse; （创建数据库）<br>use crashcourse;    （进入数据库当中）<br>source create.sql;  （创建表,要填脚本的绝对路径）<br>source populate.sql;（插入数据）</p>
-</blockquote>
-<p>当然执行这两条命里需要用户有相应的权限。<br>出现Query OK, 1 row affected (0.00 sec)则表示相应的表创建成功，数据插入成功。</p>
-<h3 id="SHOW-命令的使用"><a href="#SHOW-命令的使用" class="headerlink" title="SHOW 命令的使用"></a>SHOW 命令的使用</h3><blockquote>
-<p><strong>show databases;(显示当前数据库)</strong><br>如果当前账户的权限不够，则不能将服务器上的所有数据库显示出来</p>
-</blockquote>
-<p><img src="1.png" alt=" "></p>
-<blockquote>
-<p><strong>show tables;(显示数据库中的表)</strong></p>
-</blockquote>
-<p><img src="2.png" alt=" "></p>
-<blockquote>
-<p><strong>show columns from customers;(显示customers表里的字段)</strong></p>
-</blockquote>
-<p><img src="3.png" alt=" "></p>
-<blockquote>
-<p><strong>show grants;(显示当前用户的权限)</strong></p>
-</blockquote>
-<p><img src="4.png" alt=" "></p>
-<blockquote>
-<p><strong>show errors;(显示服务器错误消息)</strong><br><strong>show warnings;(显示服务器警告消息)</strong><br><strong>show status;(显示服务器状态信息)</strong></p>
-</blockquote>
-<h3 id="之后的学习都将在这个数据库与这些表中进行"><a href="#之后的学习都将在这个数据库与这些表中进行" class="headerlink" title="之后的学习都将在这个数据库与这些表中进行"></a>之后的学习都将在这个数据库与这些表中进行</h3>
+        <p>Git是一个分布式版本控制系统<br>Git取代了SVN等传统的版本控制系统，最核心的区别是 SVN 是集中式的版本控制系统，而 Git 是分布式的。</p>
+<ul>
+<li>集中式版本控制系统需要找一个服务器作为大本营，所有的代码都需要提交到服务器上进行统一的管理。当你需要对代码进行改动时，需要先从服务器上下载一份拷贝，修改完成之后，还需要上传回服务器。</li>
+<li>在分布式版本控制系统中，大家都拥有一个完整的版本库，不需要联网也可以提交修改，所以中心服务器就显得不那么重要了。不过分布式版本控制系统一般也有一个“中心服务器”，但它只是用于方便大家的交换而已（挂了也没关系），而 GitHub 就是这么一个平台。</li>
+</ul>
+<p>Git与SVN的主要区别：</p>
+<ul>
+<li>克隆一份全新的目录以同样拥有 5 个分支来说，SVN 是同时复製 5 个版本的文件，也就是说重复 5 次同样的动作。而 Git 只是获取文件的每个版本的元素，然后只载入主要的分支（master）。在我的经验，克隆一个拥有将近一万个提交（commit），5 个分支，每个分支有大约 1500 个文件的 SVN，耗了将近 1 小时！而 Git 只用了区区的 1 分钟！</li>
+<li>在 SVN，分支是一个完整的目录。且这个目录拥有完整的实际文件。如果工作成员想要开啟新的分支，那将会影响“全世界”！每个人都会拥有和你一样的分支。如果你的分支是用来进行破坏工作（安检测试），那将会像传染病一样,你改一个分支，还得让其他人重新切分支重新下载，十分狗血。而 Git，每个工作成员可以任意在自己的本地版本库开启无限个分支。举例：当我想尝试破坏自己的程序（安检测试），并且想保留这些被修改的文件供日后使用， 我可以开一个分支，做我喜欢的事。完全不需担心妨碍其他工作成员。只要我不合并及提交到主要版本库，没有一个工作成员会被影响。等到我不需要这个分支时， 我只要把它从我的本地版本库删除即可。</li>
+<li>SVN 只能有一个指定中间版本库。当这个中间版本库有问题时，所有工作成员都一起瘫痪直到版本库维修完毕或者新的版本库设立完成。而 Git 可以有无限个版本库。或者，更正确的说法，每一个 Git 都是一个版本库，区别是它们是否拥有活跃目录（Git Working Tree）。如果主要版本库（例如：GitHub 的版本库）发生了什么事，工作成员仍然可以在自己的本地版本库（local repository）提交，等待主要版本库恢复即可。工作成员也可以提交到其他的版本库！</li>
+<li>在 SVN，当你提交你的完成品时，它将直接记录到中间版本库。当你发现你的完成品存在严重问题时，你已经无法阻止事情的发生了。如果网路中断，你根本没办法提交！而 Git 的提交完全属於本地版本库的活动。而你只需“推”（git push）到主要版本库即可。Git 的“推”其实是在执行“同步”（Sync）。</li>
+</ul>
+<h2 id="Git的工作流程"><a href="#Git的工作流程" class="headerlink" title="Git的工作流程"></a>Git的工作流程</h2><ol>
+<li>在工作目录中添加、修改文件</li>
+<li>将需要进行版本管理的文件放入暂存区域</li>
+<li>将暂存区域的文件提交到Git仓库</li>
+</ol>
+<p>Git管理的文件有三种状态：</p>
+<ul>
+<li>已修改</li>
+<li>已暂存</li>
+<li>已提交</li>
+</ul>
+<p>本地仓库Git维护着三个区域</p>
+<ul>
+<li>工作区域（Working Directory）就是你平时存放项目代码的地方。</li>
+<li>暂存区域（Stage）用于临时存放你的改动，事实上它只是一个文件，保存即将提交的文件列表信息。</li>
+<li>Git 仓库（Repository）就是安全存放数据的位置，这里边有你提交的所有版本的数据。其中，HEAD 指向最新放入仓库的版本（这第三棵树，确切的说，应该是 Git 仓库中 HEAD 指向的版本）。</li>
+</ul>
+<p>将工作目录的文件放到Git仓库的步骤：</p>
+<ol>
+<li>git add 文件名</li>
+<li>git commit -m “你干了啥(就是备注)”</li>
+</ol>
+<h2 id="Git常用命令"><a href="#Git常用命令" class="headerlink" title="Git常用命令"></a>Git常用命令</h2><ul>
+<li>git status 查看当前Git的状态</li>
+<li>git log 查看日志</li>
+<li>git log –pretty=oneline 查看日志</li>
+<li>git reflog 查看所有操作日志</li>
+</ul>
+<p><img src="git02.png" alt="git02"></p>
+<h2 id="reset和checkout的基本作用"><a href="#reset和checkout的基本作用" class="headerlink" title="reset和checkout的基本作用"></a>reset和checkout的基本作用</h2><p><img src="git01.png" alt="git01"><br>add：将工作区的代码提交到暂存区<br>commit：将暂存区提交到仓库<br>reset：将仓库版本恢复到暂存区<br>checkout：将暂存区数据恢复到工作区域</p>
+<p>reset命令的选项：</p>
+<ul>
+<li>git reset – mixed(默认参数可不填) HEAD~：（将快照回滚到暂存区域）<ul>
+<li>移动HEAD的指向，将其指向上一个快照</li>
+<li>将HEAD移动后指向的快照回滚到暂存区域</li>
+</ul>
+</li>
+<li>git reset –soft HEAD~：（移动HEAD的指向）<ul>
+<li>移动HEAD的指向，将其指向上一个快照</li>
+</ul>
+</li>
+<li>git reset –hard HEAD~：（将暂存区域还原到工作目录）<ul>
+<li>移动HEAD的指向，将其指向上一个快照</li>
+<li>将HEAD移动后指向的快照回滚到暂存区域</li>
+<li>将暂存区域的文件还原到工作目录</li>
+</ul>
+</li>
+</ul>
+<p>回滚指定快照：git reset 快照id<br>回滚个别文件：git reset 版本快照 文件名/路径<br>往前滚：git reset 快照id</p>
+<h2 id="远程仓库的使用"><a href="#远程仓库的使用" class="headerlink" title="远程仓库的使用"></a>远程仓库的使用</h2><p>git clone 线上仓库地址<br>git push 将本地代码提交到线上仓库<br>git pull 拉取最新的版本</p>
+<p><strong>使用SSH协议</strong>:</p>
+<ul>
+<li>执行ssh-keygen -t rsa -C “注册邮箱” 生成客户端公私钥文件</li>
+<li>将公钥上传到Github上</li>
+</ul>
+<h2 id="Git的分支操作"><a href="#Git的分支操作" class="headerlink" title="Git的分支操作"></a>Git的分支操作</h2><p>master分支为主分支</p>
+<p>git branch -查看分支<br>git branch 分支名 -创建分支<br>git checkout 分支名 -切换分支<br>git branch -d 分支名 -删除分支<br>git merge 被合并的分支名 -合并分支</p>
+<p>不能在要删除的分支内删除该分支</p>
+<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><p>不想提交到远程仓库的文档，可以使用“忽略文件”机制来实现。<br>忽略文件需要新建一个名为.gitignore文件，该文件用于声明忽略文件或不忽略文件的规则，规则对当前目录及其子目录生效。<br>注意：该文件因为没有文件名，没办法再windows目录下直接创建，可以通过命令Git Bash来touch创建。</p>
+<p>常见规则写法有：</p>
+<ul>
+<li>/mtk/     过滤整个文件夹</li>
+<li>*.zip     过滤掉所有.zip文件</li>
+<li>/mtk/do.c 过滤某个具体文件</li>
+<li>index.php 不过滤具体某个文件<br>在文件中以#开头的都是注释。</li>
+</ul>
+
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
     </div>
@@ -567,12 +598,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>MySql(连接，创建等操作)</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">510</span></p>
+    <p><span class="copy-title">文章标题:</span>Git</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.8k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-01-31, 21:02:14</p>
-    <p><span class="copy-title">最后更新:</span>2020-02-11, 21:23:22</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/01/31/MySql-Course01/" title="MySql(连接，创建等操作)">http://zjr-g.github.io/2020/01/31/MySql-Course01/</a>
+    <p><span class="copy-title">发布时间:</span>2020-02-18, 19:47:13</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-18, 19:53:11</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/18/Git/" title="Git">http://zjr-g.github.io/2020/02/18/Git/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
