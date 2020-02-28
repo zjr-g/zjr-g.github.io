@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SSIT-Inject | ZJR&#39;blog</title>
+  <meta name="keywords" content=" SSIT ">
+  <meta name="description" content="SSIT-Inject | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="文件包含简介服务器执行PHP文件时，可以通过文件包含函数加载另一个文件中的PHP代码，并且当PHP来执行，这会为开发者节省大量的时间。这意味着您可以创建供所有网页引用的标准页眉或菜单文件。当页眉需要更新时，您只更新一个包含文件就可以了，或者当您向网站添加一张新页面时，仅仅需要修改一下菜单文件（而不是更新所有网页中的链接）。 文件包含函数 require() require_once() inclu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FileIncloude(常见的文件包含漏洞及PHP伪协议分析)">
+<meta property="og:url" content="http://zjr-g.github.io/2020/02/28/FileIncloude/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="文件包含简介服务器执行PHP文件时，可以通过文件包含函数加载另一个文件中的PHP代码，并且当PHP来执行，这会为开发者节省大量的时间。这意味着您可以创建供所有网页引用的标准页眉或菜单文件。当页眉需要更新时，您只更新一个包含文件就可以了，或者当您向网站添加一张新页面时，仅仅需要修改一下菜单文件（而不是更新所有网页中的链接）。 文件包含函数 require() require_once() inclu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/01.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/02.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/03.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/04.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/05.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/06.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/07.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/08.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/09.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/10.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/11.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/12.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/13.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/14.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/15.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/16.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/17.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/18.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/19.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/20.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/21.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/22.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/23.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/24.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/25.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/26.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/27.png">
+<meta property="article:published_time" content="2020-02-28T12:56:42.000Z">
+<meta property="article:modified_time" content="2020-02-28T12:58:29.256Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="file_incloude">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/02/28/FileIncloude/01.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="21">
+<input type="hidden" id="yelog_site_word_count" value="31.2k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">aes加密</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">base64</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">ctf-web</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">file_incloude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SSIT</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="Tips "
+           href="/2020/02/18/Aes/"
+           data-tag="aes加密"
+           data-author="" >
+            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
+            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
+           data-author="" >
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/28/CTF-web-01/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-01">CTF-web-01</span>
+            <span class="post-date" title="2020-02-28 20:11:44">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/FileIncloude/"
+           data-tag="file_incloude"
+           data-author="" >
+            <span class="post-title" title="FileIncloude(常见的文件包含漏洞及PHP伪协议分析)">FileIncloude(常见的文件包含漏洞及PHP伪协议分析)</span>
+            <span class="post-date" title="2020-02-28 20:56:42">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/SSIT-Inject/"
+           data-tag="SSIT"
+           data-author="" >
+            <span class="post-title" title="SSIT-Inject">SSIT-Inject</span>
+            <span class="post-date" title="2020-02-28 20:52:27">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/11/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-SSIT-Inject" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">SSIT-Inject</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="Tips">Tips</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color5">SSIT</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-02-28 20:55:05'>2020-02-28 20:52</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#模板渲染"><span class="toc-text">模板渲染</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要服务器模板"><span class="toc-text">为什么需要服务器模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是服务端模板注入"><span class="toc-text">什么是服务端模板注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注入原理"><span class="toc-text">注入原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞发掘"><span class="toc-text">漏洞发掘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模板引擎注入"><span class="toc-text">模板引擎注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flask-jinja2模板注入"><span class="toc-text">flask&#x2F;jinja2模板注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-模版引擎Twig注入"><span class="toc-text">PHP&#x2F;模版引擎Twig注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#防御"><span class="toc-text">防御</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>具体模板的简单探测方法<br><img src="ssit01.jpg" alt="ssit01"></p>
+<p>模板引擎可以让（网站）程序实现界面与数据分离，业务代码与逻辑代码的分离，这大大提升了开发效率，良好的设计也使得代码重用变得更加容易。与此同时，它也扩展了黑客的攻击面。除了常规的 XSS 外，注入到模板中的代码还有可能引发 RCE（远程代码执行）。通常来说，这类问题会在博客，CMS，wiki 中产生。虽然模板引擎会提供沙箱机制，攻击者依然有许多手段绕过它。</p>
+<p>和常见Web注入的成因一样，也是服务端接收了用户的输入，将其作为 Web 应用模板内容的一部分，在进行目标编译渲染的过程中，执行了用户插入的恶意内容，因而可能导致了敏感信息泄露、代码执行、GetShell 等问题。其影响范围主要取决于模版引擎的复杂性。</p>
+<h2 id="模板渲染"><a href="#模板渲染" class="headerlink" title="模板渲染"></a>模板渲染</h2><p>首先 模板渲染分解为前端渲染和后端渲染，还有浏览器渲染。</p>
+<p>模板只是一种提供给程序来解析的一种语法，换句话说，模板是用于从数据（变量）到实际的视觉表现（HTML代码）这项工作的一种实现手段，而这种手段不论在前端还是后端都有应用。</p>
+<p>通俗点理解：拿到数据，塞到模板里，然后让渲染引擎将赛进去的东西生成 html 的文本，返回给浏览器，这样做的好处展示数据快，大大提升效率。</p>
+<p>后端渲染</p>
+<p>后端渲染HTML的情况下，浏览器会直接接收到经过服务器计算之后的呈现给用户的最终的HTML字符串，这里的计算就是服务器经过解析存放在服务器端的模板文件来完成的，在这种情况下，浏览器只进行了HTML的解析，以及通过操作系统提供的操纵显示器显示内容的系统调用在显示器上把HTML所代表的图像显示给用户。</p>
+<p>实现：后端拼字符串呗…… （理论上后端模板也是字符串）</p>
+<p>好处：模板统一在后端。前端（相对）省事，不占用客户端运算资源（解析模板），只要不大改结构，文字啥的小修改后端改了就好了。</p>
+<p>坏处：占用（部分、少部分）服务器运算资源、，response 出的数据量会（稍）大点，模板改了前端的交互和样式什么的一样得跟着联动修改。</p>
+<p>前端渲染</p>
+<p>前端渲染就是指浏览器会从后端得到一些信息，这些信息或许是适用于题主所说的angularjs的模板文件，亦或是JSON等各种数据交换格式所包装的数据，甚至是直接的合法的HTML字符串。这些形式都不重要，重要的是，将这些信息组织排列形成最终可读的HTML字符串是由浏览器来完成的，在形成了HTML字符串之后，再进行显示。</p>
+<p>好处：不占用服务端运算资源（解析模板），模板在前端（很有可能仅部分在前端），改结构变交互都前端自己来了，改完自己调就行。不用麻烦后端再联调神马的。</p>
+<p>坏处：占用（一部分、少部分）客户端运算资源（解析模板）。前端代码多点，毕竟包含模板代码了么。脚本是不是首次下就慢点了（看你在意不在意这个毕竟能304和CDN啥的）。可能造成前后两份模板的情况，总归要后端吐出个首屏啥的先让用户看见吧。那这部分页面模板不就是后端拼好了吐出来的么。</p>
+<p>示例1：定义一个模板，例如</p>
+<pre><code class="html">&lt;html&gt;
+
+&lt;div&gt;{$what}&lt;/div&gt;
+
+&lt;/html&gt;</code></pre>
+<p>这只是一个模板。{$what}是数据。此时不知道数据是什么。</p>
+<pre><code class="txt">    如果我想html里面成为
+    &lt;div&gt;peiqi&lt;/div&gt;
+    渲染到html代码里</code></pre>
+<p>渲染完成后。</p>
+<pre><code class="html">&lt;html&gt;
+    &lt;div&gt;peiqi&lt;/div&gt;
+&lt;/html&gt;</code></pre>
+<p>当然这只是最简答的例子；<br>一般来说，至少会提供分支，迭代。还有一些内置函数，如格式化等等<br>那么 {$what}这个数据如何代码传入。<br>比如我工作用的模板引擎是smarty<br>我定义了一个模板。</p>
+<pre><code class="html">&lt;html&gt;
+    &lt;div&gt;{$what}&lt;/div&gt;
+&lt;/html&gt;</code></pre>
+<p>js代码就是这么写就可以了</p>
+<blockquote>
+<p>var tpl= new jSmart(tplStr);//tplStr就是模板的字符串。<br>var content = “Hello World”;<br>tpl.fetch({what:content});</p>
+</blockquote>
+<p>这样就可以了<br>其余的就交给引擎去渲染执行了。</p>
+<p>示例2：<br>模板：front.tpl</p>
+<blockquote>
+<p>&lt;div&gt;<br>{ %$a% }<br>&lt;/div&gt;</p>
+</blockquote>
+<p>后端：<br>设置变量：$smarty-&gt;assign(‘a’, ‘give data’);<br>展示模板：$smarty-&gt;display(“front.tpl”);<br>到前端时是渲染好的html串：</p>
+<blockquote>
+<p>&lt;div&gt;<br>give data<br>&lt;/div&gt;</p>
+</blockquote>
+<p>这种方式的特点是展示数据快，直接后端拼装好数据与模板，展现到用户面前。</p>
+<h2 id="为什么需要服务器模板"><a href="#为什么需要服务器模板" class="headerlink" title="为什么需要服务器模板"></a>为什么需要服务器模板</h2><p>首先解释一下为什么HTML代码和应用程序逻辑混合在一起不好，看下面的例子你就知道了。假如你使用下面的代码为你的用户提供服务：<br><img src="ssit02.jpg" alt="ssit02"><br>这不仅仅是静态HTML代码。用户名是从cookie里获取并且自动填写的。这样一来，只要你之前登录过该网站，你就无需再次输入。但是这有一个问题，那就是你必须通过某种形式将值插入到HTML文档中，有两种方法可以实现，一种是正确的，一种是有危害的。不过我们要先问一下，为什么要这么做。</p>
+<p>下图展示了解决该问题的完全错误的方法：<br><img src="ssit03.jpg" alt="ssit03"></p>
+<p>这段代码有很多问题，作者不仅仅没有对用户的输入进行处理，HTML代码和PHP代码复杂的混合在一起，非常难以理解。部分HTML代码分布在多个函数中，这还不算什么，当你尝试修改HTML代码中任何内容时，你才发现有多难受，比如新增css类或修改HTML标签的顺序。</p>
+<p>上面这个例子显然是有意写的这么烂的，不过可以通过格式化进行优化。然而，在大型的代码库中，即使代码格式良好，也会很快变得无法管理。这就是为什么我们需要模板。</p>
+<p>与上面混乱的代码相比，服务器端模板提供了一种更加简单的方法来管理动态生成的HTML代码。最大的优点就是你可以在服务器端动态生成HTML页面，看起来跟静态HTML页面一样。现在我们来看看，当我们使用服务器端模板时，复杂的代码看起来如何。<br><img src="ssit04.jpg" alt="ssit04"><br>这段代码的意思非常清楚，首先加载login.tpl模板文件，然后对与模板中名称相同的变量赋值（大括号里的变量），然后调用show()函数，相应的替换它们的内容并输出HTML代码。然而，我们在模板中增加了新的功能，这将会向用户展示模板渲染的时间。</p>
+<h2 id="什么是服务端模板注入"><a href="#什么是服务端模板注入" class="headerlink" title="什么是服务端模板注入"></a>什么是服务端模板注入</h2><p>通过模板，Web应用可以把输入转换成特定的HTML文件或者email格式。就拿一个销售软件来说，我们假设它会发送大量的邮件给客户，并在每封邮件前SKE插入问候语，它会通过Twig（一个模板引擎）做如下处理：</p>
+<blockquote>
+<p>$output = $twig-&gt;render( $_GET[‘custom_email’] , array(“first_name” =&gt; $user.first_name) );</p>
+</blockquote>
+<p>有经验的读者可能迅速发现 XSS，但是问题不止如此。这行代码其实有更深层次的隐患，假设我们发送如下请求：</p>
+<pre><code class="txt">custom_email={{7*7}} // GET 参数
+49  // $output 结果
+
+还有更神奇的结果：
+custom_email={{self}} // GET 参数
+Object of class
+__TwigTemplate_7ae62e582f8a35e5ea6cc639800ecf15b96c0d6f78db3538221c1145580ca4a5
+could not be converted to string // 错误</code></pre>
+<p>我们不难猜到服务器执行了我们传过去的数据。每当服务器用模板引擎解析用户的输入时，这类问题都有可能发生。除了常规的输入外，攻击者还可以通过 LFI（文件包含）触发它。模板注入和 SQL 注入的产生原因有几分相似——都是将未过滤的数据传给引擎解析。</p>
+<p>为什么我们在模板注入前加“服务端”呢？这是为了和 jQuery，KnockoutJS 产生的客户端模板注入区别开来。通常的来讲，前者甚至可以让攻击者执行任意代码，而后者只能 XSS。</p>
+<h2 id="注入原理"><a href="#注入原理" class="headerlink" title="注入原理"></a>注入原理</h2><pre><code class="php"> &lt;?php
+require_once dirname(__FILE__).&#39;/../lib/Twig/Autoloader.php&#39;;
+Twig_Autoloader::register(true);
+$twig = new Twig_Environment(new Twig_Loader_String());
+$output = $twig-&gt;render(&quot;Hello {{name}}&quot;, array(&quot;name&quot; =&gt; $_GET[&quot;name&quot;]));  // 将用户输入作为模版变量的值
+echo $output;
+?&gt;</code></pre>
+<p>使用 Twig 模版引擎渲染页面，其中模版含有  变量，其模版变量值来自于 GET 请求参数 $_GET[“name”]。<br>显然这段代码并没有什么问题，即使你想通过 name 参数传递一段 JavaScript 代码给服务端进行渲染，也许你会认为这里可以进行 XSS，<br>但是由于模版引擎一般都默认对渲染的变量值进行编码和转义，所以并不会造成跨站脚本攻击：<br><img src="ssit05.png" alt="ssit05"></p>
+<p>但是，如果渲染的模版内容受到用户的控制，情况就不一样了。修改代码为：</p>
+<pre><code class="php"> &lt;?php
+require_once dirname(__FILE__).&#39;/../lib/Twig/Autoloader.php&#39;;
+Twig_Autoloader::register(true);
+$twig = new Twig_Environment(new Twig_Loader_String());
+$output = $twig-&gt;render(&quot;Hello {$_GET[&#39;name&#39;]}&quot;);  // 将用户输入作为模版内容的一部分
+echo $output;
+?&gt;</code></pre>
+<p><img src="ssit06.png" alt="ssit06"></p>
+<p>上面这段代码在构建模版时,拼接了用户输入作为模板的内容,现在如果再向服务端直接传递 JavaScript 代码,用户输入会原样输出,测试结果显而易见。</p>
+<p>在 Twig 模板引擎里,   除了可以输出传递的变量以外,还能执行一些基本的表达式然后将其结果作为该模板变量的值,例如这里用户输入 name=20 ,则在服务端拼接的模版内容为:<br><img src="ssit07.png" alt="ssit07"></p>
+<p>这里简单分析一下,由于   作为 Twig 模板引擎的默认注释形式,所以在前端输出的时候并不会显示,而 16  作为模板变量最终会返回 16  作为其值进行显示,因此前端最终会返回内容 Hello IsVuln16OK ,如下图:。<br><img src="ssit08.png" alt="ssit08"></p>
+<h2 id="漏洞发掘"><a href="#漏洞发掘" class="headerlink" title="漏洞发掘"></a>漏洞发掘</h2><p>每一个（重）模板引擎都有着自己的语法（点）,Payload 的构造需要针对各类模板引擎制定其不同的扫描规则,就如同 SQL 注入中有着不同的数据库类型一样。</p>
+<p>简单来说,就是更改请求参数使之承载含有模板引擎语法的 Payload,通过页面渲染返回的内容检测承载的 Payload 是否有得到编译解析,有解析则可以判定含有 Payload 对应模板引擎注入,否则不存在 SSTI。</p>
+<p>模板语言的语法和 HTML 语法相差甚大，因此我们可以用其独特的语法来探测漏洞。虽然各种模板的实现细节不大一样，不过它们的基本语法大致相同，我们可以发送如下 payload</p>
+<blockquote>
+<p>smarty=Hello ${7*7}<br>Hello 49<br>freemarker=Hello ${7*7}<br>Hello 49</p>
+</blockquote>
+<p>来确认漏洞。<br>在一些环境下，用户的输入也会被当作模板的可执行代码。比如说变量名：</p>
+<blockquote>
+<p>personal_greeting=username<br>Hello user01</p>
+</blockquote>
+<p>这种情况下，XSS 的方法就无效了。但是我们可以通过破坏 template 语句，并附加注入的HTML标签以确认漏洞：</p>
+<blockquote>
+<p>personal_greeting=username&lt;tag&gt;<br>Hello<br>personal_greeting=username}}&lt;tag&gt;<br>Hello user01 &lt;tag&gt;</p>
+</blockquote>
+<p>但是，如果渲染的模版内容受到用户的控制，情况就不一样了。修改代码为：</p>
+<pre><code class="php">&lt;?php
+require_once dirname(__FILE__).&#39;/../lib/Twig/Autoloader.php&#39;;
+Twig_Autoloader::register(true);
+$twig = new Twig_Environment(new Twig_Loader_String());
+$output = $twig-&gt;render(&quot;Hello {$_GET[&#39;name&#39;]}&quot;);  // 将用户输入作为模版内容的一部分
+echo $output;
+?&gt;</code></pre>
+<p>上面这段代码在构建模版时,拼接了用户输入作为模板的内容,现在如果再向服务端直接传递 JavaScript 代码,用户输入会原样输出,测试结果显而易见。</p>
+<h2 id="模板引擎注入"><a href="#模板引擎注入" class="headerlink" title="模板引擎注入"></a>模板引擎注入</h2><p>模板引擎（这里特指用于Web开发的模板引擎）是为了使用户界面与业务数据（内容）分离而产生的，它可以生成特定格式的文档，用于网站的模板引擎就会生成一个标准的HTML文档。</p>
+<p>一些模板引擎：Smarty，Mako，Jinja2，Jade，Velocity，Freemaker和Twig，模板注入是一种注入攻击，可以产生一些特别有趣的影响。对于AngularJS的情况，这可能意味着XSS，并且在服务器端注入的情况下可能意味着远程代码执行。</p>
+<p>重点来了，不同引擎有不同的测试以及注入方式！</p>
+<h3 id="flask-jinja2模板注入"><a href="#flask-jinja2模板注入" class="headerlink" title="flask/jinja2模板注入"></a>flask/jinja2模板注入</h3><p>Flask是一个使用 Python 编写的轻量级 Web 应用框架。其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2</p>
+<p>Flask框架中提供的模版引擎可能会被一些无量开发者利用引入一个服务端模版注入漏洞，如果对此感到有些困惑可以看看James Kettle在黑帽大会中分享的议题(PDF)，简而言之这个漏洞允许将语言/语法注入到模板中。在服务器的context中执行这个输入重现，根据应用的context可能导致任意远程代码执行(远端控制设备)</p>
+<p>参考文章：<a href="https://www.freebuf.com/articles/web/88768.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/88768.html</a></p>
+<p>参考文章：<a href="https://www.freebuf.com/articles/web/98928.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/98928.html</a></p>
+<h3 id="PHP-模版引擎Twig注入"><a href="#PHP-模版引擎Twig注入" class="headerlink" title="PHP/模版引擎Twig注入"></a>PHP/模版引擎Twig注入</h3><p>这里给出一个漏洞环境代码，本地测试</p>
+<pre><code class="txt">from flask import Flask
+from flask import render_template
+from flask import request
+from flask import render_template_string
+
+    app = Flask(__name__)
+    @app.route(&#39;/test&#39;,methods=[&#39;GET&#39;, &#39;POST&#39;])
+    def test():
+        template = &#39;&#39;&#39;
+            &lt;div class=&quot;center-content error&quot;&gt;
+                &lt;h1&gt;Oops! That page doesn&#39;t exist.&lt;/h1&gt;
+                &lt;h3&gt;%s&lt;/h3&gt;
+            &lt;/div&gt;
+        &#39;&#39;&#39; %(request.url)
+
+return render_template_string(template)
+
+    if __name__ == &#39;__main__&#39;:
+        app.debug = True
+        app.run()</code></pre>
+<p>代码简析： 我们自己简单写一个string类型的 html，html返回当前url，我们放入到渲染函数render_template_string进行渲染，然后页面会打印出当前url，如果url里含有{ { } } 那么便可以进行模板注入。</p>
+<p>测试结果如下：<br><img src="ssit09.png" alt="ssit09"></p>
+<p>而如果我们使用render_template函数，</p>
+<blockquote>
+<p>@app.route(‘/‘,methods=[‘GET’, ‘POST’])<br>@app.route(‘/index’,methods=[‘GET’, ‘POST’])#我们访问/或者/index都会跳转<br>def index():<br>return render_template(“index.html”,title=’Home’,user=request.args.get(“key”))</p>
+</blockquote>
+<p>index.html</p>
+<pre><code class="html">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;{{title}} - 小猪佩奇&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Hello, {{user}}!&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>那么将不会有模板注入，因为render_template已经传入一个固定好了的模板，没法再去修改，在渲染之后传入数据，只有当第一种代码，我们模板可控的时候，先传入后渲染，这样才会导致ssti模板注入。</p>
+<h3 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h3><p>为了防止此类漏洞，你应该像使用eval()函数一样处理字符串加载功能。尽可能加载静态模板文件。</p>
+<p>注意：我们已经确定此功能类似于require()函数调用。因此，你也应该防止本地文件包含（LFI）漏洞。不要允许用户控制此类文件或其内容的路径。</p>
+<p>另外，无论在何时，如果需要将动态数据传递给模板，不要直接在模板文件中执行，你可以使用模板引擎的内置功能来扩展表达式，实现同样的效果。</p>
+<p>黑帽大会上James Kettle讲解了<a href="us-15-Kettle-Server-Side-Template-Injection-RCE-For-The-Modern-Web-App-wp.pdf">《Server-Side Template Injection:RCE for the modern webapp》</a>,从服务端模板注入的形成到检测,再到验证和利用都进行了详细的介绍。</p>
+<p><strong>转载自链接：<a href="https://www.jianshu.com/p/aef2ae0498df" target="_blank" rel="noopener">https://www.jianshu.com/p/aef2ae0498df</a></strong></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>SSIT-Inject</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">4.1k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-02-28, 20:52:27</p>
+    <p><span class="copy-title">最后更新:</span>2020-02-28, 20:55:05</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/28/SSIT-Inject/" title="SSIT-Inject">http://zjr-g.github.io/2020/02/28/SSIT-Inject/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#aes加密','#base64','#ctf-web','#file_incloude','#Git','#MySql_select','#MySql_order by','#MySql_show','#MySql_where','#MySql_like','#MySql_concat','#MySql_regexp','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_insert','#MySql_update','#MySql_delete','#MySql_union','#MySql_create','#MySql_alter','#SSIT','#Markdown','#zip','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
